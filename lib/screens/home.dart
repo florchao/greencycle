@@ -41,8 +41,6 @@ class Home extends StatelessWidget {
           title: "Home",
           tags: [],
           searchBar: true,
-          categoryOne: "Beauty",
-          categoryTwo: "Fashion",
         ),
         backgroundColor: ArgonColors.verdeClaro,
         // key: _scaffoldKey,
@@ -52,17 +50,23 @@ class Home extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: CardHorizontal(
-                      cta: "View article",
-                      title: homeCards["Ice Cream"]!['title'] ?? "",
-                      img: homeCards["Ice Cream"]!['image'] ?? "",
-                      tap: () {
-                        Navigator.pushNamed(context, '/pro');
-                      }),
+                const Padding(
+                  padding: EdgeInsets.only(top: 16.0),
                 ),
-                SizedBox(height: 8.0),
+                Row(
+                  children:const [
+                Text(
+                  'Mis grupos',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20),
+                ),
+                    Text(''),
+                ]
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 16.0),
+                ),
+                const SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -82,28 +86,62 @@ class Home extends StatelessWidget {
                         })
                   ],
                 ),
-                SizedBox(height: 8.0),
-                CardHorizontal(
-                    cta: "View article",
-                    title: homeCards["Fashion"]!['title'] ?? "",
-                    img: homeCards["Fashion"]!['image'] ?? "",
-                    tap: () {
-                      Navigator.pushNamed(context, '/pro');
-                    }),
-                SizedBox(height: 8.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 16.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    const Text(
+                      'Últimas acciones',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20),
+                    ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      primary:  ArgonColors.azul
+                  ),
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      '+',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 32.0),
-                  child: CardSquare(
-                      cta: "View article",
-                      title: homeCards["Argon"]!['title'] ?? "",
-                      img: homeCards["Argon"]!['image'] ?? "",
-                      tap: () {
-                        Navigator.pushNamed(context, '/pro');
-                      }),
-                )
+                  padding: const EdgeInsets.only(top: 16.0),
+                ),
+                SizedBox(height: 8.0),
+                  ],
+        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CardSmall(
+                        cta: "View article",
+                        title: homeCards['Makeup']!['title'] ?? "",
+                        img: homeCards["Makeup"]!['image'] ?? "",
+                        tap: () {
+                          Navigator.pushNamed(context, '/pro');
+                        }),
+                    CardSmall(
+                        cta: "View article",
+                        title: homeCards["Coffee"]!['title'] ?? "",
+                        img: homeCards["Coffee"]!['image'] ?? "",
+                        tap: () {
+                          Navigator.pushNamed(context, '/pro');
+                        })
+                  ],
+                ),
               ],
             ),
           ),
-        ));
+        ),
+    );
   }
 }
