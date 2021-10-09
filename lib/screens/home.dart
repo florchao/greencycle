@@ -4,9 +4,7 @@ import 'package:greencycle/constants/Theme.dart';
 
 //widgets
 import 'package:greencycle/widgets/navbar.dart';
-import 'package:greencycle/widgets/card-horizontal.dart';
 import 'package:greencycle/widgets/card-small.dart';
-import 'package:greencycle/widgets/card-square.dart';
 import 'package:greencycle/widgets/drawer.dart';
 
 final Map<String, Map<String, String>> homeCards = {
@@ -32,15 +30,19 @@ final Map<String, Map<String, String>> homeCards = {
   }
 };
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   // final GlobalKey _scaffoldKey = new GlobalKey();
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Navbar(
-          title: "Home",
+          title: "",
           tags: [],
-          searchBar: true,
         ),
         backgroundColor: ArgonColors.verdeClaro,
         // key: _scaffoldKey,
@@ -75,15 +77,13 @@ class Home extends StatelessWidget {
                         title: homeCards['Makeup']!['title'] ?? "",
                         img: homeCards["Makeup"]!['image'] ?? "",
                         tap: () {
-                          Navigator.pushNamed(context, '/pro');
                         }),
                     CardSmall(
                         cta: "View article",
                         title: homeCards["Coffee"]!['title'] ?? "",
                         img: homeCards["Coffee"]!['image'] ?? "",
-                        tap: () {
-                          Navigator.pushNamed(context, '/pro');
-                        })
+                        tap: () {}
+                        )
                   ],
                 ),
                 const Padding(
@@ -111,7 +111,7 @@ class Home extends StatelessWidget {
                       style: TextStyle(fontSize: 24),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () { Navigator.pushNamed(context, '/AgregarAccion');},
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
