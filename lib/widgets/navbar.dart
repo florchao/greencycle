@@ -74,37 +74,38 @@ class _NavbarState extends State<Navbar> {
                         ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/profile');
-                            },
-                            child: IconButton(
-                                icon: Icon(Icons.account_circle,
-                                    color: widget.title == 'Mi Perfil'
-                                        ? ArgonColors.verdeClaro : ArgonColors.azul,
-                                    size: 22.0),
-                                onPressed: null),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/acciones');
+                              Navigator.pushNamed(context, '/misacciones');
                             },
                             child: IconButton(
                                 icon: Icon(Icons.post_add,
-                                    color: widget.title == 'Mis acciones'
+                                    color: widget.title == 'MisAcciones'
                                         ? ArgonColors.verdeClaro : ArgonColors.azul,
                                     size: 22.0),
                                 onPressed: null),
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/grupos');
+                              Navigator.pushNamed(context, '/misgrupos');
                             },
                             child: IconButton(
                                 icon: Icon(Icons.groups,
-                                    color: widget.title == 'Mis Grupos'
+                                    color: widget.title == 'MisGrupos'
                                         ? ArgonColors.verdeClaro : ArgonColors.azul,
                                     size: 22.0),
                                 onPressed: null),
                           ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/profile');
+                          },
+                          child: IconButton(
+                            icon: Icon(Icons.account_circle,
+                                color: widget.title == 'Mi Perfil'
+                                    ? ArgonColors.verdeClaro : ArgonColors.azul,
+                                size: 22.0),
+                            onPressed: () => Navigator.pushNamed(context, '/profile'),),
+
+                        ),
                         ],
                       ),
                   ],

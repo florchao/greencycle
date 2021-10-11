@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:greencycle/constants/Theme.dart';
 
 class Input extends StatelessWidget {
-  final String placeholder;
-  final Widget suffixIcon;
-  final Function onTap;
-  final Function onChanged;
-  final TextEditingController controller;
+  final String ? placeholder;
+  final Widget ? suffixIcon;
+  final Function ? onTap;
+  final Function ? onChanged;
+  final TextEditingController ? controller;
   final bool autofocus;
   final Color borderColor;
 
   Input(
-      {required this.placeholder,
-      required this.suffixIcon,
-        required this.onTap,
-        required this.onChanged,
+      { this.placeholder,
+       this.suffixIcon,
+        this.onTap,
+         this.onChanged,
       this.autofocus = false,
       this.borderColor = ArgonColors.verdeOscuro,
-        required this.controller});
+         this.controller});
 
   @override
   Widget build(BuildContext context) {

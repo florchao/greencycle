@@ -102,15 +102,10 @@ class _HomeState extends State<Home> {
                       shape: const CircleBorder(),
                       primary:  ArgonColors.azul
                   ),
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    alignment: Alignment.center,
-                    child: const Text(
+                  child: Text(
                       '+',
                       style: TextStyle(fontSize: 24),
                     ),
-                  ),
                   onPressed: () { Navigator.pushNamed(context, '/AgregarAccion');},
                 ),
                 Padding(
