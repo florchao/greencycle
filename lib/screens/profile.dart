@@ -18,12 +18,6 @@ class Profile extends StatelessWidget {
         ),
         backgroundColor: ArgonColors.verdeClaro,
         body: Stack(children: <Widget>[
-          Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      alignment: Alignment.topCenter,
-                      image: AssetImage("assets/img/profile-screen-bg.png"),
-                      fit: BoxFit.fitWidth))),
           SafeArea(
             child: ListView(children: [
               Padding(
@@ -60,12 +54,6 @@ class Profile extends StatelessWidget {
                                   Expanded(
                                     child: Column(
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                          ],
-                                        ),
                                         Align(
                                           child: Text("Jessica Jones",
                                               style: TextStyle(
@@ -169,7 +157,7 @@ class Profile extends StatelessWidget {
                           child: Align(
                             child: CircleAvatar(
                               backgroundImage: AssetImage(
-                                  "assets/img/profile-screen-avatar.jpg"),
+                                  "assets/img/profilepicsample.png"),
                               radius: 65.0,
                               // maxRadius: 200.0,
                             ),
