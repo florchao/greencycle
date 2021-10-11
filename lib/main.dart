@@ -5,6 +5,7 @@ import 'package:greencycle/screens/register.dart';
 import 'package:greencycle/screens/login.dart';
 import 'package:greencycle/screens/profile.dart';
 import 'package:greencycle/screens/misacciones.dart';
+import 'package:greencycle/screens/misgrupos.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           "/login" : (BuildContext context) => new Login(),
           "/profile" : (BuildContext context) => new Profile(),
           "/misacciones" : (BuildContext context) => new MisAcciones(),
+          "/misgrupos" : (BuildContext context) => new MisGrupos(),
         });
   }
 }

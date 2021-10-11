@@ -97,11 +97,11 @@ class _NavbarState extends State<Navbar> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/grupos');
+                              Navigator.pushNamed(context, '/misgrupos');
                             },
                             child: IconButton(
                                 icon: Icon(Icons.groups,
-                                    color: widget.title == 'Mis Grupos'
+                                    color: widget.title == 'MisGrupos'
                                         ? ArgonColors.verdeClaro : ArgonColors.azul,
                                     size: 22.0),
                                 onPressed: null),
