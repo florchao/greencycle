@@ -133,6 +133,7 @@ class Profile extends StatelessWidget {
                                                     title:  "HOLA",
                                                     img:"https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=240&q=80hoto-1501601983405-7c7cabaa1581?fit=crop&w=240&q=80",
                                                 ),
+
                                                 CardXs(
                                                     cta: "View article",
                                                     title:  "HOLA",

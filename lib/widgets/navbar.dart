@@ -86,11 +86,11 @@ class _NavbarState extends State<Navbar> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/acciones');
+                              Navigator.pushNamed(context, '/misacciones');
                             },
                             child: IconButton(
                                 icon: Icon(Icons.post_add,
-                                    color: widget.title == 'Mis acciones'
+                                    color: widget.title == 'MisAcciones'
                                         ? ArgonColors.verdeClaro : ArgonColors.azul,
                                     size: 22.0),
                                 onPressed: null),
