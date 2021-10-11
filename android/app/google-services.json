@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "886922089042",
-    "project_id": "greencycle-fc27b",
-    "storage_bucket": "greencycle-fc27b.appspot.com"
+    "project_number": "316897990513",
+    "project_id": "greencycle-ed98e",
+    "storage_bucket": "greencycle-ed98e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:886922089042:android:073796022f160088cfc58b",
+        "mobilesdk_app_id": "1:316897990513:android:cf653955a18e98008708d0",
         "android_client_info": {
           "package_name": "com.itba.greencycle"
         }
       },
       "oauth_client": [
         {
-          "client_id": "886922089042-2q4l5fjttiagv5qjvo59o44gchrnenpi.apps.googleusercontent.com",
+          "client_id": "316897990513-3qgh7it4trhrfl4nq78bra6la4512kt8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJ6xPZ_dxzgkHVD8sxH78KMAGt7Cdwp5E"
+          "current_key": "AIzaSyCDa8-247llsLezkQEtkxvSSVWNOo8wA94"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "886922089042-2q4l5fjttiagv5qjvo59o44gchrnenpi.apps.googleusercontent.com",
+              "client_id": "316897990513-3qgh7it4trhrfl4nq78bra6la4512kt8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
