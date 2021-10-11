@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:greencycle/screens/home.dart';
 import 'package:greencycle/screens/onboarding.dart';
 import 'package:greencycle/screens/register.dart';
+import 'package:greencycle/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,11 +18,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'GreenCycle',
         theme: ThemeData(fontFamily: 'Railway'),
-        initialRoute: "/register",
+        initialRoute: "/onboarding",
         routes: <String, WidgetBuilder>{
           "/onboarding": (BuildContext context) => new Onboarding(),
           "/home" : (BuildContext context) => new Home(),
           "/register" : (BuildContext context) => new Register(),
+          "/login" : (BuildContext context) => new Login(),
         });
   }
 }
