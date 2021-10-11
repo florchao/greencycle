@@ -81,7 +81,8 @@ class _NavbarState extends State<Navbar> {
                                     color: widget.title == 'Mi Perfil'
                                         ? ArgonColors.verdeClaro : ArgonColors.azul,
                                     size: 22.0),
-                                onPressed: null),
+                                onPressed: () => Navigator.pushNamed(context, '/profile'),),
+
                           ),
                           GestureDetector(
                             onTap: () {
