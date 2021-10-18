@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'GreenCycle',
         theme: ThemeData(fontFamily: 'Railway'),
-        initialRoute: "/settings",
+        initialRoute: "/onboarding",
         routes: <String, WidgetBuilder>{
           "/onboarding": (BuildContext context) => new Onboarding(),
           "/home": (BuildContext context) => new Home(),
