@@ -6,6 +6,7 @@ import 'package:greencycle/screens/login.dart';
 import 'package:greencycle/screens/profile.dart';
 import 'package:greencycle/screens/misacciones.dart';
 import 'package:greencycle/screens/misgrupos.dart';
+import 'package:greencycle/screens/settings.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'GreenCycle',
         theme: ThemeData(fontFamily: 'Railway'),
-        initialRoute: "/onboarding",
+        initialRoute: "/settings",
         routes: <String, WidgetBuilder>{
           "/onboarding": (BuildContext context) => new Onboarding(),
           "/home": (BuildContext context) => new Home(),
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           "/profile": (BuildContext context) => new Profile(),
           "/misacciones": (BuildContext context) => new MisAcciones(),
           "/misgrupos": (BuildContext context) => new MisGrupos(),
+          "/settings" : (BuildContext context) => new Settings(),
         });
   }
 }

@@ -100,7 +100,7 @@ class _NavbarState extends State<Navbar> {
                           },
                           child: IconButton(
                             icon: Icon(Icons.account_circle,
-                                color: widget.title == 'Mi Perfil'
+                                color: (widget.title == 'Mi Perfil' || widget.title == 'Configuración')
                                     ? ArgonColors.verdeClaro : ArgonColors.azul,
                                 size: 22.0),
                             onPressed: () => Navigator.pushNamed(context, '/profile'),),

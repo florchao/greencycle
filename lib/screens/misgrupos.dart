@@ -118,14 +118,6 @@ class MisGrupos extends StatelessWidget {
                       tap: () {
                         Navigator.pushNamed(context, '/pro');
                       }),
-                  SizedBox(height: 8.0),
-                  CardSquare(
-                      cta: "View article",
-                      title: articlesCards["Argon"]!['title'],
-                      img: articlesCards["Argon"]!['image'],
-                      tap: () {
-                        Navigator.pushNamed(context, '/pro');
-                      }),
                 ],
               ),
             )));

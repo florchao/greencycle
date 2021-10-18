@@ -54,12 +54,27 @@ class Profile extends StatelessWidget {
                                   Expanded(
                                     child: Column(
                                       children: [
-                                        Align(
-                                          child: Text("Jessica Jones",
-                                              style: TextStyle(
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        children:[
+                                          Align(
+                                            child: Text("Jessica Jones",
+                                                style: TextStyle(
+                                                    color: ArgonColors.azul,
+                                                    fontSize: 28.0)),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(context, '/profile');
+                                            },
+                                            child: IconButton(
+                                              icon: Icon(Icons.settings,
                                                   color: ArgonColors.azul,
-                                                  fontSize: 28.0)),
-                                        ),
+                                                  size: 22.0),
+                                              onPressed: () => Navigator.pushNamed(context, '/settings'),),
+
+                                          ),
+                                        ]),
                                         SizedBox(height: 25.0),
                                         Padding(padding: const EdgeInsets.only(
                                             right: 25.0, left: 25.0),
