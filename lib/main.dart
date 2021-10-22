@@ -7,6 +7,7 @@ import 'package:greencycle/screens/profile.dart';
 import 'package:greencycle/screens/misacciones.dart';
 import 'package:greencycle/screens/misgrupos.dart';
 import 'package:greencycle/screens/settings.dart';
+import 'package:greencycle/screens/newgroup.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           "/misacciones": (BuildContext context) => new MisAcciones(),
           "/misgrupos": (BuildContext context) => new MisGrupos(),
           "/settings" : (BuildContext context) => new Settings(),
+          "/newgroup" : (BuildContext context) => new NewGroup(),
         });
   }
 }
