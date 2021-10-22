@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:greencycle/screens/action-detail.dart';
 import 'package:greencycle/screens/home.dart';
 import 'package:greencycle/screens/onboarding.dart';
 import 'package:greencycle/screens/register.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           "/misgrupos": (BuildContext context) => new MisGrupos(),
           "/settings" : (BuildContext context) => new Settings(),
           "/newgroup" : (BuildContext context) => new NewGroup(),
+          "/action-detail" : (BuildContext context) => new ActionDetail(),
         });
   }
 }
