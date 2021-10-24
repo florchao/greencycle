@@ -120,6 +120,15 @@ class MisGrupos extends StatelessWidget {
                       }),
                 ],
               ),
-            )));
+            )
+        ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/newgroup');
+            },
+          child: const Icon(Icons.add),
+          backgroundColor: ArgonColors.azul,
+      ),
+    );
   }
 }

@@ -18,10 +18,11 @@ class NewGroup extends StatelessWidget {
         children: [
           SafeArea(
               child: ListView(
+                scrollDirection: Axis.vertical,
                 children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                        top: 16, left: 24.0, right: 24.0, bottom: 32),
+                        top: 16, left: 24.0, right: 24.0, bottom: 16),
                   child: Column(
                     children: [
                       Padding(
@@ -34,56 +35,82 @@ class NewGroup extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.63,
+                        height: MediaQuery.of(context).size.height,
                         color: ArgonColors.verdeClaro,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                            child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceAround,
+                            child: ListView(
+                              scrollDirection: Axis.vertical,
                               children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Input(
+                                    placeholder: "Nombre",
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
+                                SizedBox(height: 8.0),
+                                Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('Premios',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)
+                                          )
+                                        ),
+                                        SizedBox( height: 8.0),
+                                        Input(
+                                          placeholder: "1er Puesto",
+                                          suffixIcon: Icon(Icons.emoji_events),
+                                        ),
+                                        SizedBox( height: 8.0),
+                                        Input(
+                                          placeholder: "2do Puesto",
+                                          suffixIcon: Icon(Icons.emoji_events),
+                                        ),
+                                        SizedBox( height: 8.0),
+                                        Input(
+                                          placeholder: "3er Puesto",
+                                          suffixIcon: Icon(Icons.emoji_events),
+                                        )
+                                      ],
+                                    )
+                                ),
+                                SizedBox(height: 8.0),
+                                Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Input(
-                                        placeholder: "Nombre",
+                                      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text('Integrantes',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text('Integrantes',
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
-                                          ),
-                                        ),
-                                        FloatingActionButton.small(
-                                          tooltip: 'Agregar',
-                                            child: const Icon(Icons.add),
-                                            backgroundColor: ArgonColors.azul,
-                                            onPressed: null)
-                                      ],
+                                    FloatingActionButton.small(
+                                        tooltip: 'Agregar',
+                                        child: const Icon(Icons.add),
+                                        backgroundColor: ArgonColors.azul,
+                                        onPressed: null
                                     ),
-
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           )
                         ),
                       )
                     ],
-                  ),)
-              ],))
+                  ),
+                )
+              ],)
+          )
         ],
       )
     );
