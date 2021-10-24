@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/card-horizontal.dart';
-import 'package:greencycle/widgets/card-small.dart';
-import 'package:greencycle/widgets/card-square.dart';
 import 'package:greencycle/widgets/navbar.dart';
 
 final Map<String, Map<String, dynamic>> articlesCards = {
@@ -121,7 +119,7 @@ class MisAcciones extends StatelessWidget {
                         title: articlesCards["Ice Cream"]!['title'],
                         img: articlesCards["Ice Cream"]!['image'],
                         tap: () {
-                          Navigator.pushNamed(context, '/pro');
+                          Navigator.pushNamed(context, '/group-detail');
                         }),
                   ),
                   SizedBox(height: 8.0),
@@ -130,7 +128,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/pro');
+                        Navigator.pushNamed(context, '/group-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -146,7 +144,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/pro');
+                        Navigator.pushNamed(context, '/group-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -154,7 +152,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/pro');
+                        Navigator.pushNamed(context, '/group-detail');
                       }),
                   SizedBox(height: 8.0),
                 ],
