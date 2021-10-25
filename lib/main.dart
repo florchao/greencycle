@@ -10,6 +10,7 @@ import 'package:greencycle/screens/misgrupos.dart';
 import 'package:greencycle/screens/settings.dart';
 import 'package:greencycle/screens/newgroup.dart';
 import 'package:greencycle/screens/group-detail.dart';
+import 'package:greencycle/screens/create-action.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           "/newgroup" : (BuildContext context) => new NewGroup(),
           "/action-detail" : (BuildContext context) => new ActionDetail(),
           "/group-detail" : (BuildContext context) => new GroupDetail(),
+          "/create-action" : (BuildContext context) => new CreateAction(),
         });
   }
 }

@@ -6,20 +6,20 @@ class GroupDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "GroupDetails",
-          rightOptions: false, tags: [],
-        ),
-        backgroundColor: ArgonColors.verdeClaro,
-        body: Container(
+      appBar: Navbar(
+        title: "GroupDetails",
+        rightOptions: false, tags: [],
+      ),
+      backgroundColor: ArgonColors.verdeClaro,
+      body: Container(
           child: SafeArea(
               child: Column(
                 children: <Widget>[
                   GroupDetailsTitleWidget(),
                   Divider(
-                    height: 50,
-                    thickness: 5,
-                    color: ArgonColors.verdeOscuro
+                      height: 50,
+                      thickness: 5,
+                      color: ArgonColors.verdeOscuro
                   ),
                   ScoreTableWidget(),
                   Divider(
@@ -37,7 +37,7 @@ class GroupDetail extends StatelessWidget {
                 ],
               )
           )
-        ),
+      ),
     );
   }
   Widget GroupDetailsTitleWidget(){

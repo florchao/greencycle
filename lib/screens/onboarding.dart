@@ -23,23 +23,23 @@ class Onboarding extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     child:
-                      FlatButton(
-                        textColor: ArgonColors.white,
-                        color: ArgonColors.verdeOscuro,
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/register');
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 16.0, right: 16.0, top: 12, bottom: 10),
-                            child: Text("REGISTRARSE",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18.0))),
+                    FlatButton(
+                      textColor: ArgonColors.white,
+                      color: ArgonColors.verdeOscuro,
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/register');
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 12, bottom: 10),
+                          child: Text("REGISTRARSE",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18.0))),
+                    ),
                   ),
                 ),
                 Padding(

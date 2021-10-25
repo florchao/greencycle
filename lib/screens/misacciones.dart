@@ -108,7 +108,7 @@ class MisAcciones extends StatelessWidget {
                           '+',
                           style: TextStyle(fontSize: 24),
                         ),
-                      onPressed: () { Navigator.pushNamed(context, '/AgregarAccion');},
+                      onPressed: () { Navigator.pushNamed(context, '/create-action');},
                     ),
                   ]),
         ),
