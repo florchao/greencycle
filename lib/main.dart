@@ -12,8 +12,9 @@ import 'package:greencycle/screens/newgroup.dart';
 import 'package:greencycle/screens/group-detail.dart';
 import 'package:greencycle/screens/create-action.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -23,23 +24,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'GreenCycle',
-        theme: ThemeData(fontFamily: 'Railway'),
-        initialRoute: "/onboarding",
-        routes: <String, WidgetBuilder>{
-          "/onboarding": (BuildContext context) => new Onboarding(),
-          "/home": (BuildContext context) => new Home(),
-          "/register": (BuildContext context) => new Register(),
-          "/login": (BuildContext context) => new Login(),
-          "/profile": (BuildContext context) => new Profile(),
-          "/misacciones": (BuildContext context) => new MisAcciones(),
-          "/misgrupos": (BuildContext context) => new MisGrupos(),
-          "/settings" : (BuildContext context) => new Settings(),
-          "/newgroup" : (BuildContext context) => new NewGroup(),
-          "/action-detail" : (BuildContext context) => new ActionDetail(),
-          "/group-detail" : (BuildContext context) => new GroupDetail(),
-          "/create-action" : (BuildContext context) => new CreateAction(),
-        });
+    return ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
+          title: 'GreenCycle',
+          theme: ThemeData(fontFamily: 'Railway'),
+          initialRoute: "/onboarding",
+          routes: <String, WidgetBuilder>{
+            "/onboarding": (BuildContext context) => new Onboarding(),
+            "/home": (BuildContext context) => new Home(),
+            "/register": (BuildContext context) => new Register(),
+            "/login": (BuildContext context) => new Login(),
+            "/profile": (BuildContext context) => new Profile(),
+            "/misacciones": (BuildContext context) => new MisAcciones(),
+            "/misgrupos": (BuildContext context) => new MisGrupos(),
+            "/settings" : (BuildContext context) => new Settings(),
+            "/newgroup" : (BuildContext context) => new NewGroup(),
+            "/action-detail" : (BuildContext context) => new ActionDetail(),
+            "/group-detail" : (BuildContext context) => new GroupDetail(),
+            "/create-action" : (BuildContext context) => new CreateAction(),
+          }),
+    );
   }
 }
