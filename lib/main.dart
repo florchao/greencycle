@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:greencycle/provider/google_sign_in.dart';
 import 'package:greencycle/screens/action-detail.dart';
 import 'package:greencycle/screens/home.dart';
 import 'package:greencycle/screens/onboarding.dart';
@@ -11,6 +13,7 @@ import 'package:greencycle/screens/settings.dart';
 import 'package:greencycle/screens/newgroup.dart';
 import 'package:greencycle/screens/group-detail.dart';
 import 'package:greencycle/screens/create-action.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
