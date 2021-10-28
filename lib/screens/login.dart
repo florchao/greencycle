@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/input.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -68,6 +69,43 @@ class _LoginState extends State<Login> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceAround,
                                   children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 16),
+                                          child:Center(
+                                            child: FlatButton(
+                                              textColor: ArgonColors.white,
+                                              color: ArgonColors.verdeOscuro,
+                                              onPressed: () {
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(4.0),
+                                              ),
+                                              child: Row(
+                                                      children:[
+                                                      Text("Iniciar Sesión con Google",
+                                                          style: TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.w600,
+                                                  fontSize: 16.0)),
+                                                        RawMaterialButton(
+                                                          onPressed: () {},
+                                                          elevation: 0,
+                                                          fillColor: ArgonColors.verdeOscuro,
+                                                          child: Icon(FontAwesomeIcons.google,
+                                                              size: 16.0, color: Colors.white),
+                                                          padding: EdgeInsets.all(15.0),
+                                                          shape: CircleBorder(),
+                                                        ),])),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                     Column(
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
@@ -91,7 +129,7 @@ class _LoginState extends State<Login> {
                                       ],
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 16),
+                                      padding: const EdgeInsets.only(top: 1),
                                       child: Center(
                                         child: FlatButton(
                                           textColor: ArgonColors.white,
