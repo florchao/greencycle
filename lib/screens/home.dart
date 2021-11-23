@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                       '+',
                       style: TextStyle(fontSize: 24),
                     ),
-                  onPressed: () { Navigator.pushNamed(context, '/AgregarAccion');},
+                  onPressed: () { Navigator.pushNamed(context, '/create-action');},
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
