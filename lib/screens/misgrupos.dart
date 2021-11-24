@@ -90,13 +90,27 @@ class MisGrupos extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 32),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Mis grupos',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
-                    ),
+                    padding: const EdgeInsets.only(left: 8.0, top: 15),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+                          const Text(
+                            'Mis grupos',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                primary:  ArgonColors.azul
+                            ),
+                            child: Text(
+                              '+',
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            onPressed: () { Navigator.pushNamed(context, '/newgroup');},
+                          ),
+                        ]),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
@@ -120,13 +134,6 @@ class MisGrupos extends StatelessWidget {
               ),
             )
         ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/newgroup');
-            },
-          child: const Icon(Icons.add),
-          backgroundColor: ArgonColors.azul,
-      ),
     );
   }
 }
