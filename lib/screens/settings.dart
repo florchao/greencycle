@@ -23,9 +23,13 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ArgonColors.verdeClaro,
-        appBar: Navbar(
-          title: "Configuración",
-          bgColor: ArgonColors.verdeOscuro, tags: [],
+        // appBar: Navbar(
+        //   title: "Configuración",
+        //   bgColor: ArgonColors.verdeOscuro, tags: [],
+        // ),
+        appBar: AppBar(
+          title: const Text("GreenCycle"),
+          backgroundColor: ArgonColors.verdeOscuro,
         ),
         body:  Container(
             color: ArgonColors.verdeClaro,

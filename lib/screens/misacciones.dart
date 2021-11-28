@@ -79,9 +79,13 @@ class MisAcciones extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "MisAcciones",
-          rightOptions: false, tags: [],
+        // appBar: Navbar(
+        //   title: "MisAcciones",
+        //   rightOptions: false, tags: [],
+        // ),
+        appBar: AppBar(
+          title: const Text("GreenCycle"),
+          backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,
         body: Container(

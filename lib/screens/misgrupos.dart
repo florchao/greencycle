@@ -79,10 +79,14 @@ class MisGrupos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "MisGrupos",
-          rightOptions: false, tags: [],
-        ),
+        // appBar: Navbar(
+        //   title: "MisGrupos",
+        //   rightOptions: false, tags: [],
+        // ),
+      appBar: AppBar(
+        title: const Text("GreenCycle"),
+        backgroundColor: ArgonColors.verdeOscuro,
+      ),
         backgroundColor: ArgonColors.verdeClaro,
         body: Container(
             padding: EdgeInsets.only(right: 24, left: 24, bottom: 36),

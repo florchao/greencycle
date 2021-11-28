@@ -12,9 +12,13 @@ class Profile extends StatelessWidget {
     final double itemWidth = size.width / 2;
     return Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: Navbar(
-          title: "Mi Perfil",
-          tags: [],
+        // appBar: Navbar(
+        //   title: "Mi Perfil",
+        //   tags: [],
+        // ),
+        appBar: AppBar(
+          title: const Text("GreenCycle"),
+          backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,
         body: Stack(children: <Widget>[

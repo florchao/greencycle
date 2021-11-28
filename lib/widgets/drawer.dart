@@ -21,9 +21,10 @@ class ArgonDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('drawer entre');
     return Drawer(
         child: Container(
-      color: ArgonColors.white,
+      color: ArgonColors.verdeOscuro,
       child: Column(children: [
         Container(
             height: MediaQuery.of(context).size.height * 0.1,
@@ -34,60 +35,67 @@ class ArgonDrawer extends StatelessWidget {
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 32),
-                  child: Image.asset("assets/img/argon-logo.png"),
+                  // TODO meter imagen del logo de greencycle
+                  child: Image.asset("assets/img/fondoVerdeOscuro.jpeg"),
                 ),
               ),
             )),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: ListView(
             padding: EdgeInsets.only(top: 24, left: 16, right: 16),
             children: [
-              DrawerTile(
-                  icon: Icons.home,
+              ListTile(
+                title: const Text("Home"),
+
+                leading: Icon(Icons.home),
+                tileColor: Colors.white,
+                selectedTileColor: Colors.red,
                   onTap: () {
                     if (currentPage != "Home")
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushNamed(context, '/home');
                   },
-                  iconColor: ArgonColors.verdeClaro,
-                  title: "Home",
-                  isSelected: currentPage == "Home" ? true : false),
-              DrawerTile(
-                  icon: Icons.pie_chart,
-                  onTap: () {
-                    if (currentPage != "Profile")
-                      Navigator.pushReplacementNamed(context, '/profile');
-                  },
-                  iconColor: ArgonColors.verdeOscuro,
-                  title: "Profile",
-                  isSelected: currentPage == "Profile" ? true : false),
-              DrawerTile(
-                  icon: Icons.account_circle,
-                  onTap: () {
-                    if (currentPage != "Account")
-                      Navigator.pushReplacementNamed(context, '/account');
-                  },
-                  iconColor: ArgonColors.verdeClaro,
-                  title: "Account",
-                  isSelected: currentPage == "Account" ? true : false),
-              DrawerTile(
-                  icon: Icons.settings_input_component,
-                  onTap: () {
-                    if (currentPage != "Elements")
-                      Navigator.pushReplacementNamed(context, '/elements');
-                  },
-                  iconColor: ArgonColors.verdeOscuro,
-                  title: "Elements",
-                  isSelected: currentPage == "Elements" ? true : false),
-              DrawerTile(
-                  icon: Icons.apps,
-                  onTap: () {
-                    if (currentPage != "Articles")
-                      Navigator.pushReplacementNamed(context, '/articles');
-                  },
-                  iconColor: ArgonColors.verdeClaro,
-                  title: "Articles",
-                  isSelected: currentPage == "Articles" ? true : false),
+              ),
+              ListTile(
+                title: const Text("Perfil"),
+                leading: Icon(Icons.person),
+                tileColor: Colors.white,
+                selectedTileColor: Colors.red,
+                onTap: () {
+                  if (currentPage != "Profile")
+                    Navigator.pushNamed(context, '/profile');
+                },
+              ),
+              ListTile(
+                title: const Text("Mis Grupos"),
+                leading: Icon(Icons.people),
+                tileColor: Colors.white,
+                selectedTileColor: Colors.red,
+                onTap: () {
+                  if (currentPage != "MisGrupos")
+                    Navigator.pushNamed(context, '/misgrupos');
+                },
+              ),
+              ListTile(
+                title: const Text("Mis Acciones"),
+                leading: Icon(Icons.category),
+                tileColor: Colors.white,
+                selectedTileColor: Colors.red,
+                onTap: () {
+                  if (currentPage != "MisAcciones")
+                    Navigator.pushNamed(context, '/misacciones');
+                },
+              ),
+              ListTile(
+                title: const Text("Configuracion"),
+                leading: Icon(Icons.settings),
+                tileColor: Colors.white,
+                selectedTileColor: Colors.red,
+                onTap: () {
+                  if (currentPage != "Settings")
+                    Navigator.pushNamed(context, '/settings');
+                },
+              ),
             ],
           ),
         ),

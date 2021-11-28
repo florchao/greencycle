@@ -40,10 +40,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "",
-          tags: [],
-        ),
+        // appBar: Navbar(
+        //   title: "",
+        //   tags: [],
+        // ),
+      appBar: AppBar(
+        title: const Text("GreenCycle"),
+        backgroundColor: ArgonColors.verdeOscuro,
+      ),
         backgroundColor: ArgonColors.verdeClaro,
         // key: _scaffoldKey,
         drawer: ArgonDrawer(currentPage: "Home"),
