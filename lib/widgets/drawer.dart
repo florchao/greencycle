@@ -21,7 +21,6 @@ class ArgonDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('drawer entre');
     return Drawer(
         child: Container(
       color: ArgonColors.verdeOscuro,

@@ -87,11 +87,7 @@ class _SettingsState extends State<Settings> {
                       textColor: ArgonColors.white,
                       color: ArgonColors.verdeOscuro,
                       onPressed: () {
-                        // Respond to button press
-
-                        print(FirebaseAuth.instance.currentUser);
-
-                        // Navigator.pushNamed(context, '/profile');
+                        Navigator.pushNamed(context, '/profile');
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius:

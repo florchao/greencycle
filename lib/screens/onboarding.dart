@@ -52,8 +52,6 @@ class Onboarding extends StatelessWidget {
                       textColor: ArgonColors.white,
                       color: ArgonColors.verdeOscuro,
                       onPressed: () {
-                        print("quien soy?");
-                        print(FirebaseAuth.instance.currentUser);
                         Navigator.pushReplacementNamed(context, '/login');
                       },
                       shape: RoundedRectangleBorder(
