@@ -12,12 +12,12 @@ class Input extends StatelessWidget {
 
   Input(
       { this.placeholder,
-       this.suffixIcon,
+        this.suffixIcon,
         this.onTap,
-         this.onChanged,
-      this.autofocus = false,
-      this.borderColor = ArgonColors.verdeOscuro,
-         this.controller});
+        this.onChanged,
+        this.autofocus = false,
+        this.borderColor = ArgonColors.verdeOscuro,
+        this.controller});
 
   @override
   Widget build(BuildContext context) {

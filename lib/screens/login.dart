@@ -18,6 +18,9 @@ class _LoginState extends State<Login> {
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
 
+  final TextEditingController? _emailController = TextEditingController();
+  final TextEditingController? _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -111,12 +114,14 @@ class _LoginState extends State<Login> {
                               padding: const EdgeInsets.all(8.0),
                                 child: Input(
                                   placeholder: "Email",
+                                  controller: _emailController,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Input(
                                   placeholder: "Contraseña",
+                                  controller: _passwordController,
                                 ),
                               ),
                               Padding(
@@ -131,10 +136,15 @@ class _LoginState extends State<Login> {
                               child: FlatButton(
                                 textColor: ArgonColors.white,
                                 color: ArgonColors.verdeOscuro,
-                                onPressed: () {
-                                  // Respond to button press
-                                  Navigator.pushNamed(
-                                      context, '/home');
+                                onPressed: () async{
+
+                                  UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                      email: _emailController!.text,
+                                      password: _passwordController!.text,
+                                  );
+                                  setState(() {});
+                                  if (result.user!.email == null) return;
+                                  Navigator.pushNamed(context, '/home');
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius:

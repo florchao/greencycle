@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
@@ -12,6 +14,12 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
 
   final double height = window.physicalSize.height;
+
+  final TextEditingController? _firstNameController = TextEditingController();
+  final TextEditingController? _lastNameController = TextEditingController();
+  final TextEditingController? _emailController = TextEditingController();
+  final TextEditingController? _passwordController = TextEditingController();
+  final TextEditingController? _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,30 +82,35 @@ class _RegisterState extends State<Register> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Input(
                                               placeholder: "Nombre",
+                                              controller: _firstNameController,
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Input(
                                               placeholder: "Apellido",
+                                              controller: _lastNameController,
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Input(
                                                 placeholder: "Email",
+                                              controller: _emailController,
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Input(
                                                 placeholder: "Contraseña",
+                                                controller: _passwordController,
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Input(
                                               placeholder: "Confirmar contraseña",
+                                              controller: _confirmPasswordController,
                                             ),
                                           ),
                                           Padding(
@@ -112,10 +125,17 @@ class _RegisterState extends State<Register> {
                                           child: FlatButton(
                                             textColor: ArgonColors.white,
                                             color: ArgonColors.verdeOscuro,
-                                            onPressed: () {
-                                              // Respond to button press
-                                              Navigator.pushNamed(
-                                                  context, '/home');
+                                            onPressed: () async {
+
+                                              User? user = FirebaseAuth.instance.currentUser;
+
+                                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                                  email: _emailController!.text,
+                                                  password: _passwordController!.text,
+                                              );
+                                              setState(() {});
+
+                                              Navigator.pushNamed(context, '/home');
                                             },
                                             shape: RoundedRectangleBorder(
                                               borderRadius:

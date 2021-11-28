@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greencycle/constants/Theme.dart';
 
@@ -51,6 +52,8 @@ class Onboarding extends StatelessWidget {
                       textColor: ArgonColors.white,
                       color: ArgonColors.verdeOscuro,
                       onPressed: () {
+                        print("quien soy?");
+                        print(FirebaseAuth.instance.currentUser);
                         Navigator.pushReplacementNamed(context, '/login');
                       },
                       shape: RoundedRectangleBorder(
