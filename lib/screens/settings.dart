@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/input.dart';
@@ -19,8 +21,11 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
     return Scaffold(
         backgroundColor: ArgonColors.verdeClaro,
         // appBar: Navbar(
@@ -83,8 +88,7 @@ class _SettingsState extends State<Settings> {
                       color: ArgonColors.verdeOscuro,
                       onPressed: () {
                         // Respond to button press
-                        Navigator.pushNamed(
-                            context, '/profile');
+                        Navigator.pushNamed(context, '/profile');
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius:
@@ -110,7 +114,12 @@ class _SettingsState extends State<Settings> {
                             child: FlatButton(
                               textColor: ArgonColors.white,
                               color: ArgonColors.verdeOscuro,
-                              onPressed: () {
+                              onPressed: () async {
+
+                                // Habria que hacer un checkeo para que se fije si inicie sesino con google o no
+                                await _googleSignIn.signOut();
+                                FirebaseAuth.instance.signOut();
+                                setState(() {}); // Esto es para forzar un refresh nadamas
                                 // Respond to button press
                                 Navigator.pushNamed(
                                     context, '/onboarding');
