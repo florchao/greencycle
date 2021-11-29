@@ -33,7 +33,7 @@ class _SettingsState extends State<Settings> {
         //   bgColor: ArgonColors.verdeOscuro, tags: [],
         // ),
         appBar: AppBar(
-          title: const Text("GreenCycle"),
+          title: const Text("Configuración"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
         body:  Container(
