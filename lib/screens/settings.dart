@@ -120,7 +120,7 @@ class _SettingsState extends State<Settings> {
                                 FirebaseAuth.instance.signOut();
                                 setState(() {}); // Esto es para forzar un refresh nadamas
                                 // Respond to button press
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, '/onboarding');
                               },
                               shape: RoundedRectangleBorder(

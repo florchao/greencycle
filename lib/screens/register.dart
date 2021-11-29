@@ -21,6 +21,13 @@ class _RegisterState extends State<Register> {
   final TextEditingController? _passwordController = TextEditingController();
   final TextEditingController? _confirmPasswordController = TextEditingController();
 
+  // Podria hacerlo con Regex pero soy vago
+  bool validEmail(TextEditingController? controller) {
+    if (controller == null) return false;
+    if (!controller.text.contains('@') || !controller.text.contains('.')) return false;
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,13 +136,31 @@ class _RegisterState extends State<Register> {
 
                                               User? user = FirebaseAuth.instance.currentUser;
 
+                                              if (_firstNameController == null || _lastNameController == null) {
+                                                // TODO habria que meter un feedback en rojo algo asi
+                                                return;
+                                              }
+
+                                              if (!validEmail(_emailController)) {
+                                                // TODO habria que meter un feedback en rojo algo asi
+                                                return;
+                                              }
+
+                                              if (_passwordController == null || _confirmPasswordController == null) {
+                                                // TODO habria que meter un feedback en rojo algo asi
+                                                return;
+                                              }
+
+                                              if (_passwordController!.text != _confirmPasswordController!.text) {
+                                                // TODO habria que meter un feedback en rojo algo asi
+                                                return;
+                                              }
+
                                               await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                                   email: _emailController!.text,
                                                   password: _passwordController!.text,
                                               );
-                                              if (_firstNameController != null && _lastNameController != null) {
-                                                FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
-                                              }
+                                              FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
                                               setState(() {});
 
                                               Navigator.pushNamed(context, '/home');
