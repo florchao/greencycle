@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
         //   tags: [],
         // ),
       appBar: AppBar(
-        title: const Text("GreenCycle"),
+        title: const Text("Menú"),
         backgroundColor: ArgonColors.verdeOscuro,
       ),
         backgroundColor: ArgonColors.verdeClaro,

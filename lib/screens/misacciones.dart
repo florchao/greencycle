@@ -84,7 +84,7 @@ class MisAcciones extends StatelessWidget {
         //   rightOptions: false, tags: [],
         // ),
         appBar: AppBar(
-          title: const Text("GreenCycle"),
+          title: const Text("Mis Acciones"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,

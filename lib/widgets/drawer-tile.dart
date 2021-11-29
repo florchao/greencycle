@@ -22,21 +22,20 @@ class DrawerTile extends StatelessWidget {
       child: Container(
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-              color: isSelected ? ArgonColors.verdeClaro : ArgonColors.black,
+              color: ArgonColors.verdeOscuro,
               borderRadius: BorderRadius.all(Radius.circular(8))),
           child: Row(
             children: [
               Icon(icon,
-                  size: 20, color: isSelected ? ArgonColors.white : iconColor),
+                  size: 20, color: isSelected ? ArgonColors.white : ArgonColors.azul),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(title,
                     style: TextStyle(
                         letterSpacing: .3,
                         fontSize: 15,
-                        color: isSelected
-                            ? ArgonColors.white
-                            : Color.fromRGBO(0, 0, 0, 0.7))),
+                        color: isSelected ? ArgonColors.white : ArgonColors.azul,
+                        )),
               )
             ],
           )),

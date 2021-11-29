@@ -9,9 +9,9 @@ class NewGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "MisGrupos",
-          rightOptions: false, tags: [],
+        appBar: AppBar(
+          title: const Text("Nuevo Grupo"),
+          backgroundColor: ArgonColors.verdeOscuro,
         ),
       backgroundColor: ArgonColors.verdeClaro,
       body:Stack(
@@ -101,6 +101,29 @@ class NewGroup extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      textColor: ArgonColors.white,
+                                      color: ArgonColors.verdeOscuro,
+                                      onPressed: () {
+                                        Navigator.pushReplacementNamed(context, '/home');
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4.0),
+                                      ),
+                                      child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 16.0, right: 16.0, top: 12, bottom: 10),
+                                          child: Text("GURDAR GRUPO",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 18.0))),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           )
@@ -108,9 +131,11 @@ class NewGroup extends StatelessWidget {
                       )
                     ],
                   ),
-                )
+                ),
+
               ],)
-          )
+          ),
+
         ],
       )
     );

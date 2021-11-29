@@ -3,8 +3,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 
-import 'package:greencycle/widgets/drawer-tile.dart';
-
 class ArgonDrawer extends StatelessWidget {
   final String currentPage;
 
@@ -34,7 +32,6 @@ class ArgonDrawer extends StatelessWidget {
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 32),
-                  // TODO meter imagen del logo de greencycle
                   child: Image.asset("assets/img/fondoVerdeOscuro.jpeg"),
                 ),
               ),
@@ -45,21 +42,19 @@ class ArgonDrawer extends StatelessWidget {
             padding: EdgeInsets.only(top: 24, left: 16, right: 16),
             children: [
               ListTile(
-                title: const Text("Home"),
-
+                title: const Text("Menú"),
                 leading: Icon(Icons.home),
-                tileColor: Colors.white,
-                selectedTileColor: Colors.red,
+                  selected: (currentPage == "Home" ? true: false),
                   onTap: () {
-                    if (currentPage != "Home")
+                    if (currentPage != "Home") {
                       Navigator.pushNamed(context, '/home');
+                    }
                   },
               ),
               ListTile(
                 title: const Text("Perfil"),
                 leading: Icon(Icons.person),
-                tileColor: Colors.white,
-                selectedTileColor: Colors.red,
+                selected: ((currentPage == "Mi Perfil") ? true: false),
                 onTap: () {
                   if (currentPage != "Profile")
                     Navigator.pushNamed(context, '/profile');
@@ -68,8 +63,7 @@ class ArgonDrawer extends StatelessWidget {
               ListTile(
                 title: const Text("Mis Grupos"),
                 leading: Icon(Icons.people),
-                tileColor: Colors.white,
-                selectedTileColor: Colors.red,
+                selected: ((currentPage == "Mis Grupos") ? true: false),
                 onTap: () {
                   if (currentPage != "MisGrupos")
                     Navigator.pushNamed(context, '/misgrupos');
@@ -78,18 +72,16 @@ class ArgonDrawer extends StatelessWidget {
               ListTile(
                 title: const Text("Mis Acciones"),
                 leading: Icon(Icons.category),
-                tileColor: Colors.white,
-                selectedTileColor: Colors.red,
+                selected: ((currentPage == "Mis Acciones") ? true: false),
                 onTap: () {
                   if (currentPage != "MisAcciones")
                     Navigator.pushNamed(context, '/misacciones');
                 },
               ),
               ListTile(
-                title: const Text("Configuracion"),
+                title: const Text("Configuración"),
                 leading: Icon(Icons.settings),
-                tileColor: Colors.white,
-                selectedTileColor: Colors.red,
+                selected: ((currentPage == "Settings") ? true: false),
                 onTap: () {
                   if (currentPage != "Settings")
                     Navigator.pushNamed(context, '/settings');
@@ -98,7 +90,7 @@ class ArgonDrawer extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
+        /*Expanded(
           flex: 1,
           child: Container(
               padding: EdgeInsets.only(left: 8, right: 16),
@@ -125,7 +117,7 @@ class ArgonDrawer extends StatelessWidget {
                           currentPage == "Getting started" ? true : false),
                 ],
               )),
-        ),
+        ),*/
       ]),
     ));
   }

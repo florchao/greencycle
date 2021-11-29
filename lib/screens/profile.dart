@@ -17,7 +17,7 @@ class Profile extends StatelessWidget {
         //   tags: [],
         // ),
         appBar: AppBar(
-          title: const Text("GreenCycle"),
+          title: const Text("Mi Perfil"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,

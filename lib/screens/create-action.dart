@@ -39,9 +39,9 @@ class _CreateActionState extends State<CreateAction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(
-        title: "CreateAction",
-        rightOptions: false, tags: [],
+      appBar: AppBar(
+        title: const Text("Nueva Acción"),
+        backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
       body: ListView(
