@@ -42,9 +42,14 @@ class ArgonDrawer extends StatelessWidget {
             padding: EdgeInsets.only(top: 24, left: 16, right: 16),
             children: [
               ListTile(
-                title: const Text("Menú"),
-                leading: Icon(Icons.home),
+                title: const Text("Menú", style: TextStyle(
+                  letterSpacing: .3,
+                  fontSize: 15,
+                  color: ArgonColors.white,
+                )),
+                leading: Icon(Icons.home, color: ArgonColors.white,),
                   selected: (currentPage == "Home" ? true: false),
+                  selectedTileColor: ArgonColors.verdeClaro,
                   onTap: () {
                     if (currentPage != "Home") {
                       Navigator.pushNamed(context, '/home');
@@ -52,36 +57,56 @@ class ArgonDrawer extends StatelessWidget {
                   },
               ),
               ListTile(
-                title: const Text("Perfil"),
-                leading: Icon(Icons.person),
+                title: const Text("Perfil", style: TextStyle(
+                  letterSpacing: .3,
+                  fontSize: 15,
+                  color: ArgonColors.white,
+                )),
+                leading: Icon(Icons.person, color: ArgonColors.white,),
                 selected: ((currentPage == "Mi Perfil") ? true: false),
+                selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "Profile")
                     Navigator.pushNamed(context, '/profile');
                 },
               ),
               ListTile(
-                title: const Text("Mis Grupos"),
-                leading: Icon(Icons.people),
+                title: const Text("Mis Grupos", style: TextStyle(
+                  letterSpacing: .3,
+                  fontSize: 15,
+                  color: ArgonColors.white,
+                )),
+                leading: Icon(Icons.people, color: ArgonColors.white,),
                 selected: ((currentPage == "Mis Grupos") ? true: false),
+                selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "MisGrupos")
                     Navigator.pushNamed(context, '/misgrupos');
                 },
               ),
               ListTile(
-                title: const Text("Mis Acciones"),
-                leading: Icon(Icons.category),
+                title: const Text("Mis Acciones", style: TextStyle(
+                  letterSpacing: .3,
+                  fontSize: 15,
+                  color: ArgonColors.white,
+                )),
+                leading: Icon(Icons.category, color: ArgonColors.white,),
                 selected: ((currentPage == "Mis Acciones") ? true: false),
+                selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "MisAcciones")
                     Navigator.pushNamed(context, '/misacciones');
                 },
               ),
               ListTile(
-                title: const Text("Configuración"),
-                leading: Icon(Icons.settings),
+                title: const Text("Configuración", style: TextStyle(
+                  letterSpacing: .3,
+                  fontSize: 15,
+                  color: ArgonColors.white,
+                )),
+                leading: Icon(Icons.settings, color: ArgonColors.white,),
                 selected: ((currentPage == "Settings") ? true: false),
+                selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "Settings")
                     Navigator.pushNamed(context, '/settings');

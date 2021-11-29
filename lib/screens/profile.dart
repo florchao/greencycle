@@ -67,17 +67,6 @@ class Profile extends StatelessWidget {
                                                     color: ArgonColors.azul,
                                                     fontSize: 28.0)),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(context, '/profile');
-                                            },
-                                            child: IconButton(
-                                              icon: Icon(Icons.settings,
-                                                  color: ArgonColors.azul,
-                                                  size: 22.0),
-                                              onPressed: () => Navigator.pushNamed(context, '/settings'),),
-
-                                          ),
                                         ]),
                                         SizedBox(height: 25.0),
                                         Padding(padding: const EdgeInsets.only(
