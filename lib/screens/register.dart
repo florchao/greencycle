@@ -32,6 +32,7 @@ class _RegisterState extends State<Register> {
     // return null if the text is valid
     return null;
   }
+
   String? get _errorTexFirstName {
     // at any time, we can get the text from _controller.value.text
     final text = _firstNameController!.value.text;

@@ -21,6 +21,30 @@ class _LoginState extends State<Login> {
   final TextEditingController? _emailController = TextEditingController();
   final TextEditingController? _passwordController = TextEditingController();
 
+  String? get _errorTexEmail {
+    // at any time, we can get the text from _controller.value.text
+    final text = _emailController!.value.text;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    if (text.isEmpty) {
+      return 'El mail es un campo obligatorio';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
+  String? get _errorTexPassword {
+    // at any time, we can get the text from _controller.value.text
+    final text = _passwordController!.value.text;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    if (text.isEmpty) {
+      return 'El mail es un campo obligatorio';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -112,15 +136,27 @@ class _LoginState extends State<Login> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                                child: Input(
-                                  placeholder: "Email",
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Mail',
+                                    border: OutlineInputBorder(),
+                                    labelStyle: TextStyle(color: ArgonColors.azul),
+                                    errorText: _errorTexEmail,
+                                  ),
                                   controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Input(
-                                  placeholder: "Contraseña",
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Contraseña',
+                                    border: OutlineInputBorder(),
+                                    labelStyle: TextStyle(color: ArgonColors.azul),
+                                    errorText: _errorTexPassword,
+                                  ),
+                                  obscureText: true,
                                   controller: _passwordController,
                                 ),
                               ),
