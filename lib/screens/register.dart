@@ -133,6 +133,9 @@ class _RegisterState extends State<Register> {
                                                   email: _emailController!.text,
                                                   password: _passwordController!.text,
                                               );
+                                              if (_firstNameController != null && _lastNameController != null) {
+                                                FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
+                                              }
                                               setState(() {});
 
                                               Navigator.pushNamed(context, '/home');
