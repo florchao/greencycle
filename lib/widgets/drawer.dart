@@ -24,22 +24,22 @@ class ArgonDrawer extends StatelessWidget {
       color: ArgonColors.verdeOscuro,
       child: Column(children: [
         Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.2 ,
+            width: MediaQuery.of(context).size.width,
             child: SafeArea(
               bottom: false,
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 32),
-                  child: Image.asset("assets/img/fondoVerdeOscuro.jpeg"),
+                  child: Image.asset("assets/img/VerdeOscuroLogo.jpeg",scale: 1, alignment: Alignment.center),
                 ),
               ),
             )),
         Expanded(
           flex: 3,
           child: ListView(
-            padding: EdgeInsets.only(top: 24, left: 16, right: 16),
+            padding: EdgeInsets.only(top:16, left: 16, right: 16),
             children: [
               ListTile(
                 title: const Text("Menú", style: TextStyle(
