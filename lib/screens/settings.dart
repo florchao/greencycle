@@ -87,7 +87,8 @@ class _SettingsState extends State<Settings> {
                       textColor: ArgonColors.white,
                       color: ArgonColors.verdeOscuro,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/profile');
+                        print(FirebaseAuth.instance.currentUser!);
+                        // Navigator.pushNamed(context, '/profile');
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius:
@@ -114,7 +115,6 @@ class _SettingsState extends State<Settings> {
                               textColor: ArgonColors.white,
                               color: ArgonColors.verdeOscuro,
                               onPressed: () async {
-
                                 // Habria que hacer un checkeo para que se fije si inicie sesino con google o no
                                 await _googleSignIn.signOut();
                                 FirebaseAuth.instance.signOut();
