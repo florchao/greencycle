@@ -1,10 +1,15 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/navbar.dart';
 import 'package:greencycle/widgets/card-xs.dart';
 
 class Profile extends StatelessWidget {
+
+  final String? _userName = FirebaseAuth.instance.currentUser!.displayName;
+  final String? _imgUrl = FirebaseAuth.instance.currentUser!.photoURL;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -35,7 +40,7 @@ class Profile extends StatelessWidget {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
+                              color: Colors.grey.withOpacity(0.2),
                               spreadRadius: 1,
                               blurRadius: 7,
                               offset:
@@ -62,7 +67,7 @@ class Profile extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                         children:[
                                           Align(
-                                            child: Text("Jessica Jones",
+                                            child: Text(_userName!,
                                                 style: TextStyle(
                                                     color: ArgonColors.azul,
                                                     fontSize: 28.0)),
@@ -165,8 +170,11 @@ class Profile extends StatelessWidget {
                           translation: Offset(0.0, -0.5),
                           child: Align(
                             child: CircleAvatar(
-                              backgroundImage: AssetImage(
-                                  "assets/img/profilepicsample.png"),
+                              // backgroundImage: AssetImage(
+                              //     "assets/img/profilepicsample.png"),
+                              backgroundImage: _imgUrl != null ?
+                                NetworkImage(_imgUrl!) : AssetImage("assets/img/profilepicsample.png") as ImageProvider,
+                              // child: Image.network(_imgUrl!),
                               radius: 65.0,
                               // maxRadius: 200.0,
                             ),
