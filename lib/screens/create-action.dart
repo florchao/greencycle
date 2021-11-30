@@ -47,7 +47,6 @@ class _CreateActionState extends State<CreateAction> {
       body: ListView(
         children: <Widget>[
           Padding(padding: const EdgeInsets.only(left: 8.0, top: 32, bottom: 5.0),
-              child: Text("Nueva Acción", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20))
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),

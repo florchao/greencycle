@@ -96,7 +96,6 @@ class MisGrupos extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 15),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children:[
                           const Text(
                             'Mis grupos',

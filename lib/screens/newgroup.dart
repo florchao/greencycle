@@ -25,15 +25,6 @@ class NewGroup extends StatelessWidget {
                         top: 16, left: 24.0, right: 24.0, bottom: 16),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 32),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text('Nuevo grupo',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 30)),
-                        ),
-                      ),
                       Container(
                         height: MediaQuery.of(context).size.height,
                         color: ArgonColors.verdeClaro,

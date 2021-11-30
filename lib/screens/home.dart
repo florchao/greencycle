@@ -91,12 +91,15 @@ class _HomeState extends State<Home> {
                         title: homeCards['Makeup']!['title'] ?? "",
                         img: homeCards["Makeup"]!['image'] ?? "",
                         tap: () {
+                          Navigator.pushNamed(context, '/group-detail');
                         }),
                     CardSmall(
                         cta: "View article",
                         title: homeCards["Coffee"]!['title'] ?? "",
                         img: homeCards["Coffee"]!['image'] ?? "",
-                        tap: () {}
+                        tap: () {
+                          Navigator.pushNamed(context, '/group-detail');
+                        }
                         )
                   ],
                 ),
