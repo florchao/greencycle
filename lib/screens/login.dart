@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:greencycle/constants/Theme.dart';
-import 'package:greencycle/widgets/input.dart';
 import 'package:sign_button/sign_button.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,29 +17,44 @@ class _LoginState extends State<Login> {
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
 
-  final TextEditingController? _emailController = TextEditingController();
-  final TextEditingController? _passwordController = TextEditingController();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
 
   String? get _errorTexEmail {
     // at any time, we can get the text from _controller.value.text
-    final text = _emailController!.value.text;
+    final text = _emailController.value.text;
     // Note: you can do your own custom validation here
     // Move this logic this outside the widget for more testable code
-    if (text.isEmpty) {
-      return 'El mail es un campo obligatorio';
-    }
+      if (text.isEmpty) {
+        return 'El mail es un campo obligatorio';
+      }
     // return null if the text is valid
     return null;
   }
 
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.black
+    );
+  }
+
   String? get _errorTexPassword {
     // at any time, we can get the text from _controller.value.text
-    final text = _passwordController!.value.text;
+    final text = _passwordController.value.text;
     // Note: you can do your own custom validation here
     // Move this logic this outside the widget for more testable code
-    if (text.isEmpty) {
-      return 'El mail es un campo obligatorio';
-    }
+      if (text.isEmpty) {
+        return 'La contraseña es un campo obligatorio';
+      }
+      if (text.length < 6) {
+        return 'La contraseña es muy corta';
+      }
     // return null if the text is valid
     return null;
   }
@@ -173,35 +187,28 @@ class _LoginState extends State<Login> {
                                 textColor: ArgonColors.white,
                                 color: ArgonColors.verdeOscuro,
                                 onPressed: () async{
-
-                                  String errorMessage;
                                   try {
                                     UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                      email: _emailController!.text,
-                                      password: _passwordController!.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
                                     );
-                                  } on FirebaseAuthException catch  (e) {
+                                    setState(() {});
+                                    Navigator.pushNamed(context, '/home');
+                                  } on FirebaseAuthException catch (e) {
                                     switch (e.code) {
                                       case 'invalid-email':
-                                        errorMessage = e.code;
-                                        print('invalido');
+                                        showToast("El formato del mail es inválido");
                                         break;
                                       case 'wrong-password':
-                                        errorMessage = e.code;
-                                        print('mal mail o contraseña');
+                                        showToast("El usuario o contraseña son erróneos");
                                         break;
                                       case 'user-not-found':
-                                        print('not found');
-                                        errorMessage = e.code;
+                                        showToast("El usuario o contraseña son erróneos");
                                         break;
                                     }
                                     print('Failed with error code: ${e.code}');
                                     print(e.message);
                                   }
-
-                                  setState(() {});
-
-                                  Navigator.pushNamed(context, '/home');
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
