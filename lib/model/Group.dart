@@ -6,6 +6,8 @@ class Group{
   String weekly_score;
   List members;
 
+  static const String collection_id = 'Grupos';
+
   Group(this.name, this.Id, this.icon_url, this.members)
       : this.score= "",
         this.weekly_score = "";

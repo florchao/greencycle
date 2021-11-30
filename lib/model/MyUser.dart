@@ -1,4 +1,4 @@
-class User{
+class MyUser{
   String name;
   String last_name;
   String Id;
@@ -6,16 +6,17 @@ class User{
   String email;
   String score;
   String weekly_score;
-  String groups;
+  Map<String,dynamic> groups;
+
   static const String collection_id = 'usuarios';
 
-  User(this.name, this.last_name, this.Id, this.icon_url, this.email,)
-      : this.groups = " ",
+  MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
+      : this.groups = new Map(),
         this.weekly_score = " ",
         this.score = " ";
 
 
-  User.fromSnapshot(String Id,Map<String, dynamic> user)
+  MyUser.fromSnapshot(String Id,Map<String, dynamic> user)
       : Id = Id,
         name = user['name'],
         last_name = user['last_name'],
