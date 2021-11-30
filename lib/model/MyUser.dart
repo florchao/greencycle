@@ -2,13 +2,13 @@ class MyUser{
   String name;
   String last_name;
   String Id;
-  String icon_url;
+  String? icon_url;
   String email;
   String score;
   String weekly_score;
   Map<String,dynamic> groups;
 
-  static const String collection_id = 'usuarios';
+  static const String collection_id = 'Usuario';
 
   MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
       : this.groups = new Map(),

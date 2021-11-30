@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/user_service.dart';
 import 'package:greencycle/widgets/input.dart';
 
 class Register extends StatefulWidget {
@@ -250,7 +252,20 @@ class _RegisterState extends State<Register> {
                                                   email: _emailController!.text,
                                                   password: _passwordController!.text,
                                               );
+
                                               FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
+
+                                              MyUser _myUser = MyUser(
+                                                  _firstNameController!.text,
+                                                  _lastNameController!.text,
+                                                  FirebaseAuth.instance.currentUser!.uid,
+                                                  FirebaseAuth.instance.currentUser!.photoURL,
+                                                  _emailController!.text);
+
+                                              UserService _userService = UserService();
+
+                                              _userService.create(_myUser);
+
                                               setState(() {});
 
                                               Navigator.pushNamed(context, '/home');

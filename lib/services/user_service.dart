@@ -4,7 +4,8 @@ import 'package:greencycle/model/Action.dart';
 import 'package:greencycle/model/MyUser.dart';
 
 class UserService {
-  CollectionReference userRef = FirebaseFirestore.instance.collection(MyUser.collection_id);
+  CollectionReference userRef = FirebaseFirestore.instance.collection(
+      MyUser.collection_id);
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
@@ -18,21 +19,21 @@ class UserService {
     return id;
   }
 
-  Future<MyUser?> getCurrentUser() async{
-    return await getUser(FirebaseAuth.instance.currentUser!.uid);
-  }
+  // Future<MyUser?> getCurrentUser() async{
+  //   return await getUser(FirebaseAuth.instance.currentUser!.uid);
+  // }
 
-  Future<MyUser?> getUser(String id) async {
-    MyUser user;
-    DocumentSnapshot documentSnapshot = await userRef.doc(id).get();
-    if (documentSnapshot.exists) {
-      user = MyUser.fromSnapshot(documentSnapshot.id, documentSnapshot.data());
-      return user;
-    }
-    return null;
-  }
+  // Future<MyUser?> getUser(String id) async {
+  //   MyUser user;
+  //   DocumentSnapshot documentSnapshot = await userRef.doc(id).get();
+  //   if (documentSnapshot.exists) {
+  //     user = MyUser.fromSnapshot(documentSnapshot.id, documentSnapshot.data());
+  //     return user;
+  //   }
+  //   return null;
+  // }
 
-  Future<void> editUser(MyUser myUser) async{
+  Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(
         myUser.toMap(),
@@ -40,17 +41,17 @@ class UserService {
     );
   }
 
-  Future<void> addAction(String userId, Action action) async{
-     userRef.doc(userId).collection('acciones').add(action.toMap());
+  Future<void> addAction(String userId, Action action) async {
+    userRef.doc(userId).collection('acciones').add(action.toMap());
   }
+//
+// Future<List<Action>> getUserActions(String userId) async{
+//   QuerySnapshot qs = await userRef.doc(userId).collection(Action.collection_id).get();
+//     return qs.docs.map((ds) => Action.fromSnapshot(ds.data())).toList();
+//   }
+// }
 
-  Future<List<Action>> getUserActions(String userId) async{
-    QuerySnapshot qs = await userRef.doc(userId).collection(Action.collection_id).get();
-      return qs.docs.map((ds) => Action.fromSnapshot(ds.data())).toList();
-    }
-  }
-
-
+}
 
   // Future<List<User>> get() async {
   //   QuerySnapshot querySnapshot = await usersRef.get();
@@ -65,7 +66,4 @@ class UserService {
   //           .map((ds) => Usuario.fromSnapshot(ds.id, ds.data()))
   //           .toList());
   // }
-}
-
-mixin  {
-}
+// }
