@@ -1,11 +1,31 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/input.dart';
 import 'package:greencycle/widgets/navbar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewGroup extends StatelessWidget {
+
+  var _image = null;
+
+  Future getImageFromCamera() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.camera);
+
+    _image = image as File;
+  }
+
+  Future getImageFromGallery() async {
+    final picker = ImagePicker();
+    var image = await picker.pickImage(source: ImageSource.gallery
+    );
+
+    _image = image as File;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +61,25 @@ class NewGroup extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 8.0),
-                                Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
+                                Center(
+                                  child: _image == null ? Text("Agregar una imagen",
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)) : Image.file(_image)
+                                ),
+                                // Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
                                 SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    FloatingActionButton(
+                                        onPressed: getImageFromCamera,
+                                        child: Icon(Icons.add_a_photo)
+                                    ),
+                                    FloatingActionButton(
+                                      onPressed: getImageFromGallery,
+                                      child: Icon(Icons.camera_alt),
+                                    )
+                                  ],
+                                ),
                                 Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
