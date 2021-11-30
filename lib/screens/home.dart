@@ -86,21 +86,21 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CardSmall(
+                  CardSmall(
                         cta: "View article",
                         title: homeCards['Makeup']!['title'] ?? "",
                         img: homeCards["Makeup"]!['image'] ?? "",
                         tap: () {
                           Navigator.pushNamed(context, '/group-detail');
                         }),
-                    CardSmall(
+                      CardSmall(
                         cta: "View article",
                         title: homeCards["Coffee"]!['title'] ?? "",
                         img: homeCards["Coffee"]!['image'] ?? "",
                         tap: () {
                           Navigator.pushNamed(context, '/group-detail');
                         }
-                        )
+                        ),
                   ],
                 ),
                 const Padding(
@@ -138,14 +138,14 @@ class _HomeState extends State<Home> {
                         title: homeCards['Makeup']!['title'] ?? "",
                         img: homeCards["Makeup"]!['image'] ?? "",
                         tap: () {
-                          Navigator.pushNamed(context, '/pro');
+                          Navigator.pushNamed(context, '/action-detail');
                         }),
                     CardSmall(
                         cta: "View article",
                         title: homeCards["Coffee"]!['title'] ?? "",
                         img: homeCards["Coffee"]!['image'] ?? "",
                         tap: () {
-                          Navigator.pushNamed(context, '/pro');
+                          Navigator.pushNamed(context, '/action-detail');
                         })
                   ],
                 ),
