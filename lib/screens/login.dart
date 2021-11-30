@@ -20,6 +20,14 @@ class _LoginState extends State<Login> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  late FToast fToast;
+
+  @override
+  void initState(){
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
 
 
   String? get _errorTexEmail {
@@ -35,14 +43,26 @@ class _LoginState extends State<Login> {
   }
 
   void showToast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.black
+    Widget toast = Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Color.fromRGBO(244, 67, 54, 0.5019607843137255)
+      ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message),
+          ],
+        ),
+    );
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
     );
   }
+
+
 
   String? get _errorTexPassword {
     // at any time, we can get the text from _controller.value.text
