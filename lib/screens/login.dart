@@ -56,10 +56,12 @@ class _LoginState extends State<Login> {
           ],
         ),
     );
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-    );
+    if(_errorTexEmail== null && _errorTexPassword== null) {
+      fToast.showToast(
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
   }
 
 
@@ -177,6 +179,7 @@ class _LoginState extends State<Login> {
                                     labelStyle: TextStyle(color: ArgonColors.azul),
                                     errorText: _errorTexEmail,
                                   ),
+
                                   controller: _emailController,
                                   keyboardType: TextInputType.emailAddress,
                                 ),
