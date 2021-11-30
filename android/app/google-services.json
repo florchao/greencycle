@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "316897990513-61u335jusiu1an4j8o44k3a9rm4kh9uu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itba.greencycle",
+            "certificate_hash": "4fae961988d8cddb69b393020f8a2dbbb48f46ca"
+          }
+        },
+        {
+          "client_id": "316897990513-e3u92h9tleatkqapndnih6fot8j2emcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itba.greencycle",
+            "certificate_hash": "caeeed69a3e589cd626ce776cc6c62c624c978a0"
+          }
+        },
+        {
           "client_id": "316897990513-f5u39fjnek7vmdni62coifh2acrcqgcl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

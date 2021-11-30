@@ -2,8 +2,8 @@
     package="com.example.greencycle">
    <application
         android:requestLegacyExternalStorage="true"
-        android:label="greencycle"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Greencycle"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
