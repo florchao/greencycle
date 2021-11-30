@@ -12,10 +12,13 @@ import 'package:greencycle/screens/settings.dart';
 import 'package:greencycle/screens/newgroup.dart';
 import 'package:greencycle/screens/group-detail.dart';
 import 'package:greencycle/screens/create-action.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+
   runApp(const MyApp());
 }
 
