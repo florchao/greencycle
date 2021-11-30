@@ -60,13 +60,23 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 16.0),
                 ),
                 Row(
-                  children:const [
-                Text(
-                  'Mis grupos',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20),
-                ),
-                    Text(''),
+                  children: [
+                  const Text(
+                    'Mis grupos',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20),
+                  ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          primary:  ArgonColors.azul
+                      ),
+                      child: Text(
+                        '+',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: () { Navigator.pushNamed(context, '/newgroup');},
+                    )
                 ]
                 ),
                 const Padding(
@@ -94,7 +104,6 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 16.0),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
                     const Text(
                       'Últimas acciones',
