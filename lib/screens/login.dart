@@ -174,12 +174,33 @@ class _LoginState extends State<Login> {
                                 color: ArgonColors.verdeOscuro,
                                 onPressed: () async{
 
-                                  UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  String errorMessage;
+                                  try {
+                                    UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
                                       email: _emailController!.text,
                                       password: _passwordController!.text,
-                                  );
+                                    );
+                                  } on FirebaseAuthException catch  (e) {
+                                    switch (e.code) {
+                                      case 'invalid-email':
+                                        errorMessage = e.code;
+                                        print('invalido');
+                                        break;
+                                      case 'wrong-password':
+                                        errorMessage = e.code;
+                                        print('mal mail o contraseña');
+                                        break;
+                                      case 'user-not-found':
+                                        print('not found');
+                                        errorMessage = e.code;
+                                        break;
+                                    }
+                                    print('Failed with error code: ${e.code}');
+                                    print(e.message);
+                                  }
+
                                   setState(() {});
-                                  if (result.user!.email == null) return;
+
                                   Navigator.pushNamed(context, '/home');
                                 },
                                 shape: RoundedRectangleBorder(
