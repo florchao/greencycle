@@ -6,9 +6,18 @@ import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/input.dart';
 import 'package:greencycle/widgets/navbar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class NewGroup extends StatelessWidget {
 
+  final List<String> usernames = [
+    'Felo',
+    'Herni',
+    'Flor',
+    'Male',
+    'Nicky',
+    'Azu'
+  ];
   var _image = null;
 
   Future getImageFromCamera() async {
@@ -125,7 +134,7 @@ class NewGroup extends StatelessWidget {
                                         tooltip: 'Agregar',
                                         child: const Icon(Icons.add),
                                         backgroundColor: ArgonColors.azul,
-                                        onPressed: null
+                                        onPressed: () => _showUserListDialog(context)
                                     ),
                                   ],
                                 ),
@@ -145,7 +154,7 @@ class NewGroup extends StatelessWidget {
                                       child: Padding(
                                           padding: EdgeInsets.only(
                                               left: 16.0, right: 16.0, top: 12, bottom: 10),
-                                          child: Text("GURDAR GRUPO",
+                                          child: Text("GUARDAR GRUPO",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18.0))),
@@ -167,6 +176,65 @@ class NewGroup extends StatelessWidget {
         ],
       )
     );
+  }
+
+  _showUserListDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) {
+        final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+        return AlertDialog(
+          title: Text('Selecciona los usuarios a agregar',
+              style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
+          content: SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: usernames.map((e) => CheckboxListTile(
+                    title: Text(e),
+                    onChanged: (value) {
+                      value! ? _multipleNotifier.addItem(e) : _multipleNotifier.removeItem(e);
+                    },
+                  value: _multipleNotifier.isInList(e),
+                )).toList()
+              )
+            )
+          ),
+          actions: [
+            TextButton(
+              child: Text('CANCELAR'),
+                onPressed: () => Navigator.of(context).pop()
+            ),
+            TextButton(
+              child: const Text('AGREGAR'),
+              onPressed: () => Navigator.of(context).pop()
+            )
+          ],
+        );
+      });
+
+}
+
+class MultipleNotifier extends ChangeNotifier {
+  List<String> _selectedItems;
+
+  MultipleNotifier(this._selectedItems);
+  List<String> get selectedItems => _selectedItems;
+
+  bool isInList(String value) => _selectedItems.contains(value);
+
+  addItem(String value) {
+    if (!isInList(value)) {
+      _selectedItems.add(value);
+      notifyListeners();
+    }
+  }
+
+  removeItem(String value) {
+    if(isInList(value)) {
+      _selectedItems.remove(value);
+      notifyListeners();
+    }
   }
 
 }
