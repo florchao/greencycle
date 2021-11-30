@@ -10,9 +10,9 @@ class ActionDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(
-        title: "MisAcciones",
-        rightOptions: false, tags: [],
+      appBar: AppBar(
+        title: const Text("Detalle acción"),
+        backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
       body: Stack(

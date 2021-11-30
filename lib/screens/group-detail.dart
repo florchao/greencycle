@@ -6,9 +6,9 @@ class GroupDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(
-        title: "GroupDetails",
-        rightOptions: false, tags: [],
+      appBar: AppBar(
+        title: const Text("Detalle grupo"),
+        backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
       body: Container(
