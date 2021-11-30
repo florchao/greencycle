@@ -10,7 +10,7 @@ class CardSquare extends StatelessWidget {
 
   final String cta;
   final String img;
-  final Function tap;
+  final VoidCallback tap;
   final String title;
 
   static void defaultFunc() {
@@ -23,6 +23,7 @@ class CardSquare extends StatelessWidget {
         height: 250,
         width: null,
         child: GestureDetector(
+          onTap: tap,
           child: Card(
               elevation: 0.4,
               shape: RoundedRectangleBorder(

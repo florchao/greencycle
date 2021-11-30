@@ -6,11 +6,17 @@ class CardXs extends StatelessWidget {
       {this.title = "Placeholder Title",
         this.cta = "",
         this.img = "https://via.placeholder.com/200",
+        this.tap = defaultFunc
         });
 
   final String cta;
   final String img;
+  final VoidCallback tap;
   final String title;
+
+  static void defaultFunc() {
+    print("the function works!");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +24,7 @@ class CardXs extends StatelessWidget {
         child: Container(
           height: 150,
             child: GestureDetector(
+              onTap: tap,
             child: Card(
               color: ArgonColors.verdeClaro,
                 elevation: 0.4,
