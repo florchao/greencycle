@@ -248,10 +248,25 @@ class _RegisterState extends State<Register> {
                                                 return;
                                               }
 
-                                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                              String errorMessage;
+                                              try {
+                                                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                                   email: _emailController!.text,
                                                   password: _passwordController!.text,
-                                              );
+                                                );
+                                              } on FirebaseAuthException catch  (e) {
+                                                switch (e.code) {
+                                                  case 'email-already-in-use':
+                                                    errorMessage = e.code;
+                                                    print('ya esta en uso este mail');
+                                                    break;
+                                                  case 'invalid-email':
+                                                    errorMessage = e.code;
+                                                    print('mail invalido');
+                                                }
+                                                print('Failed with error code: ${e.code}');
+                                                print(e.message);
+                                              }
 
                                               FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
 
