@@ -138,6 +138,19 @@ class NewGroup extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                Flexible(
+                                  child: ListView.builder(
+                                      itemCount: 3,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          leading: Icon(Icons.account_circle),
+                                          title: Text("User1",
+                                            style: TextStyle(color: ArgonColors.azul, fontSize: 14),),
+                                          trailing: Icon(Icons.close, color: ArgonColors.azul)
+                                        );
+                                      })
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: SizedBox(
