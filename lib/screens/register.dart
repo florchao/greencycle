@@ -276,13 +276,9 @@ class _RegisterState extends State<Register> {
 
                                               FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
                                               MyUser _myUser = MyUser(_firstNameController!.text, _lastNameController!.text, FirebaseAuth.instance.currentUser!.uid, FirebaseAuth.instance.currentUser!.photoURL, _emailController!.text);
-
                                               UserService _userService = UserService();
-
                                               _userService.create(_myUser);
-
                                               setState(() {});
-
                                               Navigator.pushNamed(context, '/home');
                                             },
                                             shape: RoundedRectangleBorder(

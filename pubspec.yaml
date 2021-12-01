@@ -46,6 +46,7 @@ dependencies:
   sign_button: ^2.0.2
   provider:
   google_sign_in: ^5.2.1
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
