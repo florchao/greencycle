@@ -269,17 +269,32 @@ class _RegisterState extends State<Register> {
                                               lastName.currentState!.save();
                                               lastName.currentState!.validate();
                                               User? user = FirebaseAuth.instance.currentUser;
-                                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                                  email: _emailController!.text,
-                                                  password: _passwordController!.text,
-                                              );
 
-                                              FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
-                                              MyUser _myUser = MyUser(_firstNameController!.text, _lastNameController!.text, FirebaseAuth.instance.currentUser!.uid, FirebaseAuth.instance.currentUser!.photoURL, _emailController!.text);
-                                              UserService _userService = UserService();
-                                              _userService.create(_myUser);
-                                              setState(() {});
-                                              Navigator.pushNamed(context, '/home');
+                                              if(password.currentState!.validate() && mail.currentState!.validate() && firstName.currentState!.validate() && lastName.currentState!.validate() && confirmPassword.currentState!.validate()) {
+                                                try {
+                                                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                                    email: _emailController!.text,
+                                                    password: _passwordController!.text,
+                                                  );
+                                                  FirebaseAuth.instance.currentUser!.updateDisplayName(_firstNameController!.text+" "+_lastNameController!.text);
+                                                  MyUser _myUser = MyUser(_firstNameController!.text, _lastNameController!.text, FirebaseAuth.instance.currentUser!.uid, FirebaseAuth.instance.currentUser!.photoURL, _emailController!.text);
+                                                  UserService _userService = UserService();
+                                                  _userService.create(_myUser);
+                                                  setState(() {});
+                                                  Navigator.pushNamed(context, '/home');
+                                                } on FirebaseAuthException catch (e) {
+                                                  switch (e.code) {
+                                                    case 'invalid-email':
+                                                      showToast("El formato del mail es inválido");
+                                                      break;
+                                                    case 'email-already-in-use':
+                                                      showToast("s");
+                                                      break;
+                                                  }
+                                                  print('Failed with error code: ${e.code}');
+                                                  print(e.message);
+                                                }
+                                              }
                                             },
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
