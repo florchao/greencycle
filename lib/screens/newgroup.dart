@@ -18,6 +18,8 @@ class NewGroup extends StatelessWidget {
     'Nicky',
     'Azu'
   ];
+
+  List<String> data = [];
   var _image = null;
 
   Future getImageFromCamera() async {
@@ -37,6 +39,7 @@ class NewGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Nuevo Grupo"),
@@ -134,18 +137,21 @@ class NewGroup extends StatelessWidget {
                                         tooltip: 'Agregar',
                                         child: const Icon(Icons.add),
                                         backgroundColor: ArgonColors.azul,
-                                        onPressed: () => _showUserListDialog(context)
+                                        onPressed: () {
+                                          _showUserListDialog(context);
+                                          data = _myMultipleNotifier._selectedItems;
+                                        }
                                     ),
                                   ],
                                 ),
                                 Flexible(
                                   child: ListView.builder(
-                                      itemCount: 3,
+                                      itemCount: data.length,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return ListTile(
                                           leading: Icon(Icons.account_circle),
-                                          title: Text("User1",
+                                          title: Text(data[index],
                                             style: TextStyle(color: ArgonColors.azul, fontSize: 14),),
                                           trailing: Icon(Icons.close, color: ArgonColors.azul)
                                         );
