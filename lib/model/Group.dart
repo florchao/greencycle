@@ -4,7 +4,7 @@ class Group{
   String icon_url;
   String score;
   String weekly_score;
-  List members;
+  List<String> members;
 
   static const String collection_id = 'Grupos';
 
@@ -31,6 +31,6 @@ class Group{
 
   @override
   String toString() {
-    return 'user{id: $Id, nombres: $name, score: $score, members: $members, iconURL:$icon_url}';
+    return '$Id,$name,$score,$members, iconURL:$icon_url}';
   }
 }

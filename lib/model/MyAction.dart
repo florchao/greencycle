@@ -1,13 +1,13 @@
-class Action{
+class MyAction{
   String name;
-  String score;
+  int score;
   String id;
   static const String collection_id = 'Acciones';
 
-  Action(this.name, this.score, this.id);
+  MyAction(this.name, this.score, this.id);
 
-  Action.fromSnapshot(Map<String, dynamic> action)
-      : id = action['id'],
+  MyAction.fromSnapshot(String Id, Map<String, dynamic> action)
+      : id = Id,
         name = action['name'],
         score = action['score'];
 
