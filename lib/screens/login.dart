@@ -16,30 +16,19 @@ class _LoginState extends State<Login> {
   final double height = window.physicalSize.height;
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
-
-
+  late FToast fToast;
+  final password = GlobalKey<FormState>();
+  final mail = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  late FToast fToast;
+
+
 
   @override
   void initState(){
     super.initState();
     fToast = FToast();
     fToast.init(context);
-  }
-
-
-  String? get _errorTexEmail {
-    // at any time, we can get the text from _controller.value.text
-    final text = _emailController.value.text;
-    // Note: you can do your own custom validation here
-    // Move this logic this outside the widget for more testable code
-      if (text.isEmpty) {
-        return 'El mail es un campo obligatorio';
-      }
-    // return null if the text is valid
-    return null;
   }
 
   void showToast(String message) {
@@ -56,7 +45,7 @@ class _LoginState extends State<Login> {
           ],
         ),
     );
-    if(_errorTexEmail== null && _errorTexPassword== null) {
+    if(password.currentState!.validate() && mail.currentState!.validate()) {
       fToast.showToast(
         child: toast,
         gravity: ToastGravity.BOTTOM,
@@ -64,22 +53,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-
-
-  String? get _errorTexPassword {
-    // at any time, we can get the text from _controller.value.text
-    final text = _passwordController.value.text;
-    // Note: you can do your own custom validation here
-    // Move this logic this outside the widget for more testable code
-      if (text.isEmpty) {
-        return 'La contraseña es un campo obligatorio';
-      }
-      if (text.length < 6) {
-        return 'La contraseña es muy corta';
-      }
-    // return null if the text is valid
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,30 +145,57 @@ class _LoginState extends State<Login> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
+                                child: Form(
+                                  key: mail,
+                                  child: TextFormField(
+                                  decoration: const InputDecoration(
                                     labelText: 'Mail',
                                     border: OutlineInputBorder(),
                                     labelStyle: TextStyle(color: ArgonColors.azul),
-                                    errorText: _errorTexEmail,
                                   ),
-
-                                  controller: _emailController,
+                                    onSaved: (value) {
+                                      _emailController.text = value!;
+                                    },
+                                    validator: (value){
+                                      RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                      if(value == null || value.isEmpty){
+                                        return "El mail es un campo requerido";
+                                      }
+                                      else if (!regex.hasMatch(value)){
+                                        return "El formato del mail no es válido";
+                                      }
+                                      return null;
+                                    },
                                   keyboardType: TextInputType.emailAddress,
+                                ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
+                                child: Form(
+                                  key: password,
+                                  child: TextFormField(
+                                  decoration: const InputDecoration(
                                     labelText: 'Contraseña',
                                     border: OutlineInputBorder(),
                                     labelStyle: TextStyle(color: ArgonColors.azul),
-                                    errorText: _errorTexPassword,
                                   ),
+                                  onSaved: (value) {
+                                    _passwordController.text = value!;
+                                  },
+                                  validator: (value){
+                                    RegExp regex = new RegExp(r'^.{6,}$');
+                                    if(value == null || value.isEmpty){
+                                      return "La contraseña es un campo requerido";
+                                    }
+                                    else if (!regex.hasMatch(value)){
+                                      return "La contraseña debe tener como mínimo 6 caracteres";
+                                    }
+                                    return null;
+                                  },
                                   obscureText: true,
-                                  controller: _passwordController,
                                 ),
+                              ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -210,6 +210,10 @@ class _LoginState extends State<Login> {
                                 textColor: ArgonColors.white,
                                 color: ArgonColors.verdeOscuro,
                                 onPressed: () async{
+                                  password.currentState!.save();
+                                  password.currentState!.validate();
+                                  mail.currentState!.save();
+                                  mail.currentState!.validate();
                                   try {
                                     UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
                                       email: _emailController.text,
