@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:greencycle/constants/Theme.dart';
-import 'package:greencycle/widgets/input.dart';
 import 'package:sign_button/sign_button.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,33 +16,43 @@ class _LoginState extends State<Login> {
   final double height = window.physicalSize.height;
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
+  late FToast fToast;
+  final password = GlobalKey<FormState>();
+  final mail = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  final TextEditingController? _emailController = TextEditingController();
-  final TextEditingController? _passwordController = TextEditingController();
 
-  String? get _errorTexEmail {
-    // at any time, we can get the text from _controller.value.text
-    final text = _emailController!.value.text;
-    // Note: you can do your own custom validation here
-    // Move this logic this outside the widget for more testable code
-    if (text.isEmpty) {
-      return 'El mail es un campo obligatorio';
-    }
-    // return null if the text is valid
-    return null;
+
+  @override
+  void initState(){
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
   }
 
-  String? get _errorTexPassword {
-    // at any time, we can get the text from _controller.value.text
-    final text = _passwordController!.value.text;
-    // Note: you can do your own custom validation here
-    // Move this logic this outside the widget for more testable code
-    if (text.isEmpty) {
-      return 'El mail es un campo obligatorio';
+  void showToast(String message) {
+    Widget toast = Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Color.fromRGBO(244, 67, 54, 0.5019607843137255)
+      ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message),
+          ],
+        ),
+    );
+    if(password.currentState!.validate() && mail.currentState!.validate()) {
+      fToast.showToast(
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+      );
     }
-    // return null if the text is valid
-    return null;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,29 +145,57 @@ class _LoginState extends State<Login> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
+                                child: Form(
+                                  key: mail,
+                                  child: TextFormField(
+                                  decoration: const InputDecoration(
                                     labelText: 'Mail',
                                     border: OutlineInputBorder(),
                                     labelStyle: TextStyle(color: ArgonColors.azul),
-                                    errorText: _errorTexEmail,
                                   ),
-                                  controller: _emailController,
+                                    onSaved: (value) {
+                                      _emailController.text = value!;
+                                    },
+                                    validator: (value){
+                                      RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                      if(value == null || value.isEmpty){
+                                        return "El mail es un campo requerido";
+                                      }
+                                      else if (!regex.hasMatch(value)){
+                                        return "El formato del mail no es válido";
+                                      }
+                                      return null;
+                                    },
                                   keyboardType: TextInputType.emailAddress,
+                                ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
+                                child: Form(
+                                  key: password,
+                                  child: TextFormField(
+                                  decoration: const InputDecoration(
                                     labelText: 'Contraseña',
                                     border: OutlineInputBorder(),
                                     labelStyle: TextStyle(color: ArgonColors.azul),
-                                    errorText: _errorTexPassword,
                                   ),
+                                  onSaved: (value) {
+                                    _passwordController.text = value!;
+                                  },
+                                  validator: (value){
+                                    RegExp regex = new RegExp(r'^.{6,}$');
+                                    if(value == null || value.isEmpty){
+                                      return "La contraseña es un campo requerido";
+                                    }
+                                    else if (!regex.hasMatch(value)){
+                                      return "La contraseña debe tener como mínimo 6 caracteres";
+                                    }
+                                    return null;
+                                  },
                                   obscureText: true,
-                                  controller: _passwordController,
                                 ),
+                              ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -173,35 +210,32 @@ class _LoginState extends State<Login> {
                                 textColor: ArgonColors.white,
                                 color: ArgonColors.verdeOscuro,
                                 onPressed: () async{
-
-                                  String errorMessage;
+                                  password.currentState!.save();
+                                  password.currentState!.validate();
+                                  mail.currentState!.save();
+                                  mail.currentState!.validate();
                                   try {
                                     UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                      email: _emailController!.text,
-                                      password: _passwordController!.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
                                     );
-                                  } on FirebaseAuthException catch  (e) {
+                                    setState(() {});
+                                    Navigator.pushNamed(context, '/home');
+                                  } on FirebaseAuthException catch (e) {
                                     switch (e.code) {
                                       case 'invalid-email':
-                                        errorMessage = e.code;
-                                        print('invalido');
+                                        showToast("El formato del mail es inválido");
                                         break;
                                       case 'wrong-password':
-                                        errorMessage = e.code;
-                                        print('mal mail o contraseña');
+                                        showToast("El usuario o contraseña son erróneos");
                                         break;
                                       case 'user-not-found':
-                                        print('not found');
-                                        errorMessage = e.code;
+                                        showToast("El usuario o contraseña son erróneos");
                                         break;
                                     }
                                     print('Failed with error code: ${e.code}');
                                     print(e.message);
                                   }
-
-                                  setState(() {});
-
-                                  Navigator.pushNamed(context, '/home');
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius:

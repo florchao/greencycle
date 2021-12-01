@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:greencycle/constants/Theme.dart';
-import 'package:greencycle/widgets/navbar.dart';
 import 'package:greencycle/widgets/card-xs.dart';
 
 class Profile extends StatelessWidget {
@@ -17,10 +17,6 @@ class Profile extends StatelessWidget {
     final double itemWidth = size.width / 2;
     return Scaffold(
         extendBodyBehindAppBar: true,
-        // appBar: Navbar(
-        //   title: "Mi Perfil",
-        //   tags: [],
-        // ),
         appBar: AppBar(
           title: const Text("Mi Perfil"),
           backgroundColor: ArgonColors.verdeOscuro,
@@ -36,25 +32,24 @@ class Profile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Stack(children: <Widget>[
+
                       Container(
+                        width: size.width*0.9,
+                        height: size.height*0.7,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
+                          boxShadow: [BoxShadow(
                               color: Colors.grey.withOpacity(0.2),
                               spreadRadius: 1,
                               blurRadius: 7,
                               offset:
                                   Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
+                            ),],
                         ),
                         child: Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             elevation: .0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0))),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   top: 85.0, bottom: 20.0),
@@ -64,14 +59,20 @@ class Profile extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Row(
+                                          mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                         children:[
                                           Align(
-                                            child: Text(_userName!,
-                                                style: TextStyle(
-                                                    color: ArgonColors.azul,
-                                                    fontSize: 28.0)),
-                                          ),
+                                              child: SizedBox(
+                                                width: size.width*0.85,
+                                                height: size.height*0.05,
+                                                child: AutoSizeText( _userName!,
+                                                           maxLines: 2,
+                                                           minFontSize: 8,
+                                                           textAlign: TextAlign.center,
+                                                           maxFontSize: 28.0,
+                                                           style: TextStyle(color: ArgonColors.azul, fontSize: 28.0)),
+                                          ),),
                                         ]),
                                         SizedBox(height: 25.0),
                                         Padding(padding: const EdgeInsets.only(
@@ -86,7 +87,7 @@ class Profile extends StatelessWidget {
                                                       fontSize: 19.0,
                                                       color: ArgonColors.azul)),
                                               Text(
-                                                "800000 puntos",
+                                                "800000 puntos", //getCurrentUser().score
                                                 style: TextStyle(
                                                     color: ArgonColors.azul,
                                                     fontSize: 19.0,
@@ -115,7 +116,7 @@ class Profile extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 250,
+                                          height: size.height*0.395,
                                           child: GridView.count(
                                               primary: false,
                                               padding: EdgeInsets.symmetric(
@@ -125,7 +126,7 @@ class Profile extends StatelessWidget {
                                               childAspectRatio: (itemWidth / itemHeight),
                                               mainAxisSpacing: 10,
                                               crossAxisCount: 3,
-                                              children: <Widget>[
+                                              children: <Widget>[ //List.generate(
                                                 CardXs(
                                                       cta: "View article",
                                                       title:  "HOLA todo bien",
