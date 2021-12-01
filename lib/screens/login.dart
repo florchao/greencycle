@@ -214,6 +214,7 @@ class _LoginState extends State<Login> {
                                   password.currentState!.validate();
                                   mail.currentState!.save();
                                   mail.currentState!.validate();
+                                  if(password.currentState!.validate() && mail.currentState!.validate()){
                                   try {
                                     UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
                                       email: _emailController.text,
@@ -236,7 +237,7 @@ class _LoginState extends State<Login> {
                                     print('Failed with error code: ${e.code}');
                                     print(e.message);
                                   }
-                                },
+                                }},
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
                                   BorderRadius.circular(4.0),

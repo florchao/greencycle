@@ -74,7 +74,7 @@ class Profile extends StatelessWidget {
                                                            style: TextStyle(color: ArgonColors.azul, fontSize: 28.0)),
                                           ),),
                                         ]),
-                                        SizedBox(height: 25.0),
+                                        SizedBox(height: size.height*0.007),
                                         Padding(padding: const EdgeInsets.only(
                                             right: 25.0, left: 25.0),
                                         child: Row(
@@ -97,7 +97,7 @@ class Profile extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(height: 15.0),
+                                        SizedBox(height:  size.height*0.007),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 25.0, left: 25.0),
@@ -116,7 +116,7 @@ class Profile extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: size.height*0.395,
+                                          height: size.height*0.38,
                                           child: GridView.count(
                                               primary: false,
                                               padding: EdgeInsets.symmetric(

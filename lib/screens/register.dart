@@ -304,7 +304,8 @@ class _RegisterState extends State<Register> {
                                                 padding: EdgeInsets.only(
                                                     left: 16.0,
                                                     right: 16.0,
-                                                    top: 10),
+                                                    top: 12,
+                                                    bottom: 12),
                                                 child: Text("REGISTRARSE",
                                                     style: TextStyle(
                                                         fontWeight:
