@@ -8,8 +8,9 @@ class Group{
 
   static const String collection_id = 'Grupos';
 
-  Group(this.name, this.Id, this.icon_url, this.members)
+  Group(this.name, this.icon_url, this.members)
       : this.score= 0,
+        this.Id = "",
         this.weekly_score = "";
 
   Group.fromSnapshot(String Id, Map<String, dynamic> group)
