@@ -288,7 +288,7 @@ class _RegisterState extends State<Register> {
                                                       showToast("El formato del mail es inválido");
                                                       break;
                                                     case 'email-already-in-use':
-                                                      showToast("s");
+                                                      showToast("El mail ya esta en uso");
                                                       break;
                                                   }
                                                   print('Failed with error code: ${e.code}');
