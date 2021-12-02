@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyAction.dart';
+import 'package:greencycle/model/MyUser.dart';
 
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
@@ -12,7 +13,7 @@ class GroupService{
   }
 
   Future<void> deleteGroup(String groupId){
-    groupRef
+    //Todo: felu
   }
 
   Future<void> addAction(MyAction action, String groupId) async {
@@ -27,8 +28,13 @@ class GroupService{
         .toList();
   }
 
-  Future<Group> getGroupById(String Id) async {
+  Future<List<MyUser>> getMembers(String Id) async {
+    //Todo:
 
+  }
+
+  Future<Group> getGroupById(String Id) async {
+      //TODO:
   }
 
 
