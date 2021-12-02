@@ -130,7 +130,7 @@ class _CreateActionState extends State<CreateAction> {
                 child: Padding(
                     padding: EdgeInsets.only(
                         left: 16.0, right: 16.0, top: 12, bottom: 10),
-                    child: Text("GURDAR ACCIÓN",
+                    child: Text("GUARDAR ACCIÓN",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18.0))),
