@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:greencycle/constants/Theme.dart';
-import 'package:greencycle/widgets/navbar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateAction extends StatefulWidget{
@@ -12,8 +11,11 @@ class CreateAction extends StatefulWidget{
 }
 
 class _CreateActionState extends State<CreateAction> {
-  List<String> listItem = ["Reciclaje", "Reciclaje2", "Reciclaje3", "Reciclaje4", "Reciclaje5"];
-  Object? _valueChoose;
+  List<String> categoryList = ["Reciclaje", "Transporte", "Plantar", "Ecoproductos", "Factura de luz y gas", "Compost"];
+  List<String> recycleList = ["Metales", "Plástico", "Papel y Cartón", "Vidrio"];
+  List<String> transportList = ["Bicicleta", "Público"];
+  String categoryChoose = '';
+  String actionValue = '';
   String comment = '';
   var _image = null;
 
@@ -47,40 +49,26 @@ class _CreateActionState extends State<CreateAction> {
       body: ListView(
         children: <Widget>[
           Padding(padding: const EdgeInsets.only(left: 8.0, top: 32, bottom: 5.0),
+            child: Text("Categoría", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
             child:
             //Dropdown
             DropdownButtonFormField(
-              items: listItem.map((e) {
+              items: categoryList.map((e) {
                 return DropdownMenuItem(
                   value: e,
                   child: Text('$e'),
                 );
               }).toList(),
-              onChanged: (val) => setState(() => _valueChoose = val),
+              onChanged: (val) => setState(() => categoryChoose = val.toString()),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 8.0),
             child:
-              MaterialCounterWidget("Metales"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 8.0),
-            child:
-            MaterialCounterWidget("Papel y cartón"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 8.0),
-            child:
-            MaterialCounterWidget("Vidrio"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 8.0),
-            child:
-            MaterialCounterWidget("Plástico"),
+            ShowActionOptions(categoryChoose),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -106,6 +94,9 @@ class _CreateActionState extends State<CreateAction> {
             ],
           ),
           // Comments
+          Padding(padding: const EdgeInsets.only(left: 8.0, top: 32, bottom: 5.0),
+            child: Text("Comentarios", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
             child:
@@ -142,20 +133,78 @@ class _CreateActionState extends State<CreateAction> {
     );
   }
 
-  Widget MaterialCounterWidget(String material){
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: Text('$material', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
-        ),
-        TextField(
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-        ),
-      ]
+  Widget ShowActionOptions(String material){
+    switch(material){
+      case 'Reciclaje':
+        return ButtonList(recycleList);
+      case 'Transporte':
+        return ButtonList(transportList);
+      case 'Plantar':
+        return MaterialCounterWidget('árboles');
+      case 'Ecoproductos':
+        return MaterialCounterWidget('unidades');
+      case 'Compost':
+        return MaterialCounterWidget('kilos');
+      case 'Factura de luz y gas':
+        return UploadFileButton();
+      default:
+        return SizedBox.shrink();
+    };
+  }
+
+  Widget UploadFileButton(){
+    return SizedBox.shrink();
+  }
+
+  Widget MaterialCounterWidget(String units){
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          ),
+          Expanded(
+              child: Text('$units', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)))
+        ]
+    );
+  }
+
+  Widget ButtonList(List<String> l){
+    return Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+        child:
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: l.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new SizedBox(
+              width: double.infinity,
+              child: FlatButton(
+                textColor: ArgonColors.white,
+                color: l[index] == actionValue ? Colors.amber : ArgonColors.verdeOscuro,
+                onPressed: () {
+                  actionValue = l[index];
+                  setState(() {});
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 12, bottom: 10),
+                    child: Text(l[index],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0))),
+              ),
+            );
+          },
+        )
     );
   }
 
