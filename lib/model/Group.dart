@@ -1,36 +1,38 @@
 class Group{
   String name;
-  String Id;
   String icon_url;
-  String score;
-  String weekly_score;
+  int score;
+  //String weekly_score;
   List<String> members;
+  Map<String,int> membersScore;
 
   static const String collection_id = 'Grupos';
 
-  Group(this.name, this.Id, this.icon_url, this.members)
-      : this.score= "",
-        this.weekly_score = "";
+  Group(this.name, this.icon_url, this.members)
+      : this.score= 0,
+        this.membersScore = Map();
+        //this.weekly_score = "";
 
   Group.fromSnapshot(String Id, Map<String, dynamic> group)
-      : Id = Id,
+      : //Id = Id,
         name = group['name'],
         icon_url = group['icon_url'],
         score = group['score'],
-        weekly_score = group['weekly_score'],
+        //weekly_score = group['weekly_score'],
+        membersScore = group['members_score'],
         members = group['members'];
 
   Map<String, dynamic> toMap() => {
     'name': name,
-    'Id': Id,
     'icon_url': icon_url,
     'score': score,
-    'weekly_score': weekly_score,
+    //'weekly_score': weekly_score,
+    'members_score' : membersScore,
     'members': members,
   };
 
   @override
   String toString() {
-    return '$Id,$name,$score,$members, iconURL:$icon_url}';
+    return '$name,$score,$members, icon_url:$icon_url, score: $score}';
   }
 }

@@ -37,6 +37,11 @@ class UserService {
     return null;
   }
 
+  // Future<List<MyUser>> getAllUser(String email, int max) async {
+  //   //TODO:
+  // }
+
+
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
   //(no hace falta poner nada en la variable id)
   Future<void> editCurrentUser(MyUser user)async {
@@ -59,10 +64,18 @@ class UserService {
     userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(action.toMap());
   }
 
+  Future<void> addScoreToUser(int score, String userId)async {
+    final userDoc = userRef.doc(userId);
+    userDoc.update({
+      "score" : FieldValue.increment(1)
+    });
+  }
+
+
   Future<void> addScore(int score)async {
     final userDoc = userRef.doc(getCurrentUserId());
     userDoc.update({
-      "score" : FieldValue.increment(1)
+      "score" : FieldValue.increment(score)
     });
   }
 
@@ -75,28 +88,33 @@ class UserService {
 
   //metodos para grupos
   Future<String> addGroup(Group group) async{
-    String id = "-1";
-    final userDoc = userRef.doc(getCurrentUserId()).collection(Group.collection_id);
-    userDoc.add(group.toMap()).then((value) => id = value.id);
-    group.Id = id;
-    groupService.create(group);
+    String id = await groupService.addGroup(group);
+    if(id == "-1"){
+      return id;
+    }
+    final userDoc = userRef.doc(getCurrentUserId());
+    userDoc.update({
+      "groups" : FieldValue.arrayUnion([id])
+    });
+    // userDoc.add(group.toMap());
     return id;
   }
 
   Future<void> deleteGroup(String groupId)async{
-    final userDoc = userRef.doc(getCurrentUserId()).collection(Group.collection_id).doc(groupId);
-    await userDoc.set(
-        {"group":{
-          groupId : null}
-        },SetOptions(merge: true)
-    );
+    //TODO:felu
+    // await groupService.d
+    // final userDoc = userRef.doc(getCurrentUserId()).collection(Group.collection_id).doc(groupId);
+    // await userDoc.set(
+    //     {"group":{
+    //       groupId : null}
+    //     },SetOptions(merge: true)
+    // );
     //groupService.delete(groupId); FALTA IMPLEMENTAR
   }
 
-  Future<List<Group>> getGroups()async{
-    QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(Group.collection_id).get();
-    return qs.docs.map((value) => Group.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
-        .toList();
+  Future<List<String>> getUserGroups()async{
+    MyUser? user = await getCurrentUser();
+    return user!.groups;
   }
 
 

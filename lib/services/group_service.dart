@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyAction.dart';
+import 'package:greencycle/model/MyUser.dart';
 
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
-
-  Future<void> create(Group group) async {
-    await groupRef.doc(group.Id).set(group.toMap());
-  }
 
   Future<String> addGroup(Group group)async{
     String id = '-1';
@@ -15,7 +12,9 @@ class GroupService{
     return id;
   }
 
-  //deleteGroup(int GroupID) FALTA IMPLEMENTAR
+  // Future<void> deleteGroup(String groupId){
+  //   //Todo: felu
+  // }
 
   Future<void> addAction(MyAction action, String groupId) async {
     final groupDoc = groupRef.doc(groupId);
@@ -28,6 +27,17 @@ class GroupService{
         .map((value) => Group.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
         .toList();
   }
+
+  // Future<List<MyUser>> getMembers(String Id) async {
+  //   //Todo:
+  //
+  // }
+
+  // Future<Group> getGroupById(String Id) async {
+  //     //TODO:
+  // }
+
+
 
 
 
