@@ -8,7 +8,7 @@ class MyUser{
   String Id;
   String? icon_url;
   String email;
-  String score;
+  int score;
   //String weekly_score;
   Map<String,dynamic> groups;
   static const String collection_id = 'Usuario';
@@ -16,7 +16,7 @@ class MyUser{
   MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
       : this.groups = Map(),
         //this.weekly_score = " ",
-        this.score = " ";
+        this.score = 0;
 
 
   MyUser.fromSnapshot(String Id, Map<String, dynamic> user)
@@ -41,7 +41,7 @@ class MyUser{
 
   @override
   String toString() {
-    return 'user{id: $Id, nombres: $name, apellidos: $last_name, email: $email, iconURL:$icon_url}';
+    return 'user{id: $Id, nombres: $name, apellidos: $last_name, email: $email, iconURL:$icon_url, score: $score, groups: $groups}';
   }
 
 
