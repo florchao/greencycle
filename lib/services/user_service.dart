@@ -83,13 +83,16 @@ class UserService {
 
   //metodos para grupos
   Future<String> addGroup(Group group) async{
-    groupService.create(group);
+    String id = await groupService.addGroup(group);
+    if(id == "-1"){
+      return id;
+    }
     final userDoc = userRef.doc(getCurrentUserId());
     userDoc.update({
-      "groups" : FieldValue.arrayUnion([group.Id])
+      "groups" : FieldValue.arrayUnion([id])
     });
     // userDoc.add(group.toMap());
-    return group.Id;
+    return id;
   }
 
   Future<void> deleteGroup(String groupId)async{
