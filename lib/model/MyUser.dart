@@ -33,7 +33,7 @@ class MyUser{
     'name': name,
     'last_name': last_name,
     'email': email,
-    'iconURL': icon_url,
+    'icon_url': icon_url,
     'groups': groups,
     //'weekly_score': weekly_score,
     'score': score,

@@ -59,6 +59,14 @@ class UserService {
     userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(action.toMap());
   }
 
+  Future<void> addScoreToUser(int score, String userId)async {
+    final userDoc = userRef.doc(userId);
+    userDoc.update({
+      "score" : FieldValue.increment(1)
+    });
+  }
+
+
   Future<void> addScore(int score)async {
     final userDoc = userRef.doc(getCurrentUserId());
     userDoc.update({
