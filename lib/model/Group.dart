@@ -2,14 +2,14 @@ class Group{
   String name;
   String Id;
   String icon_url;
-  String score;
+  int score;
   String weekly_score;
   List<String> members;
 
   static const String collection_id = 'Grupos';
 
   Group(this.name, this.Id, this.icon_url, this.members)
-      : this.score= "",
+      : this.score= 0,
         this.weekly_score = "";
 
   Group.fromSnapshot(String Id, Map<String, dynamic> group)
@@ -31,6 +31,6 @@ class Group{
 
   @override
   String toString() {
-    return '$Id,$name,$score,$members, iconURL:$icon_url}';
+    return '$Id,$name,$score,$members, icon_url:$icon_url, score: $score}';
   }
 }
