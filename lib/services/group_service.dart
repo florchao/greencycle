@@ -12,30 +12,36 @@ class GroupService{
     return id;
   }
 
-  // Future<void> deleteGroup(String groupId){
-  //   //Todo: felu
-  // }
+  Future<void> deleteGroup(String groupId) async{
+    await groupRef.doc(groupId).delete();
+  }
 
   Future<void> addAction(MyAction action, String groupId) async {
     final groupDoc = groupRef.doc(groupId);
     await groupDoc.set(action.toMap(), SetOptions(merge: true));
   }
 
-  Future<List<Group>> get() async {
+  Future<List<Group>> get() async { //TODO:ver si esta bien
     QuerySnapshot querySnapshot = await groupRef.get();
     return querySnapshot.docs
         .map((value) => Group.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
         .toList();
   }
 
-  // Future<List<MyUser>> getMembers(String Id) async {
-  //   //Todo:
-  //
-  // }
+  Future<Group?> getGroupById(String groupId) async{
+    Group group;
+    DocumentSnapshot ds = await groupRef.doc(groupId).get();
+    if (ds.exists) {
+      group = Group.fromSnapshot(ds.id, ds.data() as Map<String, dynamic>);
+      return group;
+    }
+    return null;
+  }
 
-  // Future<Group> getGroupById(String Id) async {
-  //     //TODO:
-  // }
+  Future<List<MyUser>> getMembersOfGroup(String id) async {
+    return (getGroupById(id) as Group).members as List<MyUser>;
+  }
+
 
 
 

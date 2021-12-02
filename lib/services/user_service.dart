@@ -38,7 +38,7 @@ class UserService {
   }
 
   // Future<List<MyUser>> getAllUser(String email, int max) async {
-  //   //TODO:
+  //   userRef.
   // }
 
 
@@ -87,8 +87,8 @@ class UserService {
   }
 
   //metodos para grupos
-  Future<String> addGroup(Group group) async{
-    String id = await groupService.addGroup(group);
+  Future<String> addGroup(Group groupId) async{
+    String id = await groupService.addGroup(groupId);
     if(id == "-1"){
       return id;
     }
@@ -96,20 +96,15 @@ class UserService {
     userDoc.update({
       "groups" : FieldValue.arrayUnion([id])
     });
-    // userDoc.add(group.toMap());
     return id;
   }
 
   Future<void> deleteGroup(String groupId)async{
-    //TODO:felu
-    // await groupService.d
-    // final userDoc = userRef.doc(getCurrentUserId()).collection(Group.collection_id).doc(groupId);
-    // await userDoc.set(
-    //     {"group":{
-    //       groupId : null}
-    //     },SetOptions(merge: true)
-    // );
-    //groupService.delete(groupId); FALTA IMPLEMENTAR
+    groupService.deleteGroup(groupId);
+    final userDoc = userRef.doc(getCurrentUserId());
+    userDoc.update({
+      "groups" : FieldValue.arrayRemove([groupId])
+    });
   }
 
   Future<List<String>> getUserGroups()async{
@@ -118,26 +113,14 @@ class UserService {
   }
 
 
-//
-// Future<List<Action>> getUserActions(String userId) async{
-//   QuerySnapshot qs = await userRef.doc(userId).collection(Action.collection_id).get();
-//     return qs.docs.map((ds) => Action.fromSnapshot(ds.data())).toList();
-//   }
-// }
-
-}
-
-  // Future<List<User>> get() async {
-  //   QuerySnapshot querySnapshot = await usersRef.get();
-  //   return querySnapshot.docs
-  //       .map((ds) => Usuario.fromSnapshot(ds.id, ds.data()))
-  //       .toList();
+  // Future<void> _getUserName() async {
+  //   Firestore.instance
+  //       .collection('Users')
+  //       .document((await FirebaseAuth.instance.currentUser()).uid)
+  //       .get()
+  //       .then((value) {
+  //     setState(() {
+  //       _userName = value.data['UserName'].toString();
+  //     });
+  //   });
   // }
-
-  // Stream<List<User>> getByName(String name) {
-  //   return usersRef.where('name', isEqualTo: name).snapshots().map(
-  //           (e) => e.docs
-  //           .map((ds) => Usuario.fromSnapshot(ds.id, ds.data()))
-  //           .toList());
-  // }
-// }
