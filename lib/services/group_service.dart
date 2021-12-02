@@ -12,9 +12,9 @@ class GroupService{
     return id;
   }
 
-  Future<void> deleteGroup(String groupId){
-    //Todo: felu
-  }
+  // Future<void> deleteGroup(String groupId){
+  //   //Todo: felu
+  // }
 
   Future<void> addAction(MyAction action, String groupId) async {
     final groupDoc = groupRef.doc(groupId);
@@ -28,14 +28,14 @@ class GroupService{
         .toList();
   }
 
-  Future<List<MyUser>> getMembers(String Id) async {
-    //Todo:
+  // Future<List<MyUser>> getMembers(String Id) async {
+  //   //Todo:
+  //
+  // }
 
-  }
-
-  Future<Group> getGroupById(String Id) async {
-      //TODO:
-  }
+  // Future<Group> getGroupById(String Id) async {
+  //     //TODO:
+  // }
 
 
 

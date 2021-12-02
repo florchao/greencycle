@@ -37,9 +37,9 @@ class UserService {
     return null;
   }
 
-  Future<List<MyUser>> getAllUser(String email, int max) async {
-    //TODO:
-  }
+  // Future<List<MyUser>> getAllUser(String email, int max) async {
+  //   //TODO:
+  // }
 
 
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
