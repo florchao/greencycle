@@ -3,12 +3,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/model/Group.dart';
+import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/widgets/input.dart';
 import 'package:greencycle/widgets/navbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatelessWidget {
+
+  final _groupNameController = TextEditingController();
+  final _prize1stController = TextEditingController();
+  final _prize2ndController = TextEditingController();
+  final _prize3rdController = TextEditingController();
 
   final List<String> usernames = [
     'Felo',
@@ -70,6 +77,7 @@ class NewGroup extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Input(
                                     placeholder: "Nombre",
+                                    controller: _groupNameController
                                   ),
                                 ),
                                 SizedBox(height: 8.0),
@@ -106,16 +114,19 @@ class NewGroup extends StatelessWidget {
                                         SizedBox( height: 8.0),
                                         Input(
                                           placeholder: "1er Puesto",
+                                          controller: _prize1stController,
                                           suffixIcon: Icon(Icons.emoji_events),
                                         ),
                                         SizedBox( height: 8.0),
                                         Input(
                                           placeholder: "2do Puesto",
+                                          controller: _prize2ndController,
                                           suffixIcon: Icon(Icons.emoji_events),
                                         ),
                                         SizedBox( height: 8.0),
                                         Input(
                                           placeholder: "3er Puesto",
+                                          controller: _prize3rdController,
                                           suffixIcon: Icon(Icons.emoji_events),
                                         )
                                       ],
@@ -164,8 +175,14 @@ class NewGroup extends StatelessWidget {
                                     child: FlatButton(
                                       textColor: ArgonColors.white,
                                       color: ArgonColors.verdeOscuro,
-                                      onPressed: () {
-                                        Navigator.pushReplacementNamed(context, '/home');
+                                      onPressed: () async{
+                                        if(_groupNameController.text.isNotEmpty && _prize1stController.text.isNotEmpty
+                                        && _prize2ndController.text.isNotEmpty && _prize3rdController.text.isNotEmpty) {
+                                          Group _group = Group(_groupNameController.text, _image.toString(), []);
+                                          GroupService _groupService = GroupService();
+                                          _groupService.addGroup(_group);
+                                          Navigator.pushReplacementNamed(context, '/home');
+                                        }
                                       },
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4.0),
