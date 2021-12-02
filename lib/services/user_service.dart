@@ -70,7 +70,7 @@ class UserService {
   Future<void> addScore(int score)async {
     final userDoc = userRef.doc(getCurrentUserId());
     userDoc.update({
-      "score" : FieldValue.increment(1)
+      "score" : FieldValue.increment(score)
     });
   }
 
