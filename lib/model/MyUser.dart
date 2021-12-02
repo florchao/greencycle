@@ -9,7 +9,6 @@ class MyUser{
   String? icon_url;
   String email;
   int score;
-  //String weekly_score;
   Map<String,dynamic> groups;
   static const String collection_id = 'Usuario';
 

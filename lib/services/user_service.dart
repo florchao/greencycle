@@ -96,6 +96,7 @@ class UserService {
   }
 
   Future<void> deleteGroup(String groupId)async{
+    await groupService.d
     final userDoc = userRef.doc(getCurrentUserId()).collection(Group.collection_id).doc(groupId);
     await userDoc.set(
         {"group":{
