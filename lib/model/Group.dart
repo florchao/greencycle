@@ -9,7 +9,7 @@ class Group{
 
   static const String collection_id = 'Grupos';
 
-  Group(this.name, this.icon_url, List list)
+  Group(this.name, this.icon_url)
       : this.score= 0,
         this.members = Map(),
         this.membersScore = Map();
