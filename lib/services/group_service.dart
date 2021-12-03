@@ -25,7 +25,6 @@ class GroupService{
   }//todo:
 
   Future<Group?> getGroupById(String groupId) async{
-    //Group group;
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
     if (ds.exists) {
       Group group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
@@ -46,14 +45,14 @@ class GroupService{
   Future<void> addMembers(String groupId, List<String> membersList)async {
     final groupDoc = groupRef.doc(groupId);
     groupDoc.update({
-      'member' : FieldValue.arrayUnion(membersList)
+      'members' : FieldValue.arrayUnion(membersList)
     });
   }
 
   Future<void> removeMembers(String groupId, List<String> membersList)async {
     final groupDoc = groupRef.doc(groupId);
     groupDoc.update({
-      'member' : FieldValue.arrayRemove(membersList)
+      'members' : FieldValue.arrayRemove(membersList)
     });
   }
 
