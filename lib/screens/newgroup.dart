@@ -46,7 +46,7 @@ class NewGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
+    // MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Nuevo Grupo"),
@@ -150,7 +150,7 @@ class NewGroup extends StatelessWidget {
                                         backgroundColor: ArgonColors.azul,
                                         onPressed: () {
                                           _showUserListDialog(context);
-                                          data = _myMultipleNotifier._selectedItems;
+                                          // data = _myMultipleNotifier._selectedItems;
                                         }
                                     ),
                                   ],
@@ -178,9 +178,9 @@ class NewGroup extends StatelessWidget {
                                       onPressed: () async{
                                         if(_groupNameController.text.isNotEmpty && _prize1stController.text.isNotEmpty
                                         && _prize2ndController.text.isNotEmpty && _prize3rdController.text.isNotEmpty) {
-                                          Group _group = Group(_groupNameController.text, _image.toString(), []);
+                                          // Group _group = Group(_groupNameController.text, _image.toString(), []);
                                           GroupService _groupService = GroupService();
-                                          _groupService.addGroup(_group);
+                                          // _groupService.addGroup(_group);
                                           Navigator.pushReplacementNamed(context, '/home');
                                         }
                                       },
@@ -217,7 +217,7 @@ class NewGroup extends StatelessWidget {
   _showUserListDialog(BuildContext context) => showDialog(
       context: context,
       builder: (context) {
-        final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+        // final _multipleNotifier = Provider.of<MultipleNotifier>(context);
         return AlertDialog(
           title: Text('Selecciona los usuarios a agregar',
               style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
@@ -226,13 +226,13 @@ class NewGroup extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: usernames.map((e) => CheckboxListTile(
-                    title: Text(e),
-                    onChanged: (value) {
-                      value! ? _multipleNotifier.addItem(e) : _multipleNotifier.removeItem(e);
-                    },
-                  value: _multipleNotifier.isInList(e),
-                )).toList()
+                // children: usernames.map((e) => CheckboxListTile(
+                //     title: Text(e),
+                  //   onChanged: (value) {
+                  //     value! ? _multipleNotifier.addItem(e) : _multipleNotifier.removeItem(e);
+                  //   },
+                  // value: _multipleNotifier.isInList(e),
+                // )).toList()
               )
             )
           ),
@@ -251,26 +251,26 @@ class NewGroup extends StatelessWidget {
 
 }
 
-class MultipleNotifier extends ChangeNotifier {
-  List<String> _selectedItems;
-
-  MultipleNotifier(this._selectedItems);
-  List<String> get selectedItems => _selectedItems;
-
-  bool isInList(String value) => _selectedItems.contains(value);
-
-  addItem(String value) {
-    if (!isInList(value)) {
-      _selectedItems.add(value);
-      notifyListeners();
-    }
-  }
-
-  removeItem(String value) {
-    if(isInList(value)) {
-      _selectedItems.remove(value);
-      notifyListeners();
-    }
-  }
-
-}
+// class MultipleNotifier extends ChangeNotifier {
+//   List<String> _selectedItems;
+//
+//   MultipleNotifier(this._selectedItems);
+//   List<String> get selectedItems => _selectedItems;
+//
+//   bool isInList(String value) => _selectedItems.contains(value);
+//
+//   addItem(String value) {
+//     if (!isInList(value)) {
+//       _selectedItems.add(value);
+//       notifyListeners();
+//     }
+//   }
+//
+//   removeItem(String value) {
+//     if(isInList(value)) {
+//       _selectedItems.remove(value);
+//       notifyListeners();
+//     }
+//   }
+//
+// }
