@@ -16,8 +16,9 @@ class Profile extends StatelessWidget {
     final double itemHeight = size.height / 2;
     final double itemWidth = size.width / 2;
     return Scaffold(
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: true, //ESCONDE FLECHITA
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text("Mi Perfil"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
