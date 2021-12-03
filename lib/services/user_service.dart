@@ -43,7 +43,7 @@ class UserService {
     QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
         .orderBy('email').limit(maxDocuments)
         .get();
-    return qs.docs; //todo
+    return qs.docs as List<MyUser>; //todo: no funciona 
   }
 
   ///edit
