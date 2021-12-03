@@ -43,18 +43,19 @@ class UserService {
     QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
         .orderBy('email').limit(maxDocuments)
         .get();
-    return qs.docs as List<MyUser>;
+    return qs.docs; //todo
   }
 
   ///edit
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
   Future<void> editCurrentUser(MyUser user) async {
-    user.Id = (getCurrentUser() as MyUser).Id; //no se si esta bien
-    editUser(user);
+    user.Id = (await getCurrentUser() as MyUser).Id; //no se si esta bien
+    await editUser(user);
   }
 
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario
   //IMPORTANTE: en la variable id de myUser se poner el id del usuario que se quiere editar
+  //cuidado con el id
   Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
@@ -85,6 +86,21 @@ class UserService {
 
   Future<void> addScore(int score) async {
     addScoreToUser(score, getCurrentUserId());
+  }
+
+  //deja el escore del grupo en cero
+  Future<void> scoreToZero(String userId) async{
+    final groupDoc = userRef.doc(userId);
+    groupDoc.update({
+      "score" : 0
+    });
+  }
+
+  Future<void> scoreToZeroCurrentUser() async{
+    final groupDoc = userRef.doc(getCurrentUserId());
+    groupDoc.update({
+      "score" : 0
+    });
   }
 
   ///groups
