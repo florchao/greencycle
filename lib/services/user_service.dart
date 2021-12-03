@@ -26,7 +26,6 @@ class UserService {
     return await getUser(getCurrentUserId());
   }
 
-
   //devuelve un MyUser con toda la informacion del usuario con el id pasado
   Future<MyUser?> getUser(String id) async {
     MyUser user;

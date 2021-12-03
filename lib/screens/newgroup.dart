@@ -178,7 +178,7 @@ class NewGroup extends StatelessWidget {
                                       onPressed: () async{
                                         if(_groupNameController.text.isNotEmpty && _prize1stController.text.isNotEmpty
                                         && _prize2ndController.text.isNotEmpty && _prize3rdController.text.isNotEmpty) {
-                                          Group _group = Group(_groupNameController.text, _image.toString(), []);
+                                          Group _group = Group(_groupNameController.text, _image.toString());
                                           GroupService _groupService = GroupService();
                                           _groupService.addGroup(_group);
                                           Navigator.pushReplacementNamed(context, '/home');
