@@ -22,31 +22,38 @@ class GroupService{
     return querySnapshot.docs
         .map((value) => Group.fromSnapshot(value.data() as Map<String, dynamic>))
         .toList();
-  }
+  }//todo:
 
   Future<Group?> getGroupById(String groupId) async{
-    Group group;
+    //Group group;
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
     if (ds.exists) {
-      group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
+      Group group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
       return group;
     }
-    return null;
+    return null;//Todo:
   }
 
   ///edits
   //se le pasa un Group con los datos que se quieren cambiar del grupo
-  Future<void> editUser(Group group, String groupId) async {
+  Future<void> editGroup(Group group, String groupId) async {
     final userDoc = groupRef.doc(groupId);
     await userDoc.set(group.toMap(), SetOptions(merge: true)
     );
   }
 
   ///members
-  Future<void> addMember(String groupId, List<String> membersId)async {
+  Future<void> addMembers(String groupId, List<String> membersList)async {
     final groupDoc = groupRef.doc(groupId);
     groupDoc.update({
-      'member' : FieldValue.arrayUnion(membersId)
+      'member' : FieldValue.arrayUnion(membersList)
+    });
+  }
+
+  Future<void> removeMembers(String groupId, List<String> membersList)async {
+    final groupDoc = groupRef.doc(groupId);
+    groupDoc.update({
+      'member' : FieldValue.arrayRemove(membersList)
     });
   }
 

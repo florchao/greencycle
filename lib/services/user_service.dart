@@ -43,7 +43,7 @@ class UserService {
     QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
         .orderBy('email').limit(maxDocuments)
         .get();
-    return qs.docs as List<MyUser>; //todo: no funciona 
+    return qs.docs as List<MyUser>; //todo: no funciona
   }
 
   ///edit
@@ -90,15 +90,15 @@ class UserService {
 
   //deja el escore del grupo en cero
   Future<void> scoreToZero(String userId) async{
-    final groupDoc = userRef.doc(userId);
-    groupDoc.update({
+    final userDoc = userRef.doc(userId);
+    userDoc.update({
       "score" : 0
     });
   }
 
   Future<void> scoreToZeroCurrentUser() async{
-    final groupDoc = userRef.doc(getCurrentUserId());
-    groupDoc.update({
+    final userDoc = userRef.doc(getCurrentUserId());
+    userDoc.update({
       "score" : 0
     });
   }
