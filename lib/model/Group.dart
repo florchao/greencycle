@@ -1,34 +1,32 @@
+import 'package:flutter/cupertino.dart';
+
 class Group{
   String name;
   String icon_url;
   int score;
-  //String weekly_score;
-  List<String> members;
-  Map<String,int> membersScore;
+  Map<String, dynamic> members;
+  Map<String, dynamic> membersScore;
 
   static const String collection_id = 'Grupos';
 
-  Group(this.name, this.icon_url, this.members)
+  Group(this.name, this.icon_url)
       : this.score= 0,
+        this.members = Map(),
         this.membersScore = Map();
-        //this.weekly_score = "";
 
-  Group.fromSnapshot(String Id, Map<String, dynamic> group)
-      : //Id = Id,
-        name = group['name'],
-        icon_url = group['icon_url'],
-        score = group['score'],
-        //weekly_score = group['weekly_score'],
-        membersScore = group['members_score'],
-        members = group['members'];
+  Group.fromSnapshot(Map<String, dynamic> group)
+    : name = group['name'],
+      icon_url = group['icon_url'],
+      score = group['score'],
+      members = group['members'],
+      membersScore = group['membersScore'];
 
   Map<String, dynamic> toMap() => {
     'name': name,
     'icon_url': icon_url,
     'score': score,
-    //'weekly_score': weekly_score,
-    'members_score' : membersScore,
-    'members': members,
+    'members_score' : members,
+    'members': membersScore,
   };
 
   @override

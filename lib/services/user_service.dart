@@ -1,32 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyAction.dart';
 import 'package:greencycle/model/MyUser.dart';
 import 'package:greencycle/services/group_service.dart';
 
 class UserService {
-  CollectionReference userRef = FirebaseFirestore.instance.collection(
-      MyUser.collection_id);
-
+  CollectionReference userRef = FirebaseFirestore.instance.collection(MyUser.collection_id);
   GroupService groupService = new GroupService();
+  static const int maxDocuments = 50;
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
     userDocument.set(user.toMap());
   }
 
-  //devulve un objeto myUser con toda la info del usurario actual
-  Future<MyUser?> getCurrentUser() async{
-    return await getUser(getCurrentUserId());
-  }
-
+  ///get
   String getCurrentUserId(){
     return FirebaseAuth.instance.currentUser!.uid;
   }
 
-  //devulve un MyUser con toda la informacion del user con el id pasado
+  //devuelve un objeto myUser con toda la info del usuario actual
+  Future<MyUser?> getCurrentUser() async{
+    return await getUser(getCurrentUserId());
+  }
+
+
+  //devuelve un MyUser con toda la informacion del usuario con el id pasado
   Future<MyUser?> getUser(String id) async {
     MyUser user;
     DocumentSnapshot documentSnapshot = await userRef.doc(id).get();
@@ -37,58 +37,55 @@ class UserService {
     return null;
   }
 
-  // Future<List<MyUser>> getAllUser(String email, int max) async {
-  //   userRef.
-  // }
+  Future<List<MyUser>> getAllUser(String email) async {
+    QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo : email).orderBy('email').limit(maxDocuments).get();
+    return qs.docs as List<MyUser>;
+  }
 
-
+  ///edit
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
-  //(no hace falta poner nada en la variable id)
   Future<void> editCurrentUser(MyUser user)async {
     user.Id = (getCurrentUser() as MyUser).Id; //no se si esta bien
     editUser(user);
   }
 
-  //se le pasa un MyUser con los datos que se quieren cambiar de un user
-  //IMPORTANTE!! en la variable user se pone el token del user a editar
+  //se le pasa un MyUser con los datos que se quieren cambiar del usuario
+  //IMPORTANTE: en la variable id de myUser se poner el id del usuario que se quiere editar
   Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
     );
   }
 
-  Future<void> addAction(MyAction action) async {
-    addScore(action.score);
-
-    //gargar accion a todos los grupos del usuario
-    userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(action.toMap());
-  }
-
+  ///score
+  //agrega al usuario actual y  a todos los grupos que participa
+  //si score es un numero negativo entonce se resta
   Future<void> addScoreToUser(int score, String userId)async {
     final userDoc = userRef.doc(userId);
     userDoc.update({
-      "score" : FieldValue.increment(1)
-    });
-  }
-
-
-  Future<void> addScore(int score)async {
-    final userDoc = userRef.doc(getCurrentUserId());
-    userDoc.update({
       "score" : FieldValue.increment(score)
     });
+
+    Map<String, dynamic> groups;
+    userDoc.get().then((value) => {
+
+      groups = value.get('groups'),
+
+      groups.forEach((key, value) {
+      groupService.addScore(value, score);
+      }),
+
+    });
   }
 
-  Future<List<MyAction>> getUserAction()async{
-    QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).get();
-    return qs.docs
-        .map((value) => MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
-        .toList();
+  Future<void> addScore(int score)async {
+    addScoreToUser(score, getCurrentUserId());
   }
 
-  //metodos para grupos
-  Future<String> addGroup(Group groupId) async{
-    String id = await groupService.addGroup(groupId);
+  ///groups
+  //crea el grupo en la coleccion 'grupos' y agregar el id del grupo al usuario actual
+  Future<String> addGroup(Group group) async{
+    String id = await groupService.addGroup(group);
     if(id == "-1"){
       return id;
     }
@@ -99,6 +96,7 @@ class UserService {
     return id;
   }
 
+  //borra al grupo de la coleccion 'grupos' y saca el id del grupo del usuario actual
   Future<void> deleteGroup(String groupId)async{
     groupService.deleteGroup(groupId);
     final userDoc = userRef.doc(getCurrentUserId());
@@ -107,20 +105,18 @@ class UserService {
     });
   }
 
-  Future<List<String>> getUserGroups()async{
-    MyUser? user = await getCurrentUser();
-    return user!.groups;
+  ///action
+  Future<void> addAction(MyAction action) async {
+    addScore(action.score);
+
+    //gargar accion a todos los grupos del usuario
+    userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(action.toMap());
   }
 
+  Future<List<MyAction>> getUserAction()async{
+    QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).get();
+    return qs.docs
+        .map((value) => MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
+        .toList();
+  }
 
-  // Future<void> _getUserName() async {
-  //   Firestore.instance
-  //       .collection('Users')
-  //       .document((await FirebaseAuth.instance.currentUser()).uid)
-  //       .get()
-  //       .then((value) {
-  //     setState(() {
-  //       _userName = value.data['UserName'].toString();
-  //     });
-  //   });
-  // }

@@ -16,15 +16,11 @@ class GroupService{
     await groupRef.doc(groupId).delete();
   }
 
-  Future<void> addAction(MyAction action, String groupId) async {
-    final groupDoc = groupRef.doc(groupId);
-    await groupDoc.set(action.toMap(), SetOptions(merge: true));
-  }
-
+  ///get
   Future<List<Group>> get() async { //TODO:ver si esta bien
     QuerySnapshot querySnapshot = await groupRef.get();
     return querySnapshot.docs
-        .map((value) => Group.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
+        .map((value) => Group.fromSnapshot(value.data() as Map<String, dynamic>))
         .toList();
   }
 
@@ -32,14 +28,53 @@ class GroupService{
     Group group;
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
     if (ds.exists) {
-      group = Group.fromSnapshot(ds.id, ds.data() as Map<String, dynamic>);
+      group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
       return group;
     }
     return null;
   }
 
+  ///edits
+  //se le pasa un Group con los datos que se quieren cambiar del grupo
+  Future<void> editUser(Group group, String groupId) async {
+    final userDoc = groupRef.doc(groupId);
+    await userDoc.set(group.toMap(), SetOptions(merge: true)
+    );
+  }
+
+  ///members
+  Future<void> addMember(String groupId, List<String> membersId)async {
+    final groupDoc = groupRef.doc(groupId);
+    groupDoc.update({
+      'member' : FieldValue.arrayUnion(membersId)
+    });
+  }
+
   Future<List<MyUser>> getMembersOfGroup(String id) async {
     return (getGroupById(id) as Group).members as List<MyUser>;
+  }
+
+  ///score
+  //si se pasan un numero negativo se restan
+  Future<void> addScore(String groupId, int score) async{
+    final groupDoc = groupRef.doc(groupId);
+    groupDoc.update({
+      "score" : FieldValue.increment(score)
+    });
+  }
+
+  //deja el escore del grupo en cero
+  Future<void> scoreToZero(String groupId) async{
+    final groupDoc = groupRef.doc(groupId);
+    groupDoc.update({
+      "score" : 0
+    });
+  }
+
+  ///action
+  Future<void> addAction(MyAction action, String groupId) async {
+    final groupDoc = groupRef.doc(groupId);
+    await groupDoc.set(action.toMap(), SetOptions(merge: true));
   }
 
 

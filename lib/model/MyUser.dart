@@ -10,11 +10,11 @@ class MyUser{
   String? icon_url;
   String email;
   int score;
-  List<String> groups;
+  Map<String, dynamic> groups;
   static const String collection_id = 'Usuario';
 
   MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
-      : this.groups = [],
+      : this.groups = Map(),
         //this.weekly_score = " ",
         this.score = 0;
 
