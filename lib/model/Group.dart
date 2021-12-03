@@ -4,22 +4,22 @@ class Group{
   String name;
   String icon_url;
   int score;
-  Map<String, dynamic> members;
-  Map<String, dynamic> membersScore;
+  List<String> members;
+  List<String> membersScore;
 
   static const String collection_id = 'Grupos';
 
   Group(this.name, this.icon_url)
       : this.score= 0,
-        this.members = Map(),
-        this.membersScore = Map();
+        this.members = [],
+        this.membersScore = [];
 
   Group.fromSnapshot(Map<String, dynamic> group)
     : name = group['name'],
       icon_url = group['icon_url'],
       score = group['score'],
-      members = group['members'],
-      membersScore = group['membersScore'];
+      members = List.from(group['members']),
+      membersScore = List.from(group['membersScore']);
 
   Map<String, dynamic> toMap() => {
     'name': name,

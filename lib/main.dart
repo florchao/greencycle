@@ -17,14 +17,7 @@ import 'package:provider/provider.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<MultipleNotifier>(
-          create: (_) => MultipleNotifier([])
-      )
-    ],
-    child: MyApp()
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
