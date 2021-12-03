@@ -43,6 +43,7 @@ class UserService {
     QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
         .orderBy('email').limit(maxDocuments)
         .get();
+
     return qs.docs as List<MyUser>; //todo: no funciona
   }
 
@@ -71,16 +72,12 @@ class UserService {
       "score": FieldValue.increment(score)
     });
 
-    Map<String, dynamic> groups;
-    userDoc.get().then((value) =>
-    {
-
-      groups = value.get('groups'),
-
-      groups.forEach((key, value) {
-        groupService.addScore(value, score);
+    List<String> groups;
+    userDoc.get().then((data) => {
+      groups = List.from(data.get('groups')),
+      groups.forEach((element) {
+        groupService.addScore(element, score);
       }),
-
     });
   }
 

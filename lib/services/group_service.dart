@@ -17,12 +17,12 @@ class GroupService{
   }
 
   ///get
-  Future<List<Group>> get() async { //TODO:ver si esta bien
+  Future<List<Group>> getAll() async { //TODO:ver si esta bien
     QuerySnapshot querySnapshot = await groupRef.get();
     return querySnapshot.docs
         .map((value) => Group.fromSnapshot(value.data() as Map<String, dynamic>))
         .toList();
-  }//todo:
+  }
 
   Future<Group?> getGroupById(String groupId) async{
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
@@ -30,7 +30,7 @@ class GroupService{
       Group group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
       return group;
     }
-    return null;//Todo:
+    return null;
   }
 
   ///edits
