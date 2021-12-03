@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/widgets/drawer.dart';
 import 'package:greencycle/widgets/navbar.dart';
 
 
@@ -10,11 +11,13 @@ class ActionDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Detalle acción"),
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
+        drawer: ArgonDrawer(currentPage: "Detalle acción"),
       body: Stack(
         children: <Widget>[
           SafeArea(

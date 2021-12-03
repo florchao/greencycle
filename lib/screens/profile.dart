@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/card-xs.dart';
+import 'package:greencycle/widgets/drawer.dart';
 
 class Profile extends StatelessWidget {
 
@@ -18,11 +19,11 @@ class Profile extends StatelessWidget {
     return Scaffold(
         extendBodyBehindAppBar: true, //ESCONDE FLECHITA
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: const Text("Mi Perfil"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,
+        drawer: ArgonDrawer(currentPage: "Profile"),
         body: Stack(children: <Widget>[
           SafeArea(
             child: ListView(children: [

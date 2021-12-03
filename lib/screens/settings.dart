@@ -28,6 +28,7 @@ class _SettingsState extends State<Settings> {
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile']);
     return Scaffold(
         //resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
         backgroundColor: ArgonColors.verdeClaro,
         // appBar: Navbar(
         //   title: "Configuración",
@@ -37,6 +38,7 @@ class _SettingsState extends State<Settings> {
           title: const Text("Configuración"),
           backgroundColor: ArgonColors.verdeOscuro,
         ),
+        drawer: ArgonDrawer(currentPage: "Configuración"),
         body:  Container(
             color: ArgonColors.verdeClaro,
             child: Center(

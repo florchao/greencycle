@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/widgets/card-horizontal.dart';
+import 'package:greencycle/widgets/drawer.dart';
 import 'package:greencycle/widgets/navbar.dart';
 
 final Map<String, Map<String, dynamic>> articlesCards = {
@@ -79,6 +80,7 @@ class MisAcciones extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         // appBar: Navbar(
         //   title: "MisAcciones",
         //   rightOptions: false, tags: [],
@@ -88,6 +90,7 @@ class MisAcciones extends StatelessWidget {
           backgroundColor: ArgonColors.verdeOscuro,
         ),
         backgroundColor: ArgonColors.verdeClaro,
+        drawer: ArgonDrawer(currentPage: "Mis Acciones"),
         body: Container(
             padding: EdgeInsets.only(right: 24, left: 24, bottom: 36),
             child: SingleChildScrollView(
