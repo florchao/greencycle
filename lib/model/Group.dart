@@ -19,7 +19,7 @@ class Group{
       icon_url = group['icon_url'],
       score = group['score'],
       members = List.from(group['members']),
-      membersScore = List.from(group['membersScore']);
+      membersScore = List.from(group['members_score']);
 
   Map<String, dynamic> toMap() => {
     'name': name,

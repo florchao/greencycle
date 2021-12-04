@@ -9,7 +9,6 @@ class UserService {
   CollectionReference userRef = FirebaseFirestore.instance.collection(
       MyUser.collection_id);
   GroupService groupService = new GroupService();
-  static const int maxDocuments = 50;
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
@@ -38,18 +37,26 @@ class UserService {
     return null;
   }
 
-  Future<List<MyUser>> getAllUser(String email) async {
-    QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
-        .orderBy('email').limit(maxDocuments)
+  Future<List<MyUser>> getAllUser(String email,int size) async {
+    QuerySnapshot qs = await userRef.where('email', isGreaterThanOrEqualTo: email)
+        .orderBy('email').limit(size)
         .get();
-
-    return qs.docs as List<MyUser>; //todo: no funciona
+    return qs.docs.map((value) => MyUser.fromSnapshot(
+        value.id, value.data() as Map<String, dynamic>)).toList();
   }
 
   ///edit
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
+  //no se puede editar los valores id, score y groups de un usuario
   Future<void> editCurrentUser(MyUser user) async {
-    user.Id = (await getCurrentUser() as MyUser).Id; //no se si esta bien
+    MyUser currentUser = await getCurrentUserId() as MyUser;
+    user.Id = currentUser.Id;
+    user.groups = currentUser.groups;
+    user.score = currentUser.score;
+    if(user.name == ""){user.name = currentUser.name;}
+    if(user.last_name == ""){user.last_name = currentUser.last_name;}
+    if(user.icon_url == ""){user.icon_url = currentUser.icon_url;}
+    if(user.email == ""){user.email = currentUser.email;}
     await editUser(user);
   }
 
