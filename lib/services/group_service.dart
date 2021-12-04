@@ -57,12 +57,13 @@ class GroupService{
     });
   }
 
-  Future<List<MyUser>> getMembersOfGroup(String id) async {
-    return (getGroupById(id) as Group).members as List<MyUser>;
-  }
+  // Future<List<MyUser>> getMembersOfGroup(String id) async {
+  //   return (getGroupById(id) as Group).members as List<MyUser>;
+  // }
 
   ///score
   //si se pasan un numero negativo se restan
+  //todo: agregar un
   Future<void> addScore(String groupId, int score) async{
     final groupDoc = groupRef.doc(groupId);
     groupDoc.update({

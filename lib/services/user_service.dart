@@ -109,6 +109,7 @@ class UserService {
   ///groups
   //crea el grupo en la coleccion 'grupos' y agregar el id del grupo al usuario actual
   Future<String> addGroup(Group group) async {
+    group.members = [getCurrentUserId()];
     String id = await groupService.addGroup(group);
     if (id == "-1") {
       return id;

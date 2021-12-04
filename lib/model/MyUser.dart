@@ -1,13 +1,11 @@
 
 import 'dart:core';
-import 'dart:ffi';
-import 'package:greencycle/model/Group.dart';
 
 class MyUser{
   String name;
   String last_name;
   String Id;
-  String? icon_url;
+  String icon_url;
   String email;
   int score;
   List<String> groups;
