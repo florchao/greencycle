@@ -50,14 +50,14 @@ class UserService {
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
   //no se puede editar los valores id, score y groups de un usuario
   Future<void> editCurrentUser(MyUser user) async {
-    MyUser CuerrentUser = await getCurrentUserId() as MyUser;
-    user.Id = CuerrentUser.Id;
-    user.groups = CuerrentUser.groups;
-    user.score = CuerrentUser.score;
-    if(user.name == ""){user.name = CuerrentUser.name;}
-    if(user.last_name == ""){user.last_name = CuerrentUser.last_name;}
-    if(user.icon_url == ""){user.icon_url = CuerrentUser.icon_url;}
-    if(user.email == ""){user.email = CuerrentUser.email;}
+    MyUser currentUser = await getCurrentUserId() as MyUser;
+    user.Id = currentUser.Id;
+    user.groups = currentUser.groups;
+    user.score = currentUser.score;
+    if(user.name == ""){user.name = currentUser.name;}
+    if(user.last_name == ""){user.last_name = currentUser.last_name;}
+    if(user.icon_url == ""){user.icon_url = currentUser.icon_url;}
+    if(user.email == ""){user.email = currentUser.email;}
     await editUser(user);
   }
 
