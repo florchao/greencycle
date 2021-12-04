@@ -25,7 +25,7 @@ class MyUser{
         last_name = user['last_name'],
         email = user['email'],
         icon_url = user['icon_url'],
-        groups = List.from(user['groups']),
+        groups = (user['groups']),
         score = user['score'];
 
   Map<String, dynamic> toMap() => {

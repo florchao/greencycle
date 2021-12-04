@@ -42,14 +42,22 @@ class UserService {
     QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
         .orderBy('email').limit(maxDocuments)
         .get();
-
-    return qs.docs as List<MyUser>; //todo: no funciona
+    return qs.docs.map((value) => MyUser.fromSnapshot(
+        value.id, value.data() as Map<String, dynamic>)).toList();
   }
 
   ///edit
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
+  //no se puede editar los valores id, score y groups de un usuario
   Future<void> editCurrentUser(MyUser user) async {
-    user.Id = (await getCurrentUser() as MyUser).Id; //no se si esta bien
+    MyUser CuerrentUser = await getCurrentUserId() as MyUser;
+    user.Id = CuerrentUser.Id;
+    user.groups = CuerrentUser.groups;
+    user.score = CuerrentUser.score;
+    if(user.name == ""){user.name = CuerrentUser.name;}
+    if(user.last_name == ""){user.last_name = CuerrentUser.last_name;}
+    if(user.icon_url == ""){user.icon_url = CuerrentUser.icon_url;}
+    if(user.email == ""){user.email = CuerrentUser.email;}
     await editUser(user);
   }
 
