@@ -120,7 +120,7 @@ class MisAcciones extends StatelessWidget {
                         title: articlesCards["Ice Cream"]!['title'],
                         img: articlesCards["Ice Cream"]!['image'],
                         tap: () {
-                          Navigator.pushNamed(context, '/group-detail');
+                          Navigator.pushNamed(context, '/action-detail');
                         }),
                   ),
                   SizedBox(height: 8.0),
@@ -129,7 +129,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -145,7 +145,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -153,7 +153,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                 ],
