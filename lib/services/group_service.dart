@@ -25,9 +25,10 @@ class GroupService{
   }
 
   Future<Group?> getGroupById(String groupId) async{
+    Group group;
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
     if (ds.exists) {
-      Group group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
+      group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
       return group;
     }
     return null;
