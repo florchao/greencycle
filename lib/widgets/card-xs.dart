@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:greencycle/constants/Theme.dart';
 
@@ -20,9 +21,8 @@ class CardXs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-        child: Container(
-          height: 150,
+    var size = MediaQuery.of(context).size;
+    return Container(
             child: GestureDetector(
               onTap: tap,
             child: Card(
@@ -48,14 +48,34 @@ class CardXs extends StatelessWidget {
                         flex: 1,
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 8.0, bottom: 8.0, left: 8.0),
+                              top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(title,
-                                  style: TextStyle(
-                                      color: ArgonColors.azul, fontSize: 13)),
+                              Align(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  width:
+                                  size.width * 0.8,
+                                  height: size.height *
+                                      0.05,
+                                  child: AutoSizeText(title,
+                                      maxLines: 4,
+                                      minFontSize: 11,
+                                      textAlign:
+                                      TextAlign
+                                          .center,
+                                      maxFontSize: 15.0,
+                                      style: const TextStyle(
+                                          color:
+                                          ArgonColors
+                                              .azul,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize:
+                                          15.0)),
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(cta,
@@ -70,7 +90,6 @@ class CardXs extends StatelessWidget {
                   ],
                 )),
           ),
-        ),
         );
   }
 }
