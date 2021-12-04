@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Group{
   String name;
@@ -11,7 +12,7 @@ class Group{
 
   Group(this.name, this.icon_url, this.description)
       : this.score= 0,
-        this.members = Map();
+        this.members = {FirebaseAuth.instance.currentUser!.uid : 0};
 
   Group.fromSnapshot(Map<String, dynamic> group)
     : name = group['name'],

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
-import 'package:greencycle/model/MyAction.dart';
 
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
