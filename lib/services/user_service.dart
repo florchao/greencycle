@@ -50,7 +50,7 @@ class UserService {
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
   //no se puede editar los valores id, score y groups de un usuario
   Future<void> editCurrentUser(MyUser user) async {
-    MyUser currentUser = await getCurrentUserId() as MyUser;
+    MyUser currentUser = await getCurrentUser() as MyUser;
     user.Id = currentUser.Id;
     user.groups = currentUser.groups;
     user.score = currentUser.score;
@@ -61,9 +61,9 @@ class UserService {
     await editUser(user);
   }
 
-  //se le pasa un MyUser con los datos que se quieren cambiar del usuario
-  //IMPORTANTE: en la variable id de myUser se poner el id del usuario que se quiere editar
-  //cuidado con el id
+  //se le pasa un MyUser con los datos que se quieren cambiar del usuario y
+  //en la variable id de myUser se poner el id del usuario que se quiere editar
+  //IMPORTANTE: no usar
   Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
