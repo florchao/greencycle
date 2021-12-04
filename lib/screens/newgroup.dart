@@ -13,9 +13,11 @@ import 'package:provider/provider.dart';
 class NewGroup extends StatelessWidget {
 
   final _groupNameController = TextEditingController();
+  final _groupDescriptionController = TextEditingController();
   final _prize1stController = TextEditingController();
   final _prize2ndController = TextEditingController();
   final _prize3rdController = TextEditingController();
+  final _searchController = TextEditingController();
 
   final List<String> usernames = [
     'Felo',
@@ -79,6 +81,35 @@ class NewGroup extends StatelessWidget {
                                     placeholder: "Nombre",
                                     controller: _groupNameController
                                   ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextField(
+                                      cursorColor: ArgonColors.black,
+                                      controller: _groupDescriptionController,
+                                      autofocus: false,
+                                      maxLines: null,
+                                      style:
+                                      TextStyle(height: 0.85, fontSize: 14.0, color: ArgonColors.verdeOscuro),
+                                      textAlignVertical: TextAlignVertical(y: 0.6),
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: ArgonColors.white,
+                                          hintStyle: TextStyle(
+                                            color: ArgonColors.azul,
+                                          ),
+                                          suffixIcon: Icon(Icons.search_outlined),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(4.0),
+                                              borderSide: BorderSide(
+                                                  color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(4.0),
+                                              borderSide: BorderSide(
+                                                  color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
+                                          hintText: "Descripción"
+                                      )),
                                 ),
                                 SizedBox(height: 8.0),
                                 Center(
@@ -226,6 +257,20 @@ class NewGroup extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                children: [
+                  Input(
+                    placeholder: "Buscar",
+                    suffixIcon: Icon(Icons.search_outlined),
+                    controller: _searchController,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Search")
+                  )
+                ]
                 // children: usernames.map((e) => CheckboxListTile(
                 //     title: Text(e),
                   //   onChanged: (value) {
