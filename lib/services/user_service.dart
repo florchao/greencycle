@@ -9,7 +9,6 @@ class UserService {
   CollectionReference userRef = FirebaseFirestore.instance.collection(
       MyUser.collection_id);
   GroupService groupService = new GroupService();
-  static const int maxDocuments = 50;
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
@@ -38,9 +37,9 @@ class UserService {
     return null;
   }
 
-  Future<List<MyUser>> getAllUser(String email) async {
-    QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
-        .orderBy('email').limit(maxDocuments)
+  Future<List<MyUser>> getAllUser(String email,int size) async {
+    QuerySnapshot qs = await userRef.where('email', isGreaterThanOrEqualTo: email)
+        .orderBy('email').limit(size)
         .get();
     return qs.docs.map((value) => MyUser.fromSnapshot(
         value.id, value.data() as Map<String, dynamic>)).toList();
