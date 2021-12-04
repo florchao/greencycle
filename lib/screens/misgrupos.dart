@@ -80,11 +80,6 @@ class MisGrupos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-        // appBar: Navbar(
-        //   title: "MisGrupos",
-        //   rightOptions: false, tags: [],
-        // ),
       appBar: AppBar(
         title: const Text("Mis Grupos"),
         backgroundColor: ArgonColors.verdeOscuro,
