@@ -11,11 +11,12 @@ class CreateAction extends StatefulWidget{
 }
 
 class _CreateActionState extends State<CreateAction> {
-  List<String> categoryList = ["Reciclaje", "Transporte", "Plantar", "Ecoproductos", "Factura de luz y gas", "Compost"];
+  List<String> categoryList = ["Reciclaje", "Transporte", "Planta", "Ecoproductos", "Factura de luz y gas", "Compost"];
   List<String> recycleList = ["Metales", "Plástico", "Papel y Cartón", "Vidrio"];
   List<String> transportList = ["Bicicleta", "Público"];
   String categoryChoose = '';
   String actionValue = '';
+  String actionUnits = '';
   String comment = '';
   var _image = null;
 
@@ -136,10 +137,10 @@ class _CreateActionState extends State<CreateAction> {
   Widget ShowActionOptions(String material){
     switch(material){
       case 'Reciclaje':
-        return ButtonList(recycleList);
+        return ButtonList(recycleList, 'unidades');
       case 'Transporte':
-        return ButtonList(transportList);
-      case 'Plantar':
+        return ButtonList(transportList, 'kilómetros');
+      case 'Planta':
         return MaterialCounterWidget('árboles');
       case 'Ecoproductos':
         return MaterialCounterWidget('unidades');
@@ -158,13 +159,14 @@ class _CreateActionState extends State<CreateAction> {
 
   Widget MaterialCounterWidget(String units){
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(child: TextField(
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
+            onChanged: (val) => setState(() => actionUnits = val),
           ),
           ),
           Expanded(
@@ -173,38 +175,44 @@ class _CreateActionState extends State<CreateAction> {
     );
   }
 
-  Widget ButtonList(List<String> l){
-    return Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
-        child:
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: l.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new SizedBox(
-              width: double.infinity,
-              child: FlatButton(
-                textColor: ArgonColors.white,
-                color: l[index] == actionValue ? Colors.amber : ArgonColors.verdeOscuro,
-                onPressed: () {
-                  actionValue = l[index];
-                  setState(() {});
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                child: Padding(
-                    padding: EdgeInsets.only(
+  Widget ButtonList(List<String> l, String units){
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+          child:
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: l.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new SizedBox(
+                width: double.infinity,
+                child:
+                  FlatButton(
+                    textColor: ArgonColors.white,
+                    color: l[index] == actionValue ? Colors.amber : ArgonColors.verdeOscuro,
+                    onPressed: () {
+                      actionValue = l[index];
+                      setState(() {});
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
                         left: 16.0, right: 16.0, top: 12, bottom: 10),
-                    child: Text(l[index],
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18.0))),
-              ),
-            );
-          },
-        )
+                      child: Text(l[index],
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18.0))),
+                  ),
+                );
+              },
+            )
+        ),
+        MaterialCounterWidget(units)
+      ]
     );
   }
 
