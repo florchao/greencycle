@@ -174,7 +174,6 @@ class _SettingsState extends State<Settings> {
                             firstName.currentState!.validate();
                             lastName.currentState!.save();
                             lastName.currentState!.validate();
-                            print("ANTES");
                             if(_firstNameController!.text != "" || _lastNameController!.text != "" || _imageController!.text != "" || _emailController!.text != "") {
                               MyUser _myUser = MyUser(
                                   _firstNameController!.text,
@@ -182,7 +181,6 @@ class _SettingsState extends State<Settings> {
                                   "",
                                   _imageController!.text,
                                   _emailController!.text);
-                              print("ENTRE");
                               UserService _userService = UserService();
                               _userService.editCurrentUser(_myUser);
                               setState(() {});
