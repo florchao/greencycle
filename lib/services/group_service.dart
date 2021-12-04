@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyAction.dart';
-import 'package:greencycle/model/MyUser.dart';
 
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
@@ -43,18 +42,22 @@ class GroupService{
   }
 
   ///members
-  Future<void> addMembers(String groupId, List<String> membersList)async {
+  Future<void> addMember(String groupId, String memberId)async {
     final groupDoc = groupRef.doc(groupId);
-    groupDoc.update({
-      'members' : FieldValue.arrayUnion(membersList)
-    });
+    groupDoc.set({
+      'members' : {
+        memberId : 0
+      }
+    }, SetOptions(merge: true) );
   }
 
-  Future<void> removeMembers(String groupId, List<String> membersList)async {
+  Future<void> removeMembers(String groupId, String memberId)async {
     final groupDoc = groupRef.doc(groupId);
-    groupDoc.update({
-      'members' : FieldValue.arrayRemove(membersList)
-    });
+    groupDoc.set({
+      'members' : {
+        memberId : null
+      }
+    }, SetOptions(merge: true));
   }
 
   // Future<List<MyUser>> getMembersOfGroup(String id) async {
@@ -63,27 +66,29 @@ class GroupService{
 
   ///score
   //si se pasan un numero negativo se restan
-  //todo: agregar un
-  Future<void> addScore(String groupId, int score) async{
+  Future<void> addScore(String groupId, int score, String memberId) async{
     final groupDoc = groupRef.doc(groupId);
     groupDoc.update({
-      "score" : FieldValue.increment(score)
+      "score" : FieldValue.increment(score),
+      "members" : {
+        memberId : FieldValue.increment(score)
+      }
     });
   }
 
-  //deja el escore del grupo en cero
-  Future<void> scoreToZero(String groupId) async{
-    final groupDoc = groupRef.doc(groupId);
-    groupDoc.update({
-      "score" : 0
-    });
-  }
+  // //deja el escore del grupo en cero
+  // Future<void> scoreToZero(String groupId) async{
+  //   final groupDoc = groupRef.doc(groupId);
+  //   groupDoc.update({
+  //     "score" : 0
+  //   });
+  // }
 
   ///action
-  Future<void> addAction(MyAction action, String groupId) async {
-    final groupDoc = groupRef.doc(groupId);
-    await groupDoc.set(action.toMap(), SetOptions(merge: true));
-  }
+  // Future<void> addAction(MyAction action, String groupId) async {
+  //   final groupDoc = groupRef.doc(groupId);
+  //   await groupDoc.set(action.toMap(), SetOptions(merge: true));
+  // }
 
 
 

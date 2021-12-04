@@ -82,7 +82,7 @@ class UserService {
     userDoc.get().then((data) => {
       groups = List.from(data.get('groups')),
       groups.forEach((element) {
-        groupService.addScore(element, score);
+        groupService.addScore(element, score, data.id);
       }),
     });
   }
@@ -109,7 +109,6 @@ class UserService {
   ///groups
   //crea el grupo en la coleccion 'grupos' y agregar el id del grupo al usuario actual
   Future<String> addGroup(Group group) async {
-    group.members = [getCurrentUserId()];
     String id = await groupService.addGroup(group);
     if (id == "-1") {
       return id;
@@ -131,20 +130,20 @@ class UserService {
   }
 
   ///action
-  Future<void> addAction(MyAction action) async {
-    addScore(action.score);
+  // Future<void> addAction(MyAction action) async {
+  //   addScore(action.score);
+  //
+  //   //gargar accion a todos los grupos del usuario
+  //   userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
+  //       action.toMap());
+  // }
 
-    //gargar accion a todos los grupos del usuario
-    userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
-        action.toMap());
-  }
-
-  Future<List<MyAction>> getUserAction() async {
-    QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(
-        MyAction.collection_id).get();
-    return qs.docs
-        .map((value) =>
-        MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
-        .toList();
-  }
+  // Future<List<MyAction>> getUserAction() async {
+  //   QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(
+  //       MyAction.collection_id).get();
+  //   return qs.docs
+  //       .map((value) =>
+  //       MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
+  //       .toList();
+  // }
 }
