@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/user_service.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -56,8 +58,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
-    GoogleSignInAccount? user = _googleSignIn.currentUser;
 
 
     return Scaffold(
@@ -130,7 +130,23 @@ class _LoginState extends State<Login> {
                                               idToken: googleAuth.idToken,
                                             );
 
-                                            await FirebaseAuth.instance.signInWithCredential(credential);
+                                            UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+                                            User? user = userCredential.user;
+
+                                            if (userCredential.additionalUserInfo!.isNewUser) {
+                                              MyUser myUser = MyUser(
+                                                user!.displayName!.split(" ")[0].toLowerCase(),
+                                                user!.displayName!.split(" ")[1].toLowerCase(),
+                                                user!.uid,
+                                                "URL",
+                                                user!.email!
+                                              );
+                                              print("es la primera vez!");
+                                              print(myUser);
+                                              UserService userService = UserService();
+                                              userService.create(myUser);
+                                            }
 
                                             setState(() {});
                                             Navigator.pushNamed(context, '/home');
