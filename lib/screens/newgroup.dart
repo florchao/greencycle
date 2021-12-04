@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/model/Group.dart';
+import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/user_service.dart';
 import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/widgets/input.dart';
-import 'package:greencycle/widgets/navbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -91,33 +92,32 @@ class NewGroup extends StatelessWidget {
                                       autofocus: false,
                                       maxLines: null,
                                       style:
-                                      TextStyle(height: 0.85, fontSize: 14.0, color: ArgonColors.verdeOscuro),
+                                      const TextStyle(height: 0.85, fontSize: 14.0, color: ArgonColors.verdeOscuro),
                                       textAlignVertical: TextAlignVertical(y: 0.6),
                                       decoration: InputDecoration(
                                           filled: true,
                                           fillColor: ArgonColors.white,
-                                          hintStyle: TextStyle(
+                                          hintStyle: const TextStyle(
                                             color: ArgonColors.azul,
                                           ),
-                                          suffixIcon: Icon(Icons.search_outlined),
                                           enabledBorder: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(4.0),
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
                                           focusedBorder: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(4.0),
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
                                           hintText: "Descripción"
                                       )),
                                 ),
                                 SizedBox(height: 8.0),
                                 Center(
-                                  child: _image == null ? Text("Agregar una imagen",
+                                  child: _image == null ? const Text("Agregar una imagen",
                                       style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)) : Image.file(_image)
                                 ),
                                 // Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
-                                SizedBox(height: 8.0),
+                                const SizedBox(height: 8.0),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
@@ -135,7 +135,7 @@ class NewGroup extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text('Premios',
                                               textAlign: TextAlign.left,
@@ -166,8 +166,8 @@ class NewGroup extends StatelessWidget {
                                 SizedBox(height: 8.0),
                                 Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 8.0, top: 8.0),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text('Integrantes',
@@ -194,8 +194,8 @@ class NewGroup extends StatelessWidget {
                                         return ListTile(
                                           leading: Icon(Icons.account_circle),
                                           title: Text(data[index],
-                                            style: TextStyle(color: ArgonColors.azul, fontSize: 14),),
-                                          trailing: Icon(Icons.close, color: ArgonColors.azul)
+                                            style: const TextStyle(color: ArgonColors.azul, fontSize: 14),),
+                                          trailing: const Icon(Icons.close, color: ArgonColors.azul)
                                         );
                                       })
                                 ),
@@ -218,7 +218,7 @@ class NewGroup extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4.0),
                                       ),
-                                      child: Padding(
+                                      child: const Padding(
                                           padding: EdgeInsets.only(
                                               left: 16.0, right: 16.0, top: 12, bottom: 10),
                                           child: Text("GUARDAR GRUPO",
@@ -266,9 +266,16 @@ class NewGroup extends StatelessWidget {
                   const SizedBox(
                     height: 5.0,
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Search")
+                  TextButton(
+                    onPressed: () async{
+                      if(_searchController.text.isNotEmpty) {
+                        UserService _userService = new UserService();
+                        print(_searchController.text);
+                        List<MyUser> _userList = await _userService.getAllUser(_searchController.text, 1);
+                        print(_userList);
+                      }
+                    },
+                    child: Text("BUSCAR")
                   )
                 ]
                 // children: usernames.map((e) => CheckboxListTile(
