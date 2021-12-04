@@ -54,7 +54,7 @@ class GroupService{
     final groupDoc = groupRef.doc(groupId);
     groupDoc.set({
       'members' : {
-        memberId : null
+        memberId : FieldValue.delete()
       }
     }, SetOptions(merge: true));
   }
@@ -67,10 +67,13 @@ class GroupService{
   //si se pasan un numero negativo se restan
   Future<void> addScore(String groupId, int score, String memberId) async{
     final groupDoc = groupRef.doc(groupId);
+    int _auxScore = 0;
+    await groupDoc.get().then((value) => _auxScore = value.get('members')[memberId]);
+    _auxScore += score;
     groupDoc.update({
       "score" : FieldValue.increment(score),
       "members" : {
-        memberId : FieldValue.increment(score)
+        memberId : _auxScore
       }
     });
   }

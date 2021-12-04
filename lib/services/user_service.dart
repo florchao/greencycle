@@ -81,8 +81,8 @@ class UserService {
     List<String> groups;
     userDoc.get().then((data) => {
       groups = List.from(data.get('groups')),
-      groups.forEach((element) {
-        groupService.addScore(element, score, data.id);
+      groups.forEach((element) async {
+        await groupService.addScore(element, score, data.id);
       }),
     });
   }
