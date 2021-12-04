@@ -138,10 +138,6 @@ class UserService {
   //       action.toMap());
   // }
 
-    //gargar accion a todos los grupos del usuario
-    userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
-        action.toMap());
-  }
   //
   // Future<List<MyAction>> getUserAction() async {
   //   QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(

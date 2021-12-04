@@ -132,15 +132,15 @@ class _LoginState extends State<Login> {
 
                                             UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-                                            User? user = userCredential.user;
+                                            User user = userCredential.user!;
 
                                             if (userCredential.additionalUserInfo!.isNewUser) {
                                               MyUser myUser = MyUser(
-                                                user!.displayName!.split(" ")[0].toLowerCase(),
-                                                user!.displayName!.split(" ")[1].toLowerCase(),
-                                                user!.uid,
+                                                user.displayName!.split(" ")[0].toLowerCase(),
+                                                user.displayName!.split(" ")[1].toLowerCase(),
+                                                user.uid,
                                                 "URL",
-                                                user!.email!
+                                                user.email!
                                               );
                                               print("es la primera vez!");
                                               print(myUser);
