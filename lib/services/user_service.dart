@@ -60,9 +60,9 @@ class UserService {
     await editUser(user);
   }
 
-  //se le pasa un MyUser con los datos que se quieren cambiar del usuario
-  //IMPORTANTE: en la variable id de myUser se poner el id del usuario que se quiere editar
-  //cuidado con el id
+  //se le pasa un MyUser con los datos que se quieren cambiar del usuario y
+  //en la variable id de myUser se poner el id del usuario que se quiere editar
+  //IMPORTANTE: no usar
   Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
