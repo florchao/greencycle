@@ -82,7 +82,7 @@ class UserService {
 
     List<String> groups;
     userDoc.get().then((data) => {
-      groups = List.from(data.get('groups')),
+      groups = List.from(data.get('groups') ),
       groups.forEach((element) async {
         await groupService.addScore(element, score, data.id);
       }),
@@ -133,18 +133,17 @@ class UserService {
 
   ///action
   Future<String?> addAction(MyAction action) async{
-    String? id = await actionService.create(action);
-    addActionToUser(getCurrentUserId(), id!);
-    List<String>? groupsId;
+    String? actionId = await actionService.create(action);
+    addActionToUser(getCurrentUserId(), actionId!);
 
-     await userRef.doc(getCurrentUserId()).get().then(
-            (value) => groupsId = value.get('actions'));
-
-    groupsId!.forEach((element) {
-      groupService.addAction(element, id);
-    });
-
-    return id;
+    List<String> groupsId;
+     await userRef.doc(getCurrentUserId()).get().then((value) => {
+       groupsId = List.from(value.get('actions')),
+       groupsId.forEach((element) async{
+         await groupService.addAction(element, actionId);
+       }),
+     });
+    return actionId;
   }
 
   //NO USAR!!!
