@@ -138,7 +138,7 @@ class UserService {
 
     List<String> groupsId;
      await userRef.doc(getCurrentUserId()).get().then((value) => {
-       groupsId = List.from(value.get('actions')),
+       groupsId = List.from(value.get('groups')),
        groupsId.forEach((element) async{
          await groupService.addAction(element, actionId);
        }),

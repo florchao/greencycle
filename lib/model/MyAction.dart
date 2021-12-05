@@ -14,7 +14,7 @@ class MyAction{
   int plants;
   String id;
 
-  static const String collection_id = 'Acciones';
+  static const String collection_id = 'Actions';
 
   MyAction(this.name, this.icon_url, this.description, this.transport, this.recycling, this.compost,
       this.ecoProducts, this.plants)
