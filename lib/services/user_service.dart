@@ -9,7 +9,6 @@ class UserService {
   CollectionReference userRef = FirebaseFirestore.instance.collection(
       MyUser.collection_id);
   GroupService groupService = new GroupService();
-  static const int maxDocuments = 50;
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
@@ -26,7 +25,6 @@ class UserService {
     return await getUser(getCurrentUserId());
   }
 
-
   //devuelve un MyUser con toda la informacion del usuario con el id pasado
   Future<MyUser?> getUser(String id) async {
     MyUser user;
@@ -39,22 +37,32 @@ class UserService {
     return null;
   }
 
-  Future<List<MyUser>> getAllUser(String email) async {
-    QuerySnapshot qs = await userRef.where('email', isLessThanOrEqualTo: email)
-        .orderBy('email').limit(maxDocuments)
+  Future<List<MyUser>> getAllUser(String email,int size) async {
+    QuerySnapshot qs = await userRef.where('email', isGreaterThanOrEqualTo: email)
+        .orderBy('email').limit(size)
         .get();
-    return qs.docs as List<MyUser>;
+    return qs.docs.map((value) => MyUser.fromSnapshot(
+        value.id, value.data() as Map<String, dynamic>)).toList();
   }
 
   ///edit
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario acutal
+  //no se puede editar los valores id, score y groups de un usuario
   Future<void> editCurrentUser(MyUser user) async {
-    user.Id = (getCurrentUser() as MyUser).Id; //no se si esta bien
-    editUser(user);
+    MyUser currentUser = await getCurrentUser() as MyUser;
+    user.Id = currentUser.Id;
+    user.groups = currentUser.groups;
+    user.score = currentUser.score;
+    if(user.name == ""){user.name = currentUser.name;}
+    if(user.last_name == ""){user.last_name = currentUser.last_name;}
+    if(user.icon_url == ""){user.icon_url = currentUser.icon_url;}
+    if(user.email == ""){user.email = currentUser.email;}
+    await editUser(user);
   }
 
-  //se le pasa un MyUser con los datos que se quieren cambiar del usuario
-  //IMPORTANTE: en la variable id de myUser se poner el id del usuario que se quiere editar
+  //se le pasa un MyUser con los datos que se quieren cambiar del usuario y
+  //en la variable id de myUser se poner el id del usuario que se quiere editar
+  //IMPORTANTE: no usar
   Future<void> editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
@@ -70,21 +78,32 @@ class UserService {
       "score": FieldValue.increment(score)
     });
 
-    Map<String, dynamic> groups;
-    userDoc.get().then((value) =>
-    {
-
-      groups = value.get('groups'),
-
-      groups.forEach((key, value) {
-        groupService.addScore(value, score);
+    List<String> groups;
+    userDoc.get().then((data) => {
+      groups = List.from(data.get('groups')),
+      groups.forEach((element) async {
+        await groupService.addScore(element, score, data.id);
       }),
-
     });
   }
 
   Future<void> addScore(int score) async {
     addScoreToUser(score, getCurrentUserId());
+  }
+
+  //deja el escore del grupo en cero
+  Future<void> scoreToZero(String userId) async{
+    final userDoc = userRef.doc(userId);
+    userDoc.update({
+      "score" : 0
+    });
+  }
+
+  Future<void> scoreToZeroCurrentUser() async{
+    final userDoc = userRef.doc(getCurrentUserId());
+    userDoc.update({
+      "score" : 0
+    });
   }
 
   ///groups
@@ -111,20 +130,21 @@ class UserService {
   }
 
   ///action
-  Future<void> addAction(MyAction action) async {
-    addScore(action.score);
+  // Future<void> addAction(MyAction action) async {
+  //   addScore(action.score);
+  //
+  //   //gargar accion a todos los grupos del usuario
+  //   userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
+  //       action.toMap());
+  // }
 
-    //gargar accion a todos los grupos del usuario
-    userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
-        action.toMap());
-  }
-
-  Future<List<MyAction>> getUserAction() async {
-    QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(
-        MyAction.collection_id).get();
-    return qs.docs
-        .map((value) =>
-        MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
-        .toList();
-  }
+  //
+  // Future<List<MyAction>> getUserAction() async {
+  //   QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(
+  //       MyAction.collection_id).get();
+  //   return qs.docs
+  //       .map((value) =>
+  //       MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
+  //       .toList();
+  // }
 }

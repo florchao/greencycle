@@ -11,11 +11,12 @@ class CreateAction extends StatefulWidget{
 }
 
 class _CreateActionState extends State<CreateAction> {
-  List<String> categoryList = ["Reciclaje", "Transporte", "Plantar", "Ecoproductos", "Factura de luz y gas", "Compost"];
+  List<String> categoryList = ["Reciclaje", "Transporte", "Planta", "Ecoproductos", "Factura de luz y gas", "Compost"];
   List<String> recycleList = ["Metales", "Plástico", "Papel y Cartón", "Vidrio"];
   List<String> transportList = ["Bicicleta", "Público"];
   String categoryChoose = '';
   String actionValue = '';
+  String actionUnits = '';
   String comment = '';
   var _image = null;
 
@@ -136,15 +137,15 @@ class _CreateActionState extends State<CreateAction> {
   Widget ShowActionOptions(String material){
     switch(material){
       case 'Reciclaje':
-        return ButtonList(recycleList);
+        return RecycleList(recycleList);
       case 'Transporte':
-        return ButtonList(transportList);
-      case 'Plantar':
-        return MaterialCounterWidget('árboles');
+        return TransporteList(transportList);
+      case 'Planta':
+        return Counter('árboles');
       case 'Ecoproductos':
-        return MaterialCounterWidget('unidades');
+        return Counter('Ecoproductos');
       case 'Compost':
-        return MaterialCounterWidget('kilos');
+        return Counter('Compost'); // tienen que ser kilos
       case 'Factura de luz y gas':
         return UploadFileButton();
       default:
@@ -158,13 +159,14 @@ class _CreateActionState extends State<CreateAction> {
 
   Widget MaterialCounterWidget(String units){
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(child: TextField(
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
+            onChanged: (val) => setState(() => actionUnits = val),
           ),
           ),
           Expanded(
@@ -173,38 +175,168 @@ class _CreateActionState extends State<CreateAction> {
     );
   }
 
-  Widget ButtonList(List<String> l){
-    return Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
-        child:
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: l.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new SizedBox(
-              width: double.infinity,
-              child: FlatButton(
-                textColor: ArgonColors.white,
-                color: l[index] == actionValue ? Colors.amber : ArgonColors.verdeOscuro,
-                onPressed: () {
-                  actionValue = l[index];
-                  setState(() {});
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
+  Widget RecycleList(List<String> l){
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+          child:
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: l.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new Container(
+                  padding: EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Cantidad de " + recycleList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                      Container(padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: ArgonColors.verdeOscuro,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(children:[
+                      InkWell(
+                          onTap: () {},
+                          child: Icon(
+                            Icons.remove,
+                            color: Colors.white,
+                            size: 16,
+                          )),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 3),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: Colors.white),
+                        child: Text(
+                          '3',
+                          style: TextStyle(color: ArgonColors.black, fontSize: 16),
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {},
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 16,
+                          ))])),
+                    ],
+                  ),
+                );
+              },
+            )
+        ),
+      ]
+    );
+  }
+
+  Widget Counter(String units){
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Unidades de " + units, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+          Container(padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                  color: ArgonColors.verdeOscuro,
+                  borderRadius: BorderRadius.circular(5)),
+              child: Row(children:[
+                InkWell(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.remove,
+                      color: Colors.white,
+                      size: 16,
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 3),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Colors.white),
+                  child: Text(
+                    '3',
+                    style: TextStyle(color: ArgonColors.black, fontSize: 16),
+                  ),
                 ),
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 16.0, right: 16.0, top: 12, bottom: 10),
-                    child: Text(l[index],
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18.0))),
-              ),
-            );
-          },
-        )
+                InkWell(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 16,
+                    ))])),
+        ],
+      ),
+    );
+  }
+
+  Widget TransporteList(List<String> l){
+    return Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+              child:
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: l.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Kilómetros en " + transportList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                        Container(padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                color: ArgonColors.verdeOscuro,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Row(children:[
+                              InkWell(
+                                  onTap: () {},
+                                  child: Icon(
+                                    Icons.remove,
+                                    color: Colors.white,
+                                    size: 16,
+                                  )),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 3),
+                                padding:
+                                EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(3),
+                                    color: Colors.white),
+                                child: Text(
+                                  '3',
+                                  style: TextStyle(color: ArgonColors.black, fontSize: 16),
+                                ),
+                              ),
+                              InkWell(
+                                  onTap: () {},
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ))])),
+                      ],
+                    ),
+                  );
+                },
+              )
+          ),
+        ]
     );
   }
 

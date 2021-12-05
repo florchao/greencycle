@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
-import 'package:greencycle/model/MyAction.dart';
-import 'package:greencycle/model/MyUser.dart';
 
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
@@ -17,8 +15,8 @@ class GroupService{
   }
 
   ///get
-  Future<List<Group>> get() async { //TODO:ver si esta bien
-    QuerySnapshot querySnapshot = await groupRef.get();
+  Future<List<Group>> getAll(int size) async {
+    QuerySnapshot querySnapshot = await groupRef.limit(size).get();
     return querySnapshot.docs
         .map((value) => Group.fromSnapshot(value.data() as Map<String, dynamic>))
         .toList();
@@ -36,46 +34,63 @@ class GroupService{
 
   ///edits
   //se le pasa un Group con los datos que se quieren cambiar del grupo
-  Future<void> editUser(Group group, String groupId) async {
+  Future<void> editGroup(Group group, String groupId) async {
     final userDoc = groupRef.doc(groupId);
     await userDoc.set(group.toMap(), SetOptions(merge: true)
     );
   }
 
   ///members
-  Future<void> addMember(String groupId, List<String> membersId)async {
+  Future<void> addMember(String groupId, String memberId)async {
     final groupDoc = groupRef.doc(groupId);
-    groupDoc.update({
-      'member' : FieldValue.arrayUnion(membersId)
-    });
+    groupDoc.set({
+      'members' : {
+        memberId : 0
+      }
+    }, SetOptions(merge: true) );
   }
 
-  Future<List<MyUser>> getMembersOfGroup(String id) async {
-    return (getGroupById(id) as Group).members as List<MyUser>;
+  Future<void> removeMembers(String groupId, String memberId)async {
+    final groupDoc = groupRef.doc(groupId);
+    groupDoc.set({
+      'members' : {
+        memberId : FieldValue.delete()
+      }
+    }, SetOptions(merge: true));
   }
+
+  // Future<List<MyUser>> getMembersOfGroup(String id) async {
+  //   return (getGroupById(id) as Group).members as List<MyUser>;
+  // }
 
   ///score
   //si se pasan un numero negativo se restan
-  Future<void> addScore(String groupId, int score) async{
+  Future<void> addScore(String groupId, int score, String memberId) async{
     final groupDoc = groupRef.doc(groupId);
+    int _auxScore = 0;
+    await groupDoc.get().then((value) => _auxScore = value.get('members')[memberId]);
+    _auxScore += score;
     groupDoc.update({
-      "score" : FieldValue.increment(score)
+      "score" : FieldValue.increment(score),
+      "members" : {
+        memberId : _auxScore
+      }
     });
   }
 
-  //deja el escore del grupo en cero
-  Future<void> scoreToZero(String groupId) async{
-    final groupDoc = groupRef.doc(groupId);
-    groupDoc.update({
-      "score" : 0
-    });
-  }
+  // //deja el escore del grupo en cero
+  // Future<void> scoreToZero(String groupId) async{
+  //   final groupDoc = groupRef.doc(groupId);
+  //   groupDoc.update({
+  //     "score" : 0
+  //   });
+  // }
 
   ///action
-  Future<void> addAction(MyAction action, String groupId) async {
-    final groupDoc = groupRef.doc(groupId);
-    await groupDoc.set(action.toMap(), SetOptions(merge: true));
-  }
+  // Future<void> addAction(MyAction action, String groupId) async {
+  //   final groupDoc = groupRef.doc(groupId);
+  //   await groupDoc.set(action.toMap(), SetOptions(merge: true));
+  // }
 
 
 

@@ -1,7 +1,5 @@
 
 import 'dart:core';
-import 'dart:ffi';
-import 'package:greencycle/model/Group.dart';
 
 class MyUser{
   String name;
@@ -10,11 +8,11 @@ class MyUser{
   String? icon_url;
   String email;
   int score;
-  Map<String, dynamic> groups;
+  List<String> groups;
   static const String collection_id = 'Usuario';
 
   MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
-      : this.groups = Map(),
+      : this.groups = [],
         //this.weekly_score = " ",
         this.score = 0;
 
@@ -25,7 +23,7 @@ class MyUser{
         last_name = user['last_name'],
         email = user['email'],
         icon_url = user['icon_url'],
-        groups = user['groups'],
+        groups = List.from(user['groups']),
         score = user['score'];
 
   Map<String, dynamic> toMap() => {

@@ -80,11 +80,6 @@ class MisAcciones extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        // appBar: Navbar(
-        //   title: "MisAcciones",
-        //   rightOptions: false, tags: [],
-        // ),
         appBar: AppBar(
           title: const Text("Mis Acciones"),
           backgroundColor: ArgonColors.verdeOscuro,
@@ -125,7 +120,7 @@ class MisAcciones extends StatelessWidget {
                         title: articlesCards["Ice Cream"]!['title'],
                         img: articlesCards["Ice Cream"]!['image'],
                         tap: () {
-                          Navigator.pushNamed(context, '/group-detail');
+                          Navigator.pushNamed(context, '/action-detail');
                         }),
                   ),
                   SizedBox(height: 8.0),
@@ -134,7 +129,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -150,7 +145,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                   CardHorizontal(
@@ -158,7 +153,7 @@ class MisAcciones extends StatelessWidget {
                       title: articlesCards["Fashion"]!['title'],
                       img: articlesCards["Fashion"]!['image'],
                       tap: () {
-                        Navigator.pushNamed(context, '/group-detail');
+                        Navigator.pushNamed(context, '/action-detail');
                       }),
                   SizedBox(height: 8.0),
                 ],

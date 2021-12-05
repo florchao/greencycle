@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/model/Group.dart';
+import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/user_service.dart';
 import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/widgets/input.dart';
-import 'package:greencycle/widgets/navbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatelessWidget {
 
   final _groupNameController = TextEditingController();
+  final _groupDescriptionController = TextEditingController();
   final _prize1stController = TextEditingController();
   final _prize2ndController = TextEditingController();
   final _prize3rdController = TextEditingController();
+  final _searchController = TextEditingController();
 
   final List<String> usernames = [
     'Felo',
@@ -46,7 +49,7 @@ class NewGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
+    // MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Nuevo Grupo"),
@@ -81,12 +84,40 @@ class NewGroup extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 8.0),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextField(
+                                      cursorColor: ArgonColors.black,
+                                      controller: _groupDescriptionController,
+                                      autofocus: false,
+                                      maxLines: null,
+                                      style:
+                                      const TextStyle(height: 0.85, fontSize: 14.0, color: ArgonColors.verdeOscuro),
+                                      textAlignVertical: TextAlignVertical(y: 0.6),
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: ArgonColors.white,
+                                          hintStyle: const TextStyle(
+                                            color: ArgonColors.azul,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(4.0),
+                                              borderSide: const BorderSide(
+                                                  color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(4.0),
+                                              borderSide: const BorderSide(
+                                                  color: ArgonColors.verdeOscuro, width: 1.0, style: BorderStyle.solid)),
+                                          hintText: "Descripción"
+                                      )),
+                                ),
+                                SizedBox(height: 8.0),
                                 Center(
-                                  child: _image == null ? Text("Agregar una imagen",
+                                  child: _image == null ? const Text("Agregar una imagen",
                                       style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)) : Image.file(_image)
                                 ),
                                 // Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
-                                SizedBox(height: 8.0),
+                                const SizedBox(height: 8.0),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
@@ -104,7 +135,7 @@ class NewGroup extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text('Premios',
                                               textAlign: TextAlign.left,
@@ -135,8 +166,8 @@ class NewGroup extends StatelessWidget {
                                 SizedBox(height: 8.0),
                                 Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 8.0, top: 8.0),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text('Integrantes',
@@ -150,7 +181,7 @@ class NewGroup extends StatelessWidget {
                                         backgroundColor: ArgonColors.azul,
                                         onPressed: () {
                                           _showUserListDialog(context);
-                                          data = _myMultipleNotifier._selectedItems;
+                                          // data = _myMultipleNotifier._selectedItems;
                                         }
                                     ),
                                   ],
@@ -163,8 +194,8 @@ class NewGroup extends StatelessWidget {
                                         return ListTile(
                                           leading: Icon(Icons.account_circle),
                                           title: Text(data[index],
-                                            style: TextStyle(color: ArgonColors.azul, fontSize: 14),),
-                                          trailing: Icon(Icons.close, color: ArgonColors.azul)
+                                            style: const TextStyle(color: ArgonColors.azul, fontSize: 14),),
+                                          trailing: const Icon(Icons.close, color: ArgonColors.azul)
                                         );
                                       })
                                 ),
@@ -178,16 +209,16 @@ class NewGroup extends StatelessWidget {
                                       onPressed: () async{
                                         if(_groupNameController.text.isNotEmpty && _prize1stController.text.isNotEmpty
                                         && _prize2ndController.text.isNotEmpty && _prize3rdController.text.isNotEmpty) {
-                                          Group _group = Group(_groupNameController.text, _image.toString(), []);
+                                          // Group _group = Group(_groupNameController.text, _image.toString(), []);
                                           GroupService _groupService = GroupService();
-                                          _groupService.addGroup(_group);
+                                          // _groupService.addGroup(_group);
                                           Navigator.pushReplacementNamed(context, '/home');
                                         }
                                       },
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4.0),
                                       ),
-                                      child: Padding(
+                                      child: const Padding(
                                           padding: EdgeInsets.only(
                                               left: 16.0, right: 16.0, top: 12, bottom: 10),
                                           child: Text("GUARDAR GRUPO",
@@ -217,7 +248,7 @@ class NewGroup extends StatelessWidget {
   _showUserListDialog(BuildContext context) => showDialog(
       context: context,
       builder: (context) {
-        final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+        // final _multipleNotifier = Provider.of<MultipleNotifier>(context);
         return AlertDialog(
           title: Text('Selecciona los usuarios a agregar',
               style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20)),
@@ -226,13 +257,34 @@ class NewGroup extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: usernames.map((e) => CheckboxListTile(
-                    title: Text(e),
-                    onChanged: (value) {
-                      value! ? _multipleNotifier.addItem(e) : _multipleNotifier.removeItem(e);
+                children: [
+                  Input(
+                    placeholder: "Buscar",
+                    suffixIcon: Icon(Icons.search_outlined),
+                    controller: _searchController,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  TextButton(
+                    onPressed: () async{
+                      if(_searchController.text.isNotEmpty) {
+                        UserService _userService = new UserService();
+                        print(_searchController.text);
+                        List<MyUser> _userList = await _userService.getAllUser(_searchController.text, 1);
+                        print(_userList);
+                      }
                     },
-                  value: _multipleNotifier.isInList(e),
-                )).toList()
+                    child: Text("BUSCAR")
+                  )
+                ]
+                // children: usernames.map((e) => CheckboxListTile(
+                //     title: Text(e),
+                  //   onChanged: (value) {
+                  //     value! ? _multipleNotifier.addItem(e) : _multipleNotifier.removeItem(e);
+                  //   },
+                  // value: _multipleNotifier.isInList(e),
+                // )).toList()
               )
             )
           ),
@@ -251,26 +303,26 @@ class NewGroup extends StatelessWidget {
 
 }
 
-class MultipleNotifier extends ChangeNotifier {
-  List<String> _selectedItems;
-
-  MultipleNotifier(this._selectedItems);
-  List<String> get selectedItems => _selectedItems;
-
-  bool isInList(String value) => _selectedItems.contains(value);
-
-  addItem(String value) {
-    if (!isInList(value)) {
-      _selectedItems.add(value);
-      notifyListeners();
-    }
-  }
-
-  removeItem(String value) {
-    if(isInList(value)) {
-      _selectedItems.remove(value);
-      notifyListeners();
-    }
-  }
-
-}
+// class MultipleNotifier extends ChangeNotifier {
+//   List<String> _selectedItems;
+//
+//   MultipleNotifier(this._selectedItems);
+//   List<String> get selectedItems => _selectedItems;
+//
+//   bool isInList(String value) => _selectedItems.contains(value);
+//
+//   addItem(String value) {
+//     if (!isInList(value)) {
+//       _selectedItems.add(value);
+//       notifyListeners();
+//     }
+//   }
+//
+//   removeItem(String value) {
+//     if(isInList(value)) {
+//       _selectedItems.remove(value);
+//       notifyListeners();
+//     }
+//   }
+//
+// }

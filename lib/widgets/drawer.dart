@@ -32,6 +32,7 @@ class ArgonDrawer extends StatelessWidget {
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 32),
+                  // Todo Hacer que la imagen este centrada
                   child: Image.asset("assets/img/VerdeOscuroLogo.jpeg",scale: 1, alignment: Alignment.center),
                 ),
               ),
