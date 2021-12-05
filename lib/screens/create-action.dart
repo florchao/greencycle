@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:greencycle/constants/Theme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_elegant_number_button/flutter_elegant_number_button.dart';
 
 class CreateAction extends StatefulWidget{
   @override
@@ -14,6 +15,11 @@ class _CreateActionState extends State<CreateAction> {
   List<String> categoryList = ["Reciclaje", "Transporte", "Planta", "Ecoproductos", "Factura de luz y gas", "Compost"];
   List<String> recycleList = ["Metales", "Plástico", "Papel y Cartón", "Vidrio"];
   List<String> transportList = ["Bicicleta", "Público"];
+  List<num> counterRecycle = [0,0,0,0];
+  List<num> counterTransport = [0,0];
+  num countPlanta=0;
+  num countProductos=0;
+  num countCompost=0;
   String categoryChoose = '';
   String actionValue = '';
   String actionUnits = '';
@@ -141,16 +147,88 @@ class _CreateActionState extends State<CreateAction> {
       case 'Transporte':
         return TransporteList(transportList);
       case 'Planta':
-        return Counter('árboles');
+         return Padding(
+             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+             child:Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Unidades de árboles", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                ElegantNumberButton(
+                  initialValue: countPlanta,
+                  minValue: 0,
+                  maxValue: 100,
+                  step: 1,
+                  decimalPlaces: 0,
+                  color: ArgonColors.verdeOscuro,
+                  buttonSizeHeight: 30,
+                  buttonSizeWidth: 30,
+                  onChanged: (value){
+                    setState(() {
+                      countPlanta = value;
+                    });
+                  },
+                )
+              ],
+            )
+        ));
       case 'Ecoproductos':
-        return Counter('Ecoproductos');
+        return Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+            child:Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Unidades de ecoproductos", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                ElegantNumberButton(
+                  initialValue: countProductos,
+                  minValue: 0,
+                  maxValue: 100,
+                  step: 1,
+                  decimalPlaces: 0,
+                  color: ArgonColors.verdeOscuro,
+                  buttonSizeHeight: 30,
+                  buttonSizeWidth: 30,
+                  onChanged: (value){
+                    setState(() {
+                      countProductos = value;
+                    });
+                  },
+                )
+              ],
+            )
+        ));
       case 'Compost':
-        return Counter('Compost'); // tienen que ser kilos
+        return Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
+            child:Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Kilos de compost ", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+            ElegantNumberButton(
+            initialValue: countCompost,
+            minValue: 0,
+            maxValue: 100,
+            step: 0.1,
+            decimalPlaces: 1,
+            color: ArgonColors.verdeOscuro,
+            buttonSizeHeight: 30,
+            buttonSizeWidth: 30,
+            onChanged: (value){
+              setState(() {
+                countCompost = value;
+              });
+            },
+          )
+            ],
+          )
+        ));
       case 'Factura de luz y gas':
         return UploadFileButton();
       default:
         return SizedBox.shrink();
-    };
+    }
   }
 
   Widget UploadFileButton(){
@@ -187,96 +265,32 @@ class _CreateActionState extends State<CreateAction> {
               itemCount: l.length,
               itemBuilder: (BuildContext context, int index) {
                 return new Container(
-                  padding: EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Cantidad de " + recycleList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
-                      Container(padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: ArgonColors.verdeOscuro,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(children:[
-                      InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.remove,
-                            color: Colors.white,
-                            size: 16,
-                          )),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 3),
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            color: Colors.white),
-                        child: Text(
-                          '3',
-                          style: TextStyle(color: ArgonColors.black, fontSize: 16),
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 16,
-                          ))])),
-                    ],
-                  ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Unidades de " + recycleList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                        ElegantNumberButton(
+                          initialValue: counterRecycle[index],
+                          minValue: 0,
+                          maxValue: 100,
+                          step: 1,
+                          decimalPlaces: 0,
+                          color: ArgonColors.verdeOscuro,
+                          buttonSizeHeight: 30,
+                          buttonSizeWidth: 30,
+                          onChanged: (value){
+                            setState(() {
+                              counterRecycle[index] = value;
+                            });
+                          },
+                        )
+                      ],
+                    )
                 );
               },
             )
         ),
       ]
-    );
-  }
-
-  Widget Counter(String units){
-    return Container(
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Unidades de " + units, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
-          Container(padding: EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                  color: ArgonColors.verdeOscuro,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Row(children:[
-                InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                      size: 16,
-                    )),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 3),
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Colors.white),
-                  child: Text(
-                    '3',
-                    style: TextStyle(color: ArgonColors.black, fontSize: 16),
-                  ),
-                ),
-                InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 16,
-                    ))])),
-        ],
-      ),
     );
   }
 
@@ -292,46 +306,27 @@ class _CreateActionState extends State<CreateAction> {
                 itemCount: l.length,
                 itemBuilder: (BuildContext context, int index) {
                   return new Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Kilómetros en " + transportList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
-                        Container(padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                color: ArgonColors.verdeOscuro,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(children:[
-                              InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: Colors.white,
-                                    size: 16,
-                                  )),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 3),
-                                padding:
-                                EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
-                                    color: Colors.white),
-                                child: Text(
-                                  '3',
-                                  style: TextStyle(color: ArgonColors.black, fontSize: 16),
-                                ),
-                              ),
-                              InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ))])),
-                      ],
-                    ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Unidades de " + transportList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                          ElegantNumberButton(
+                            initialValue: counterTransport[index],
+                            minValue: 0,
+                            maxValue: 100,
+                            step: 1,
+                            decimalPlaces: 0,
+                            color: ArgonColors.verdeOscuro,
+                            buttonSizeHeight: 30,
+                            buttonSizeWidth: 30,
+                            onChanged: (value){
+                              setState(() {
+                                counterTransport[index] = value;
+                              });
+                            },
+                          )
+                        ],
+                      )
                   );
                 },
               )
