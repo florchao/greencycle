@@ -53,7 +53,7 @@ class ArgonDrawer extends StatelessWidget {
                   selectedTileColor: ArgonColors.verdeClaro,
                   onTap: () {
                     if (currentPage != "Home") {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.popAndPushNamed(context, '/home');
                     }
                   },
               ),
@@ -68,7 +68,7 @@ class ArgonDrawer extends StatelessWidget {
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "Profile")
-                    Navigator.pushNamed(context, '/profile');
+                    Navigator.popAndPushNamed(context, '/profile');
                 },
               ),
               ListTile(
@@ -82,7 +82,7 @@ class ArgonDrawer extends StatelessWidget {
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "MisGrupos")
-                    Navigator.pushNamed(context, '/misgrupos');
+                    Navigator.popAndPushNamed(context, '/misgrupos');
                 },
               ),
               ListTile(
@@ -96,7 +96,7 @@ class ArgonDrawer extends StatelessWidget {
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "MisAcciones")
-                    Navigator.pushNamed(context, '/misacciones');
+                    Navigator.popAndPushNamed(context, '/misacciones');
                 },
               ),
               ListTile(
@@ -110,7 +110,7 @@ class ArgonDrawer extends StatelessWidget {
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "Settings")
-                    Navigator.pushNamed(context, '/settings');
+                    Navigator.popAndPushNamed(context, '/settings');
                 },
               ),
             ],
