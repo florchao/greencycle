@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/model/MyAction.dart';
 import 'package:greencycle/screens/create-action.dart';
+import 'package:greencycle/services/user_service.dart';
 
 //widgets
 import 'package:greencycle/widgets/navbar.dart';
@@ -123,8 +125,22 @@ class _HomeState extends State<Home> {
                       '+',
                       style: TextStyle(fontSize: 24),
                     ),
-                  onPressed: () { Navigator.pushNamed(context, '/create-action');},
-                ),
+                  onPressed: () {
+                    // UserService userService = new UserService();
+                    // MyAction action = new MyAction(
+                    //     'name',
+                    //     'URL',
+                    //     "description",
+                    //     {'bike': 10, 'publicTransport': 0}, //transport
+                    //     {'glass': 0, 'plastic': 10, 'aluminum': 2, 'Peper': 0}, //recycling
+                    //     10, //compost
+                    //     6, //ecoProducts
+                    //     2); //plants
+                    //
+                    // userService.addAction(action);
+
+                    //Navigator.pushNamed(context, '/create-action');},
+                  }),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                 ),

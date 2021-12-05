@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyAction.dart';
 import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/action_service.dart';
 import 'package:greencycle/services/group_service.dart';
 
 class UserService {
   CollectionReference userRef = FirebaseFirestore.instance.collection(
       MyUser.collection_id);
   GroupService groupService = new GroupService();
+  ActionService actionService = new ActionService();
 
   Future<void> create(MyUser user) async {
     final userDocument = userRef.doc(user.Id);
@@ -109,12 +111,12 @@ class UserService {
   ///groups
   //crea el grupo en la coleccion 'grupos' y agregar el id del grupo al usuario actual
   Future<String> addGroup(Group group) async {
-    String id = await groupService.addGroup(group);
+    String id = await groupService.create(group);
     if (id == "-1") {
       return id;
     }
     final userDoc = userRef.doc(getCurrentUserId());
-    userDoc.update({
+    await userDoc.update({
       "groups": FieldValue.arrayUnion([id])
     });
     return id;
@@ -130,21 +132,34 @@ class UserService {
   }
 
   ///action
-  // Future<void> addAction(MyAction action) async {
-  //   addScore(action.score);
-  //
-  //   //gargar accion a todos los grupos del usuario
-  //   userRef.doc(getCurrentUserId()).collection(MyAction.collection_id).add(
-  //       action.toMap());
-  // }
+  Future<String?> addAction(MyAction action) async{
+    String? id = await actionService.create(action);
+    addActionToUser(getCurrentUserId(), id!);
+    List<String>? groupsId;
 
-  //
-  // Future<List<MyAction>> getUserAction() async {
-  //   QuerySnapshot qs = await userRef.doc(getCurrentUserId()).collection(
-  //       MyAction.collection_id).get();
-  //   return qs.docs
-  //       .map((value) =>
-  //       MyAction.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
-  //       .toList();
-  // }
+     await userRef.doc(getCurrentUserId()).get().then(
+            (value) => groupsId = value.get('actions'));
+
+    groupsId!.forEach((element) {
+      groupService.addAction(element, id);
+    });
+
+    return id;
+  }
+
+  //NO USAR!!!
+  Future<void> addActionToUser(String userId, String actionId) async{
+    final userDoc = userRef.doc(userId);
+    await userDoc.update({
+      'actions': FieldValue.arrayUnion([actionId])
+    });
+  }
+
+  //NO USAR
+  Future<void> removeActionToUser(String userId, String actionId) async{
+    final userDoc = userRef.doc(userId);
+    await userDoc.update({
+      'actions': FieldValue.arrayRemove([actionId])
+    });
+  }
 }

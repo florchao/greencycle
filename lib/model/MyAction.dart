@@ -9,9 +9,9 @@ class MyAction{
   String owner;
   Map<String, dynamic> transport;
   Map<String, dynamic> recycling;
-  String compost;
-  String ecoProducts;
-  String plants;
+  int compost;
+  int ecoProducts;
+  int plants;
   String id;
 
   static const String collection_id = 'Acciones';

@@ -4,7 +4,7 @@ import 'package:greencycle/model/Group.dart';
 class GroupService{
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
 
-  Future<String> addGroup(Group group)async{
+  Future<String> create(Group group)async{
     String id = '-1';
     await groupRef.add(group.toMap()).then((value) => {id = value.id});
     return id;
@@ -64,6 +64,7 @@ class GroupService{
   // }
 
   ///score
+  //NO USAR!
   //si se pasan un numero negativo se restan
   Future<void> addScore(String groupId, int score, String memberId) async{
     final groupDoc = groupRef.doc(groupId);
@@ -87,10 +88,22 @@ class GroupService{
   // }
 
   ///action
-  // Future<void> addAction(MyAction action, String groupId) async {
-  //   final groupDoc = groupRef.doc(groupId);
-  //   await groupDoc.set(action.toMap(), SetOptions(merge: true));
-  // }
+  //NO USAR
+  Future<void> addAction(String groupId, String actionId) async{
+    final groupDoc = groupRef.doc(groupId);
+    await groupDoc.update({
+      'actions': FieldValue.arrayUnion([actionId])
+    });
+  }
+
+  Future<void> removeAction(String groupId, String actionId) async{
+    final groupDoc = groupRef.doc(groupId);
+    await groupDoc.update({
+      'actions': FieldValue.arrayRemove([actionId])
+    });
+  }
+
+
 
 
 

@@ -7,11 +7,13 @@ class Group{
   String description;
   int score;
   Map<String, dynamic> members;
+  List<String> actions;
 
   static const String collection_id = 'Grupos';
 
   Group(this.name, this.icon_url, this.description)
       : this.score= 0,
+        this.actions = [],
         this.members = {FirebaseAuth.instance.currentUser!.uid : 0};
 
   Group.fromSnapshot(Map<String, dynamic> group)
@@ -19,6 +21,7 @@ class Group{
       icon_url = group['icon_url'],
       score = group['score'],
       description = group['description'],
+      actions = List.from(group['actions']),
       members = group['members'];
 
   Map<String, dynamic> toMap() => {
@@ -26,6 +29,7 @@ class Group{
     'icon_url': icon_url,
     'score': score,
     'members' : members,
+    'actions' : actions,
     'description': description,
   };
 

@@ -9,10 +9,12 @@ class MyUser{
   String email;
   int score;
   List<String> groups;
+  List<String> actions;
   static const String collection_id = 'Usuario';
 
   MyUser(this.name, this.last_name, this.Id, this.icon_url, this.email,)
       : this.groups = [],
+        this.actions = [],
         //this.weekly_score = " ",
         this.score = 0;
 
@@ -24,6 +26,7 @@ class MyUser{
         email = user['email'],
         icon_url = user['icon_url'],
         groups = List.from(user['groups']),
+        actions = List.from(user['actions']),
         score = user['score'];
 
   Map<String, dynamic> toMap() => {
@@ -32,6 +35,7 @@ class MyUser{
     'email': email,
     'icon_url': icon_url,
     'groups': groups,
+    'actions' : actions,
     'score': score,
   };
 
