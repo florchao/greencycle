@@ -116,9 +116,9 @@ class MisAcciones extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: CardHorizontal(
-                        cta: "View article",
                         title: articlesCards["Ice Cream"]!['title'],
                         img: articlesCards["Ice Cream"]!['image'],
+                        description: "hfjeajsgvhbjhgfdgfhghkjlkhgfdfghgjhkllkgvhglhjgvhl;lkjkhh.",
                         tap: () {
                           Navigator.pushNamed(context, '/action-detail');
                         }),
