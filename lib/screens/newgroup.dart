@@ -19,17 +19,17 @@ class NewGroup extends StatefulWidget {
 
 class _NewGroupState extends State<NewGroup> {
   final _groupNameController = TextEditingController();
-
+  final groupNameKey = GlobalKey<FormState>();
   final _groupDescriptionController = TextEditingController();
-
+  final groupDescriptionKey = GlobalKey<FormState>();
   final _prize1stController = TextEditingController();
-
+  final prize1stKey = GlobalKey<FormState>();
   final _prize2ndController = TextEditingController();
-
+  final prize2ndKey = GlobalKey<FormState>();
   final _prize3rdController = TextEditingController();
-
+  final prize3rdKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
-
+  final searchKey = GlobalKey<FormState>();
   List<MyUser?> usersList = [];
 
   var _image = null;
@@ -82,15 +82,54 @@ class _NewGroupState extends State<NewGroup> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Input(
-                                            placeholder: "Nombre",
-                                            controller: _groupNameController
+                                        child: Form(
+                                          key: groupNameKey,
+                                          child: TextFormField(
+                                              decoration: InputDecoration(
+                                                  filled: true,
+                                                  fillColor: ArgonColors.white,
+                                                  hintStyle: const TextStyle(
+                                                    color: ArgonColors.azul,
+                                                  ),
+                                                  enabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius
+                                                          .circular(4.0),
+                                                      borderSide: const BorderSide(
+                                                          color: ArgonColors
+                                                              .verdeOscuro,
+                                                          width: 1.0,
+                                                          style: BorderStyle
+                                                              .solid)),
+                                                  focusedBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius
+                                                          .circular(4.0),
+                                                      borderSide: const BorderSide(
+                                                          color: ArgonColors
+                                                              .verdeOscuro,
+                                                          width: 1.0,
+                                                          style: BorderStyle
+                                                              .solid)),
+                                                  hintText: "Nombre"
+                                              ),
+                                            onSaved: (value){
+                                              _groupNameController.text = value!;
+                                            },
+                                            validator: (value) {
+                                              RegExp regex = new RegExp(r'^.{1,}$');
+                                              if (value == null || value.isEmpty) {
+                                                return "El nombre es un campo requerido";
+                                              }
+                                              return null;
+                                            },
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 8.0),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
+                                        child: Form(
+                                          key: groupDescriptionKey,
+                                          child: TextFormField(
                                             cursorColor: ArgonColors.black,
                                             controller: _groupDescriptionController,
                                             autofocus: false,
@@ -126,7 +165,18 @@ class _NewGroupState extends State<NewGroup> {
                                                         style: BorderStyle
                                                             .solid)),
                                                 hintText: "Descripción"
-                                            )),
+                                            ),
+                                            onSaved: (value){
+                                      _groupDescriptionController.text = value!;
+                                      },
+                                        validator: (value) {
+                                          RegExp regex = new RegExp(r'^.{1,}$');
+                                          if (value == null || value.isEmpty) {
+                                            return "La descripción es un campo requerido";
+                                          }
+                                          return null;
+                                        },
+                                        )),
                                       ),
                                       const SizedBox(height: 8.0),
                                       Center(
@@ -261,6 +311,10 @@ class _NewGroupState extends State<NewGroup> {
                                             textColor: ArgonColors.white,
                                             color: ArgonColors.verdeOscuro,
                                             onPressed: () async {
+                                              groupNameKey.currentState!.save();
+                                              groupNameKey.currentState!.validate();
+                                              groupDescriptionKey.currentState!.save();
+                                              groupDescriptionKey.currentState!.validate();
                                               if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
