@@ -11,13 +11,11 @@ class ActionDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Detalle acción"),
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-        drawer: ArgonDrawer(currentPage: "Detalle acción"),
       body: Stack(
         children: <Widget>[
           SafeArea(

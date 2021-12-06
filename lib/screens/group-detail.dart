@@ -7,13 +7,11 @@ class GroupDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Detalle grupo"),
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-      drawer: ArgonDrawer(currentPage: "Detalle grupo"),
       body: Container(
           child: SafeArea(
               child: Column(
