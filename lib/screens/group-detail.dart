@@ -6,9 +6,9 @@ import 'package:greencycle/model/Group.dart';
 import 'package:greencycle/model/MyUser.dart';
 import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/services/user_service.dart';
-import 'package:greencycle/widgets/drawer.dart';
 
-SplayTreeMap<String, String> membersByScore = SplayTreeMap<String, String>();
+Map<int, String> membersNamesByScore = {};
+List<String> membersScoreInAScendingOrder = [];
 Group? group = new Group('', '', '');
 int position = 1;
 
@@ -21,19 +21,25 @@ class _CreateGroupDetailState extends State<GroupDetail> {
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
 
-  Future<SplayTreeMap<String, String>> load(String groupId) async {
+  Future<List<String>> load(String groupId) async {
     await groupService.getGroupById(groupId).then((value) => group = value);
+    print(group);
     Map<String, dynamic> members = group!.members;
-    for (var id in members.keys){
+    print(members);
+    var keys = members.keys;
+    for (var id in keys){
       print(id);
       var userScoreInGroup = members[id];
       print(userScoreInGroup);
       MyUser? user = await userService.getUser(id);
+      print(user);
       if(user!=null){
-        membersByScore[userScoreInGroup] = user.name;
+        print("ADENTRO");
+        membersNamesByScore.putIfAbsent(userScoreInGroup, () => user.name);
+        membersScoreInAScendingOrder.add(userScoreInGroup);
       }
     }
-    return membersByScore;
+    return membersScoreInAScendingOrder;
   }
 
   @override
@@ -46,10 +52,11 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-      body: FutureBuilder<SplayTreeMap<String, String>>(
+      body: FutureBuilder<List<String>>(
         future: load(groupId),
-        builder: (BuildContext context, AsyncSnapshot<SplayTreeMap<String, String>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
           if (snapshot.hasData) {
+            // membersScoreInAScendingOrder.sort((a, b) => a.compareTo(b));
             print("SNAP");
             print(snapshot);
             return Container(
@@ -99,9 +106,9 @@ class _CreateGroupDetailState extends State<GroupDetail> {
   Widget ScoreTableWidget(){
     return Column(
       children: [
-        for (var score in membersByScore.keys)
+        for (var score in membersScoreInAScendingOrder)
           if(position < 3)
-            ScoreTableRowWidget(membersByScore[score], score.toString(), position++)
+            ScoreTableRowWidget(membersNamesByScore[score], score.toString(), position++)
       ],
     );
   }
@@ -126,8 +133,8 @@ class _CreateGroupDetailState extends State<GroupDetail> {
   Widget ParticipantsListWidget(){
     return Column(
       children: [
-        Text(membersByScore.length.toString() + ' Participantes:', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
-        for(var memberName in membersByScore.values)
+        Text(membersNamesByScore.length.toString() + ' Participantes:', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
+        for(var memberName in membersNamesByScore.values)
           ParticipantsList(memberName),
       ],
     );
