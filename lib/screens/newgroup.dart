@@ -61,10 +61,9 @@ class _NewGroupState extends State<NewGroup> {
         body: Stack(
           children: [
             SafeArea(
-                child: ListView(
+                child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  children: [
-                    Padding(
+                  child: Padding(
                       padding: const EdgeInsets.only(
                           top: 16, left: 24.0, right: 24.0, bottom: 16),
                       child: Column(
@@ -227,12 +226,13 @@ class _NewGroupState extends State<NewGroup> {
                                           ),
                                         ],
                                       ),
-                                      Flexible(
-                                          child: ListView.builder(
-                                              itemCount: usersList.length,
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                return ListTile(
+                                      SingleChildScrollView(
+                                        child: Flexible(
+                                            child: ListView.builder(
+                                                itemCount: usersList.length,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return ListTile(
                                                     leading: const Icon(
                                                         Icons.account_circle),
                                                     title: Text(
@@ -246,11 +246,12 @@ class _NewGroupState extends State<NewGroup> {
                                                     trailing: const Icon(
                                                         Icons.close,
                                                         color: ArgonColors.azul),
-                                                  onTap: () {
+                                                    onTap: () {
                                                       _myMultipleNotifier.removeItem(usersList[index]!);
-                                                  },
-                                                );
-                                              })
+                                                    },
+                                                  );
+                                                })
+                                        )
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(10.0),
@@ -262,9 +263,6 @@ class _NewGroupState extends State<NewGroup> {
                                             onPressed: () async {
                                               if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
-                                                  _prize1stController.text.isNotEmpty &&
-                                                  _prize2ndController.text.isNotEmpty &&
-                                                  _prize3rdController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
                                                 Group _group = Group(_groupNameController.text, '', _groupDescriptionController.text);
                                                 GroupService _groupService = GroupService();
@@ -302,8 +300,7 @@ class _NewGroupState extends State<NewGroup> {
                         ],
                       ),
                     ),
-
-                  ],)
+                )
             ),
 
           ],
@@ -343,11 +340,11 @@ class _NewGroupState extends State<NewGroup> {
                                       onPressed: () async {
                                         if (_searchController.text.isNotEmpty) {
                                           UserService _userService = UserService();
-                                          // print(_searchController.text);
+                                          print(_searchController.text);
                                           List<MyUser> _userList = await _userService
                                               .getAllUser(
                                               _searchController.text, 1);
-                                          // print(_userList);
+                                          print(_userList);
                                           _userToAdd = _userList[0] as MyUser;
                                           print(_userList);
                                           print(_userToAdd);
@@ -384,20 +381,37 @@ class _NewGroupState extends State<NewGroup> {
                                                 onTap: () {
                                                   print(_userToAdd);
                                                   // usersList.add(_userToAdd!);
-                                                  _multipleNotifier.addItem(_userToAdd!);
+                                                  if(!_multipleNotifier.isInList(_userToAdd!)) {
+                                                    _multipleNotifier.addItem(
+                                                        _userToAdd!);
 
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                      SnackBar(
-                                                          content: Text(
-                                                            _userToAdd!.name +
-                                                                ' added',
-                                                            style: const TextStyle(
-                                                                color: ArgonColors
-                                                                    .white),)
-                                                      )
-                                                  );
-                                                  userVisibility = false;
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                        .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                              _userToAdd!.name +
+                                                                  ' agregado/a',
+                                                              style: const TextStyle(
+                                                                  color: ArgonColors
+                                                                      .white),)
+                                                        )
+                                                    );
+                                                    userVisibility = false;
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                        .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                              _userToAdd!.name +
+                                                                  ' ya está en el grupo',
+                                                              style: const TextStyle(
+                                                                  color: ArgonColors
+                                                                      .white),)
+                                                        )
+                                                    );
+                                                  }
                                                 },
                                                 title: Text(_userToAdd!.name),
                                                 subtitle: Text(
@@ -417,6 +431,7 @@ class _NewGroupState extends State<NewGroup> {
                           child: const Text('CERRAR',
                               style: TextStyle(color: ArgonColors.azul)),
                           onPressed: () {
+                            _searchController.clear();
                             Navigator.of(context).pop(_userToAdd);
                             setState(() {
 
@@ -437,7 +452,14 @@ class MultipleNotifier extends ChangeNotifier {
   MultipleNotifier(this._selectedItems);
   List<MyUser> get selectedItems => _selectedItems;
 
-  bool isInList(MyUser value) => _selectedItems.contains(value);
+  bool isInList(MyUser value) {
+    for(MyUser user in _selectedItems) {
+      if(value.email == user.email) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   addItem(MyUser value) {
     if (!isInList(value)) {
