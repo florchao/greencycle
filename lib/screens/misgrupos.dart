@@ -57,6 +57,7 @@ class _MisGruposState extends State<MisGrupos> {
         backgroundColor: ArgonColors.verdeClaro,
         drawer: ArgonDrawer(currentPage: "Mis Grupos"),
         body: Container(
+          height: size.height * 0.9,
             padding: EdgeInsets.only(right: 24, left: 24, bottom: 36),
             child: SingleChildScrollView(
               child: Column(
@@ -92,7 +93,6 @@ class _MisGruposState extends State<MisGrupos> {
                           AsyncSnapshot<List<Group>> snapshot) {
                         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           return SizedBox(
-                            height: size.height * 0.9,
                             child: Column(
                               children: <Widget>[
                                 for (var group in snapshot.data!)

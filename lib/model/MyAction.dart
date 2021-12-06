@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyAction{
@@ -28,7 +29,7 @@ class MyAction{
         icon_url = action['icon_url'],
         description = action['description'],
         score = action['score'],
-        date = action['date'],
+        date = action['date'].toDate(),
         owner = action['owner'],
         transport = action['transport'],
         recycling = action['recycling'],
