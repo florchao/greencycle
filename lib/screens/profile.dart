@@ -211,7 +211,7 @@ class _ProfileState extends State<Profile> {
                                                                     CardXs(cta: "Ver grupo",
                                                                     title: group.name,
                                                                     img: group.icon_url != "" ? group.icon_url : "./assets/imgs/logo.png",
-                                                                    tap: () { Navigator.pushNamed(context, '/group-detail');},),
+                                                                    tap: () { Navigator.pushNamed(context, '/group-detail', arguments: group.id);},),
                                                               ]),
                                                         );
                                                       } else {

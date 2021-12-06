@@ -10,6 +10,7 @@ class ActionDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String actionId = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalle acción"),

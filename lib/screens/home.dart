@@ -164,7 +164,6 @@ class _HomeState extends State<Home> {
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Group>> snapshot) {
                           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                            print(snapshot.data);
                             return SizedBox(
                               height: size.height * 0.3 ,
                               width: size.width * 0.8,
@@ -176,8 +175,9 @@ class _HomeState extends State<Home> {
                                         title: group.name,
                                         img: group.icon_url,
                                         tap: () {
-                                          Navigator.pushNamed(
-                                              context, '/group-detail');
+                                          print("ID");
+                                          print(group.id.toString());
+                                          Navigator.pushNamed(context, '/group-detail', arguments: group.id);
                                         })
                                 ],
                               ),

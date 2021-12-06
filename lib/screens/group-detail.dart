@@ -29,8 +29,6 @@ class _CreateGroupDetailState extends State<GroupDetail> {
       var userScoreInGroup = members[id];
       print(userScoreInGroup);
       MyUser? user = await userService.getUser(id);
-      print("USER:");
-      print(user);
       if(user!=null){
         membersByScore[userScoreInGroup] = user.name;
       }
