@@ -19,9 +19,9 @@ class CardSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-        child: Container(
+    return Container(
       height: 235,
+      width: 155,
       child: GestureDetector(
         onTap: tap,
         child: Card(
@@ -44,6 +44,7 @@ class CardSmall extends StatelessWidget {
                             )))),
                 Flexible(
                     flex: 1,
+                    fit: FlexFit.loose,
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 8.0, bottom: 8.0, left: 8.0),
@@ -68,6 +69,6 @@ class CardSmall extends StatelessWidget {
               ],
             )),
       ),
-    ));
+    );
   }
 }
