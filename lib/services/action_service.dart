@@ -18,7 +18,7 @@ class ActionService {
     MyAction action;
     DocumentSnapshot ds = await actionRef.doc(actionId).get();
     if (ds.exists) {
-      action = MyAction.fromSnapshot( ds.data() as Map<String, dynamic>);
+      action = MyAction.fromSnapshot( ds.id, ds.data() as Map<String, dynamic>);
       return action;
     }
     return null;

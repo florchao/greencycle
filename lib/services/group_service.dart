@@ -18,7 +18,7 @@ class GroupService{
   Future<List<Group>> getAll(int size) async {
     QuerySnapshot querySnapshot = await groupRef.limit(size).get();
     return querySnapshot.docs
-        .map((value) => Group.fromSnapshot(value.data() as Map<String, dynamic>))
+        .map((value) => Group.fromSnapshot(value.id, value.data() as Map<String, dynamic>))
         .toList();
   }
 
@@ -26,7 +26,7 @@ class GroupService{
     Group group;
     DocumentSnapshot ds = await groupRef.doc(groupId).get();
     if (ds.exists) {
-      group = Group.fromSnapshot( ds.data() as Map<String, dynamic>);
+      group = Group.fromSnapshot( ds.id, ds.data() as Map<String, dynamic>);
       return group;
     }
     return null;

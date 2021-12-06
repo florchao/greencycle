@@ -24,8 +24,9 @@ class MyAction{
       id = "",
       owner = FirebaseAuth.instance.currentUser!.uid;
 
-  MyAction.fromSnapshot(Map<String, dynamic> action)
-      : name = action['name'],
+  MyAction.fromSnapshot(String id, Map<String, dynamic> action)
+      : id = id,
+        name = action['name'],
         icon_url = action['icon_url'],
         description = action['description'],
         score = action['score'],
@@ -35,8 +36,8 @@ class MyAction{
         recycling = action['recycling'],
         compost = action['compost'],
         ecoProducts = action['ecoProducts'],
-        plants = action['plants'],
-        id = action['id'];
+        plants = action['plants'];
+        //id = action['id'];
 
   Map<String, dynamic> toMap() => {
     'name': name,
@@ -50,7 +51,7 @@ class MyAction{
     'compost': compost,
     'ecoProducts': ecoProducts,
     'plants': plants,
-    'id' : id,
+    //'id' : id,
   };
 
   @override

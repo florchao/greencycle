@@ -5,6 +5,7 @@ class Group{
   String name;
   String icon_url;
   String description;
+  String id;
   int score;
   Map<String, dynamic> members;
   List<String> actions;
@@ -13,11 +14,13 @@ class Group{
 
   Group(this.name, this.icon_url, this.description)
       : this.score= 0,
+        this.id = "",
         this.actions = [],
         this.members = {FirebaseAuth.instance.currentUser!.uid : 0};
 
-  Group.fromSnapshot(Map<String, dynamic> group)
-    : name = group['name'],
+  Group.fromSnapshot(String id, Map<String, dynamic> group)
+    : id = id,
+      name = group['name'],
       icon_url = group['icon_url'],
       score = group['score'],
       description = group['description'],
