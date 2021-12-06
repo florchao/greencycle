@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:greencycle/constants/Theme.dart';
+import 'package:greencycle/model/MyAction.dart';
+import 'package:greencycle/model/MyUser.dart';
+import 'package:greencycle/services/user_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_elegant_number_button/flutter_elegant_number_button.dart';
 
@@ -12,7 +15,7 @@ class CreateAction extends StatefulWidget{
 }
 
 class _CreateActionState extends State<CreateAction> {
-  List<String> categoryList = ["Reciclaje", "Transporte", "Planta", "Ecoproductos", "Factura de luz y gas", "Compost"];
+  List<String> categoryList = ["Reciclaje", "Transporte", "Plantar", "Ecoproductos", "Factura de luz y gas", "Compost"];
   List<String> recycleList = ["Metales", "Plástico", "Papel y Cartón", "Vidrio"];
   List<String> transportList = ["Bicicleta", "Público"];
   List<num> counterRecycle = [0,0,0,0];
@@ -25,6 +28,7 @@ class _CreateActionState extends State<CreateAction> {
   String actionUnits = '';
   String comment = '';
   var _image = null;
+  UserService userService = new UserService();
 
   Future getImageFromCamera() async {
     final picker = ImagePicker();
@@ -120,6 +124,48 @@ class _CreateActionState extends State<CreateAction> {
                 textColor: ArgonColors.white,
                 color: ArgonColors.verdeOscuro,
                 onPressed: () {
+                  if(categoryChoose == 'Reciclaje'){
+                    if (_image == null){
+                      _image = "";
+                    }
+                    MyAction action = new MyAction("Reciclaje", _image, comment, {},  {'glass': counterRecycle[3], 'plastic': counterRecycle[1], 'aluminum': counterRecycle[0], 'Peper': counterRecycle[2]}, 0, 0, 0);
+                    userService.addAction(action);
+                  }
+                  else if(categoryChoose == 'Transporte'){
+                    if (_image == null){
+                      _image = "";
+                    }
+                    MyAction action = new MyAction("Transporte", _image, comment, {'bike': counterTransport[0], 'publicTransport': counterTransport[1]},  {}, 0, 0, 0);
+                    userService.addAction(action);
+                  }
+                  else if(categoryChoose == 'Plantar'){
+                    if (_image == null){
+                      _image = "";
+                    }
+                    MyAction action = new MyAction("Plantar", _image, comment, {},  {}, 0, 0, countPlanta as int);
+                    userService.addAction(action);
+                  }
+                  else if(categoryChoose == 'Ecoproductos'){
+                    if (_image == null){
+                      _image = "";
+                    }
+                    MyAction action = new MyAction("Ecoproductos", _image, comment, {},  {}, 0, countProductos as int, 0);
+                    userService.addAction(action);
+                  }
+                  else if(categoryChoose == 'Compost'){
+                    if (_image == null){
+                      _image = "";
+                    }
+                    MyAction action = new MyAction("Compost", _image, comment, {},  {}, countCompost as int, 0, 0);
+                    userService.addAction(action);
+                  }
+                  if (_image == null){
+                    _image = "";
+                  }
+                  else if(categoryChoose == 'Factura de luz y gas'){ //DESPUES HAY QUE VER COMO SE CARGAN LAS FOTOS
+                    MyAction action = new MyAction("Factura de luz y gas", _image, comment, {},  {}, 0, 0, 0);
+                    userService.addAction(action);
+                  }
                   Navigator.pushReplacementNamed(context, '/home');
                 },
                 shape: RoundedRectangleBorder(
@@ -146,7 +192,7 @@ class _CreateActionState extends State<CreateAction> {
         return RecycleList(recycleList);
       case 'Transporte':
         return TransporteList(transportList);
-      case 'Planta':
+      case 'Plantar':
          return Padding(
              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0, bottom: 5.0),
              child:Container(
@@ -309,12 +355,12 @@ class _CreateActionState extends State<CreateAction> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Unidades de " + transportList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
+                          Text("Kilómetros en " + transportList[index], style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
                           ElegantNumberButton(
                             initialValue: counterTransport[index],
                             minValue: 0,
                             maxValue: 100,
-                            step: 1,
+                            step: 0.1,
                             decimalPlaces: 0,
                             color: ArgonColors.verdeOscuro,
                             buttonSizeHeight: 30,
