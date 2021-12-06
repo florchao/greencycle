@@ -41,6 +41,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final String groupId = 'pGy9z1cTLqQYTX76SM7D';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +96,7 @@ class _HomeState extends State<Home> {
                         title: homeCards['Makeup']!['title'] ?? "",
                         img: homeCards["Makeup"]!['image'] ?? "",
                         tap: () {
-                          Navigator.pushNamed(context, '/group-detail');
+                          Navigator.pushNamed(context, '/group-detail', arguments: groupId);
                         }),
                       CardSmall(
                         cta: "View article",

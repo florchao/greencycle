@@ -20,8 +20,7 @@ class GroupDetail extends StatefulWidget{
 class _CreateGroupDetailState extends State<GroupDetail> {
   @override
   Widget build(BuildContext context) {
-    //final groupId = ModalRoute.of(context)!.settings.arguments;
-    // print(groupId);
+    final String args = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
