@@ -14,5 +14,13 @@ class ActionService {
     await actionRef.doc(actionId).delete();
   }
 
-
+  Future<MyAction?> getAction(String actionId) async{
+    MyAction action;
+    DocumentSnapshot ds = await actionRef.doc(actionId).get();
+    if (ds.exists) {
+      action = MyAction.fromSnapshot( ds.data() as Map<String, dynamic>);
+      return action;
+    }
+    return null;
+  }
 }

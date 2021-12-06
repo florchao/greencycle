@@ -64,7 +64,7 @@ class GroupService{
   // }
 
   ///score
-  //NO USAR!
+  //NO USAR!!!
   //si se pasan un numero negativo se restan
   Future<void> addScore(String groupId, int score, String memberId) async{
     final groupDoc = groupRef.doc(groupId);
@@ -79,16 +79,8 @@ class GroupService{
     });
   }
 
-  // //deja el escore del grupo en cero
-  // Future<void> scoreToZero(String groupId) async{
-  //   final groupDoc = groupRef.doc(groupId);
-  //   groupDoc.update({
-  //     "score" : 0
-  //   });
-  // }
-
   ///action
-  //NO USAR
+  //NO USAR!!!
   Future<void> addAction(String groupId, String actionId) async{
     final groupDoc = groupRef.doc(groupId);
     await groupDoc.update({

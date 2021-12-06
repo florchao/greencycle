@@ -59,13 +59,13 @@ class UserService {
     if(user.last_name == ""){user.last_name = currentUser.last_name;}
     if(user.icon_url == ""){user.icon_url = currentUser.icon_url;}
     if(user.email == ""){user.email = currentUser.email;}
-    await editUser(user);
+    await _editUser(user);
   }
 
   //se le pasa un MyUser con los datos que se quieren cambiar del usuario y
   //en la variable id de myUser se poner el id del usuario que se quiere editar
   //IMPORTANTE: no usar
-  Future<void> editUser(MyUser myUser) async {
+  Future<void> _editUser(MyUser myUser) async {
     final userDocument = userRef.doc(myUser.Id);
     await userDocument.set(myUser.toMap(), SetOptions(merge: true)
     );
@@ -74,7 +74,7 @@ class UserService {
   ///score
   //agrega al usuario actual y  a todos los grupos que participa
   //si score es un numero negativo entonce se resta
-  Future<void> addScoreToUser(int score, String userId) async {
+  Future<void> _addScoreToUser(int score, String userId) async {
     final userDoc = userRef.doc(userId);
     userDoc.update({
       "score": FieldValue.increment(score)
@@ -89,19 +89,19 @@ class UserService {
     });
   }
 
-  Future<void> addScore(int score) async {
-    addScoreToUser(score, getCurrentUserId());
+  Future<void> _addScore(int score) async {
+    _addScoreToUser(score, getCurrentUserId());
   }
 
   //deja el escore del grupo en cero
-  Future<void> scoreToZero(String userId) async{
+  Future<void> _scoreToZero(String userId) async{
     final userDoc = userRef.doc(userId);
     userDoc.update({
       "score" : 0
     });
   }
 
-  Future<void> scoreToZeroCurrentUser() async{
+  Future<void> _scoreToZeroCurrentUser() async{
     final userDoc = userRef.doc(getCurrentUserId());
     userDoc.update({
       "score" : 0
@@ -134,28 +134,28 @@ class UserService {
   ///action
   Future<String?> addAction(MyAction action) async{
     String? actionId = await actionService.create(action);
-    addActionToUser(getCurrentUserId(), actionId!);
+    _addActionToUser(getCurrentUserId(), actionId!);
 
     List<String> groupsId;
      await userRef.doc(getCurrentUserId()).get().then((value) => {
        groupsId = List.from(value.get('groups')),
        groupsId.forEach((element) async{
          await groupService.addAction(element, actionId);
+         //todo:calcular el score
+         _addScore(40);
        }),
      });
     return actionId;
   }
 
-  //NO USAR!!!
-  Future<void> addActionToUser(String userId, String actionId) async{
+  Future<void> _addActionToUser(String userId, String actionId) async{
     final userDoc = userRef.doc(userId);
     await userDoc.update({
       'actions': FieldValue.arrayUnion([actionId])
     });
   }
 
-  //NO USAR
-  Future<void> removeActionToUser(String userId, String actionId) async{
+  Future<void> _removeActionToUser(String userId, String actionId) async{
     final userDoc = userRef.doc(userId);
     await userDoc.update({
       'actions': FieldValue.arrayRemove([actionId])

@@ -1,6 +1,12 @@
 
 import 'dart:core';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:greencycle/model/Group.dart';
+import 'package:greencycle/model/MyAction.dart';
+import 'package:greencycle/services/action_service.dart';
+import 'package:greencycle/services/group_service.dart';
+
 class MyUser{
   String name;
   String last_name;
@@ -18,6 +24,27 @@ class MyUser{
         //this.weekly_score = " ",
         this.score = 0;
 
+  //todo testear
+  List<MyAction?>? getActions(){
+    ActionService actionService = new ActionService();
+    List<MyAction?>? auxActions;
+    actions.forEach((element)  async {
+      MyAction? action = await actionService.getAction(element);
+      auxActions!.add(action);
+    });
+    return auxActions;
+  }
+
+  //todo testear
+  List<Group?>? getGroups(){
+    GroupService groupService = new GroupService();
+    List<Group?>? auxGroups;
+    groups.forEach((element)  async {
+      Group? group = await groupService.getGroupById(element);
+      auxGroups!.add(group);
+    });
+    return auxGroups;
+  }
 
   MyUser.fromSnapshot(String Id, Map<String, dynamic> user)
       : Id = Id,
