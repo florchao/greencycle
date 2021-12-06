@@ -46,7 +46,6 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-      drawer: ArgonDrawer(currentPage: "Detalle grupo"),
       body: FutureBuilder<SplayTreeMap<String, String>>(
         future: load(groupId),
         builder: (BuildContext context, AsyncSnapshot<SplayTreeMap<String, String>> snapshot) {
