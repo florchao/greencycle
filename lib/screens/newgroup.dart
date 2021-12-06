@@ -30,18 +30,7 @@ class _NewGroupState extends State<NewGroup> {
 
   final _searchController = TextEditingController();
 
-  final List<String> usernames = [
-    'Felo',
-    'Herni',
-    'Flor',
-    'Male',
-    'Nicky',
-    'Azu'
-  ];
-
-  List<MyUser> usersList = [];
-
-  List<String> data = [];
+  List<MyUser?> usersList = [];
 
   var _image = null;
 
@@ -62,7 +51,7 @@ class _NewGroupState extends State<NewGroup> {
 
   @override
   Widget build(BuildContext context) {
-    // MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
+    MultipleNotifier _myMultipleNotifier = Provider.of<MultipleNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Nuevo Grupo"),
@@ -99,7 +88,7 @@ class _NewGroupState extends State<NewGroup> {
                                             controller: _groupNameController
                                         ),
                                       ),
-                                      SizedBox(height: 8.0),
+                                      const SizedBox(height: 8.0),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: TextField(
@@ -111,7 +100,7 @@ class _NewGroupState extends State<NewGroup> {
                                             const TextStyle(height: 0.85,
                                                 fontSize: 14.0,
                                                 color: ArgonColors.verdeOscuro),
-                                            textAlignVertical: TextAlignVertical(
+                                            textAlignVertical: const TextAlignVertical(
                                                 y: 0.6),
                                             decoration: InputDecoration(
                                                 filled: true,
@@ -140,7 +129,7 @@ class _NewGroupState extends State<NewGroup> {
                                                 hintText: "Descripción"
                                             )),
                                       ),
-                                      SizedBox(height: 8.0),
+                                      const SizedBox(height: 8.0),
                                       Center(
                                           child: _image == null ? const Text(
                                               "Agregar una imagen",
@@ -158,11 +147,11 @@ class _NewGroupState extends State<NewGroup> {
                                         children: <Widget>[
                                           FloatingActionButton(
                                               onPressed: getImageFromCamera,
-                                              child: Icon(Icons.add_a_photo)
+                                              child: const Icon(Icons.add_a_photo)
                                           ),
                                           FloatingActionButton(
                                             onPressed: getImageFromGallery,
-                                            child: Icon(Icons.camera_alt),
+                                            child: const Icon(Icons.camera_alt),
                                           )
                                         ],
                                       ),
@@ -183,31 +172,31 @@ class _NewGroupState extends State<NewGroup> {
                                                           fontSize: 20)
                                                   )
                                               ),
-                                              SizedBox(height: 8.0),
+                                              const SizedBox(height: 8.0),
                                               Input(
                                                 placeholder: "1er Puesto",
                                                 controller: _prize1stController,
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                     Icons.emoji_events),
                                               ),
-                                              SizedBox(height: 8.0),
+                                              const SizedBox(height: 8.0),
                                               Input(
                                                 placeholder: "2do Puesto",
                                                 controller: _prize2ndController,
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                     Icons.emoji_events),
                                               ),
-                                              SizedBox(height: 8.0),
+                                              const SizedBox(height: 8.0),
                                               Input(
                                                 placeholder: "3er Puesto",
                                                 controller: _prize3rdController,
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                     Icons.emoji_events),
                                               )
                                             ],
                                           )
                                       ),
-                                      SizedBox(height: 8.0),
+                                      const SizedBox(height: 8.0),
                                       Row(
                                         children: [
                                           const Padding(
@@ -229,32 +218,37 @@ class _NewGroupState extends State<NewGroup> {
                                               child: const Icon(Icons.add),
                                               backgroundColor: ArgonColors.azul,
                                               onPressed: () {
-                                                _showUserListDialog(context).then((value) => setState((){}));
-                                                setState(() {
-                                                });
+                                                _showUserListDialog(context);
+                                                usersList = _myMultipleNotifier._selectedItems;
                                                 print(usersList);
-                                                }
-                                                // data = _myMultipleNotifier._selectedItems;
+                                                print(usersList[0]);
+                                              }
+                                            // data = _myMultipleNotifier._selectedItems;
                                           ),
                                         ],
                                       ),
                                       Flexible(
                                           child: ListView.builder(
-                                              itemCount: data.length,
+                                              itemCount: usersList.length,
                                               shrinkWrap: true,
                                               itemBuilder: (context, index) {
                                                 return ListTile(
                                                     leading: const Icon(
                                                         Icons.account_circle),
-                                                    title: Text(usersList[index].name,
+                                                    title: Text(
+                                                      usersList[index]!.name,
                                                       style: const TextStyle(
                                                           color: ArgonColors
                                                               .azul,
                                                           fontSize: 14),),
-                                                    subtitle: Text(usersList[index].email),
+                                                    subtitle: Text(
+                                                        usersList[index]!.email),
                                                     trailing: const Icon(
                                                         Icons.close,
-                                                        color: ArgonColors.azul)
+                                                        color: ArgonColors.azul),
+                                                  onTap: () {
+                                                      _myMultipleNotifier.removeItem(usersList[index]!);
+                                                  },
                                                 );
                                               })
                                       ),
@@ -266,17 +260,18 @@ class _NewGroupState extends State<NewGroup> {
                                             textColor: ArgonColors.white,
                                             color: ArgonColors.verdeOscuro,
                                             onPressed: () async {
-                                              if (_groupNameController.text
-                                                  .isNotEmpty &&
-                                                  _prize1stController.text
-                                                      .isNotEmpty
-                                                  && _prize2ndController.text
-                                                      .isNotEmpty &&
-                                                  _prize3rdController.text
-                                                      .isNotEmpty) {
-                                                // Group _group = Group(_groupNameController.text, _image.toString(), []);
+                                              if (_groupNameController.text.isNotEmpty &&
+                                                  _groupDescriptionController.text.isNotEmpty &&
+                                                  _prize1stController.text.isNotEmpty &&
+                                                  _prize2ndController.text.isNotEmpty &&
+                                                  _prize3rdController.text.isNotEmpty &&
+                                                  usersList.isNotEmpty) {
+                                                Group _group = Group(_groupNameController.text, '', _groupDescriptionController.text);
                                                 GroupService _groupService = GroupService();
-                                                // _groupService.addGroup(_group);
+                                                String _groupId = await _groupService.create(_group);
+                                                for(int i = 0; i < usersList.length; i++) {
+                                                  await _groupService.addMember(_groupId, usersList[i]!.Id);
+                                                }
                                                 Navigator.pushReplacementNamed(
                                                     context, '/home');
                                               }
@@ -315,136 +310,147 @@ class _NewGroupState extends State<NewGroup> {
         )
     );
   }
-  Future<MyUser?> _showUserListDialog(BuildContext context) {
-    bool userVisibility = false;
-    return showDialog(
-        context: context,
-        builder: (context) {
-          MyUser? _userToAdd;
-          return StatefulBuilder(
-            builder: (context, StateSetter dialogState) {
-              return AlertDialog(
-                title: const Text('Selecciona los usuarios a agregar',
-                    style: TextStyle(fontWeight: FontWeight.bold,
-                        color: ArgonColors.azul,
-                        fontSize: 20)),
-                content: SingleChildScrollView(
-                    child: Container(
-                        width: double.infinity,
-                        child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Input(
-                                placeholder: "Buscar",
-                                suffixIcon: Icon(Icons.search_outlined),
-                                controller: _searchController,
-                              ),
-                              const SizedBox(
-                                height: 5.0,
-                              ),
-                              TextButton(
-                                  onPressed: () async {
-                                    if (_searchController.text.isNotEmpty) {
-                                      UserService _userService = new UserService();
-                                      // print(_searchController.text);
-                                      List<MyUser> _userList = await _userService
-                                          .getAllUser(_searchController.text, 1);
-                                      // print(_userList);
-                                      _userToAdd = _userList[0] as MyUser;
-                                      print(_userList);
-                                      print(_userToAdd);
-                                      print(_userToAdd!.name);
-                                      if(_userToAdd != null) {
-                                        dialogState(() {
-                                          userVisibility = true;
-                                        });
-                                        //   print(_userToAdd!.name);
-                                        //   ListTile(
-                                        //       onTap: ()
-                                        //       {},
-                                        //       title: Text(_userToAdd!.name),
-                                        //       subtitle: Text(_userToAdd!.email),
-                                        //       trailing: const Icon(Icons.chat, color: ArgonColors.azul)
-                                        //   ); } else {
-                                        //   Container(); }
-                                      }
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: const Text("BUSCAR", style: TextStyle(color: ArgonColors.azul),)
-                              ),
-                              Visibility(
-                                visible: userVisibility,
-                                  child: Column(
-                                    children: [
-                                      if(_userToAdd != null)
-                                        ListTile(
-                                          leading: Icon(Icons.account_circle),
-                                            onTap: () {
-                                            print(_userToAdd);
-                                            usersList.add(_userToAdd!);
-                                            setState(() {});
-                                            dialogState(() {});
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(_userToAdd!.name + ' added',
-                                                style: TextStyle(color: ArgonColors.white),)
-                                              )
-                                            );
-                                            userVisibility = false;
-                                            },
-                                            title: Text(_userToAdd!.name),
-                                            subtitle: Text(_userToAdd!.email),
-                                            trailing: const Icon(Icons.add, color: ArgonColors.azul)
-                                        ),
-                                    ],
+
+  _showUserListDialog(BuildContext context) =>
+      showDialog(
+          context: context,
+          builder: (context) {
+            final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+            bool userVisibility = false;
+            MyUser? _userToAdd;
+            return StatefulBuilder(
+                builder: (context, StateSetter dialogState) {
+                  return AlertDialog(
+                    title: const Text('Selecciona los usuarios a agregar',
+                        style: TextStyle(fontWeight: FontWeight.bold,
+                            color: ArgonColors.azul,
+                            fontSize: 20)),
+                    content: SingleChildScrollView(
+                        child: Container(
+                            width: double.infinity,
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Input(
+                                    placeholder: "Buscar",
+                                    suffixIcon: const Icon(Icons.search_outlined),
+                                    controller: _searchController,
+                                  ),
+                                  const SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  TextButton(
+                                      onPressed: () async {
+                                        if (_searchController.text.isNotEmpty) {
+                                          UserService _userService = UserService();
+                                          // print(_searchController.text);
+                                          List<MyUser> _userList = await _userService
+                                              .getAllUser(
+                                              _searchController.text, 1);
+                                          // print(_userList);
+                                          _userToAdd = _userList[0] as MyUser;
+                                          print(_userList);
+                                          print(_userToAdd);
+                                          print(_userToAdd!.name);
+                                          if (_userToAdd != null) {
+                                            dialogState(() {
+                                              userVisibility = true;
+                                            });
+                                            //   print(_userToAdd!.name);
+                                            //   ListTile(
+                                            //       onTap: ()
+                                            //       {},
+                                            //       title: Text(_userToAdd!.name),
+                                            //       subtitle: Text(_userToAdd!.email),
+                                            //       trailing: const Icon(Icons.chat, color: ArgonColors.azul)
+                                            //   ); } else {
+                                            //   Container(); }
+                                          }
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: const Text(
+                                        "BUSCAR", style: TextStyle(
+                                          color: ArgonColors.azul),)
+                                  ),
+                                  Visibility(
+                                      visible: userVisibility,
+                                      child: Column(
+                                        children: [
+                                          if(_userToAdd != null)
+                                            ListTile(
+                                                leading: const Icon(
+                                                    Icons.account_circle),
+                                                onTap: () {
+                                                  print(_userToAdd);
+                                                  // usersList.add(_userToAdd!);
+                                                  _multipleNotifier.addItem(_userToAdd!);
+
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                      SnackBar(
+                                                          content: Text(
+                                                            _userToAdd!.name +
+                                                                ' added',
+                                                            style: const TextStyle(
+                                                                color: ArgonColors
+                                                                    .white),)
+                                                      )
+                                                  );
+                                                  userVisibility = false;
+                                                },
+                                                title: Text(_userToAdd!.name),
+                                                subtitle: Text(
+                                                    _userToAdd!.email),
+                                                trailing: const Icon(Icons.add,
+                                                    color: ArgonColors.azul)
+                                            ),
+                                        ],
+                                      )
                                   )
-                              )
-                            ]
+                                ]
+                            )
                         )
-                    )
-                ),
-                actions: [
-                  TextButton(
-                      child: const Text('CERRAR',
-                          style: TextStyle(color: ArgonColors.azul)),
-                      onPressed: () {
-                        Navigator.of(context).pop(_userToAdd);
-                        setState(() {
+                    ),
+                    actions: [
+                      TextButton(
+                          child: const Text('CERRAR',
+                              style: TextStyle(color: ArgonColors.azul)),
+                          onPressed: () {
+                            Navigator.of(context).pop(_userToAdd);
+                            setState(() {
 
-                        });
-                      }
-                  ),
-                ],
-              );
-            }
-          );
-        });
-  }
-
+                            });
+                          }
+                      ),
+                    ],
+                  );
+                }
+            );
+          });
 }
 
 
-// class MultipleNotifier extends ChangeNotifier {
-//   List<String> _selectedItems;
-//
-//   MultipleNotifier(this._selectedItems);
-//   List<String> get selectedItems => _selectedItems;
-//
-//   bool isInList(String value) => _selectedItems.contains(value);
-//
-//   addItem(String value) {
-//     if (!isInList(value)) {
-//       _selectedItems.add(value);
-//       notifyListeners();
-//     }
-//   }
-//
-//   removeItem(String value) {
-//     if(isInList(value)) {
-//       _selectedItems.remove(value);
-//       notifyListeners();
-//     }
-//   }
-//
-// }
+class MultipleNotifier extends ChangeNotifier {
+  List<MyUser> _selectedItems;
+
+  MultipleNotifier(this._selectedItems);
+  List<MyUser> get selectedItems => _selectedItems;
+
+  bool isInList(MyUser value) => _selectedItems.contains(value);
+
+  addItem(MyUser value) {
+    if (!isInList(value)) {
+      _selectedItems.add(value);
+      notifyListeners();
+    }
+  }
+
+  removeItem(MyUser value) {
+    if(isInList(value)) {
+      _selectedItems.remove(value);
+      notifyListeners();
+    }
+  }
+
+}
