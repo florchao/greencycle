@@ -245,7 +245,7 @@ class _HomeState extends State<Home> {
                                         img: action.icon_url,
                                         tap: () {
                                           Navigator.pushNamed(
-                                              context, '/action-detail');
+                                              context, '/action-detail', arguments: action.id);
                                         })
                                 ],
                               ),
@@ -254,7 +254,7 @@ class _HomeState extends State<Home> {
                             return Container(
                               alignment: Alignment.center,
                               padding: const EdgeInsets.only(top: 30.0),
-                              child: Text("No tienes grupos",
+                              child: Text("No tienes acciones",
                                   style: TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontSize: 19.0,

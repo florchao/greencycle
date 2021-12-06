@@ -98,7 +98,7 @@ class _MisAccionesState extends State<MisAcciones>{
                                       img: action.icon_url,
                                       tap: () {
                                         Navigator.pushNamed(
-                                            context, '/group-detail');
+                                            context, '/action-detail', arguments: action.id);
                                       })
                               ],
                             ),
