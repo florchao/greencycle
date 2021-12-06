@@ -7,9 +7,9 @@ import 'package:greencycle/model/MyUser.dart';
 import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/services/user_service.dart';
 import 'package:greencycle/widgets/drawer.dart';
-import 'package:greencycle/widgets/navbar.dart';
 
-final SplayTreeMap<String, String> membersByScore = SplayTreeMap<String, String>();
+SplayTreeMap<String, String> membersByScore = SplayTreeMap<String, String>();
+Group? group = new Group('', '', '');
 int position = 1;
 
 class GroupDetail extends StatefulWidget{
@@ -18,9 +18,29 @@ class GroupDetail extends StatefulWidget{
 }
 
 class _CreateGroupDetailState extends State<GroupDetail> {
+  final GroupService groupService = new GroupService();
+  UserService userService = UserService();
+
+  Future<SplayTreeMap<String, String>> load(String groupId) async {
+    await groupService.getGroupById(groupId).then((value) => group = value);
+    Map<String, dynamic> members = group!.members;
+    for (var id in members.keys){
+      print(id);
+      var userScoreInGroup = members[id];
+      print(userScoreInGroup);
+      MyUser? user = await userService.getUser(id);
+      print("USER:");
+      print(user);
+      if(user!=null){
+        membersByScore[userScoreInGroup] = user.name;
+      }
+    }
+    return membersByScore;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String args = ModalRoute.of(context)!.settings.arguments as String;
+    final String groupId = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -29,18 +49,17 @@ class _CreateGroupDetailState extends State<GroupDetail> {
       ),
       backgroundColor: ArgonColors.verdeClaro,
       drawer: ArgonDrawer(currentPage: "Detalle grupo"),
-      body: FutureBuilder<Group?>(
-        future: GroupService().getGroupById('pGy9z1cTLqQYTX76SM7D'),
-        builder: (BuildContext context, AsyncSnapshot<Group?> snapshot) {
+      body: FutureBuilder<SplayTreeMap<String, String>>(
+        future: load(groupId),
+        builder: (BuildContext context, AsyncSnapshot<SplayTreeMap<String, String>> snapshot) {
           if (snapshot.hasData) {
-            Group? groupData = snapshot.data!;
-            getMembersNames(groupData.members);
-            print(membersByScore);
+            print("SNAP");
+            print(snapshot);
             return Container(
                 child: SafeArea(
                     child: Column(
                       children: <Widget>[
-                        GroupDetailsTitleWidget(groupData.name),
+                        GroupDetailsTitleWidget(group!.name),
                         Divider(
                             height: 50,
                             thickness: 5,
@@ -88,16 +107,6 @@ class _CreateGroupDetailState extends State<GroupDetail> {
             ScoreTableRowWidget(membersByScore[score], score.toString(), position++)
       ],
     );
-  }
-
-  void getMembersNames(Map<String, dynamic> members) async {
-    for (var id in members.keys){
-      var userScoreInGroup = members[id];
-      MyUser? user = await UserService().getUser(id);
-      setState(() {
-        membersByScore[userScoreInGroup] = user!.name;
-      });
-    }
   }
   
   Widget ScoreTableRowWidget(String? name, String score, int position){
