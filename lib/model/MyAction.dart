@@ -54,10 +54,11 @@ class MyAction{
   };
 
   int getScore(){
-    double aux = 0;
     if(_score != 0){
       return _score;
     }
+    double aux = 0;
+
     if(transport.isNotEmpty) {
       aux += (transport['bike'] as double) * 5;
       aux += (transport['publicTransport'] as double) * 3;
@@ -69,12 +70,12 @@ class MyAction{
       aux += (recycling['Peper'] as int) * 2;
     }
     if(compost !=0)
-    aux += (compost * 10);
-
+      aux += (compost * 10);
     if(ecoProducts !=0)
-    aux += ecoProducts * 7;
+      aux += ecoProducts * 7;
     if (plants!=0)
-    aux += plants * 7;
+      aux += plants * 7;
+
     _score = aux.toInt();
     return _score;
   }
