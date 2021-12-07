@@ -33,7 +33,8 @@ class _SettingsState extends State<Settings> {
   }
 
   var _image = null;
-  File? profileImage = null;
+  File? profileImage;
+  late String photo_url;
 
   Future getImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -43,6 +44,7 @@ class _SettingsState extends State<Settings> {
     setState(() {
       this.profileImage = imageTemporary;
     });
+
   }
 
   Future getImageFromGallery() async {
@@ -56,17 +58,24 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  void uploadFileToStorage() async {
+  Future uploadFileToStorage() async {
     if (profileImage == null) {
       print("no tenes foto seleccionada");
       return;
     }
+    // var snapshot = await FirebaseStorage.instance.ref().child('profileImages/' + user.Id).putFile(profileImage!);
+
     final fileName = profileImage!.path;
     final destination = 'profileImages/' + fileName;
 
-    final ref = FirebaseStorage.instance.ref(destination);
+    final ref = await FirebaseStorage.instance.ref(destination);
 
-    UploadTask uploadTask = ref.putFile(profileImage!);
+    TaskSnapshot uploadTask = await ref.putFile(profileImage!);
+    print('POR OBTENER EL URL');
+    photo_url = await ref.getDownloadURL();
+    print("URL DEL ICONO");
+    print(photo_url);
+    // user.icon_url = 'gs://greencycle-ed98e.appspot.com' + 'profileImages/' + user.icon_url!;
   }
 
   @override
@@ -257,7 +266,7 @@ class _SettingsState extends State<Settings> {
                             firstName.currentState!.validate();
                             lastName.currentState!.save();
                             lastName.currentState!.validate();
-                            uploadFileToStorage();
+
                             print("PHOTO PATH");
                             print(profileImage!.path);
                             if(_firstNameController!.text != "" || _lastNameController!.text != "" || _imageController!.text != "" || _emailController!.text != "") {
@@ -272,12 +281,14 @@ class _SettingsState extends State<Settings> {
                                 print("SIN FOTO");
                                 print(_myUser);
                               } else {
+                                await uploadFileToStorage();
                                 _myUser = MyUser(
                                     _firstNameController!.text,
                                     _lastNameController!.text,
                                     "",
-                                    profileImage!.path,
+                                    photo_url,
                                     _emailController!.text);
+
                                 print("CON FOTO");
                                 print(_myUser);
                               }

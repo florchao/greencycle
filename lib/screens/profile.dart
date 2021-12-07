@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:greencycle/constants/Theme.dart';
@@ -19,6 +20,8 @@ class _ProfileState extends State<Profile> {
   UserService userService = UserService();
   String? code;
   Future<List<Group>>? loading;
+
+  var ref;
 
   @override
   void initState() {
@@ -61,6 +64,16 @@ class _ProfileState extends State<Profile> {
             future: UserService().getCurrentUser(),
             builder: (BuildContext context, AsyncSnapshot<MyUser?> snapshot) {
               if (snapshot.hasData) {
+                // String image = snapshot.data!.icon_url!;
+                // print(image);
+                // String _imageUrl = '';
+                // ref = FirebaseStorage.instance.ref().child(image).getDownloadURL().then((value) => setState(() => _imageUrl = value));
+                // ref.getDownloadURL().then((loc) {
+                //   print('ENTRO');
+                //   setState(() => _imageUrl = loc);});;
+                // print('URL' + _imageUrl);
+                // print('REF' + ref.toString());
+                // print('DOWNLOAD' + ref.getDownloadURL().toString());
                 return Stack(children: <Widget>[
                   SafeArea(
                     child: ListView(children: [
