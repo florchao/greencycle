@@ -223,17 +223,7 @@ class _CreateActionState extends State<CreateAction> {
                     }
                     if (counterTransport[0] != 0 || counterTransport[1] != 0) {
                       MyAction action = new MyAction(
-                          "Transporte",
-                          _image,
-                          comment,
-                          {
-                            'bike': counterTransport[0],
-                            'publicTransport': counterTransport[1]
-                          },
-                          {},
-                          0,
-                          0,
-                          0);
+                          "Transporte", _image, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
                     }else{
@@ -488,7 +478,7 @@ class _CreateActionState extends State<CreateAction> {
                             minValue: 0,
                             maxValue: 100,
                             step: 0.1,
-                            decimalPlaces: 0,
+                            decimalPlaces: 1,
                             color: ArgonColors.verdeOscuro,
                             buttonSizeHeight: 30,
                             buttonSizeWidth: 30,
