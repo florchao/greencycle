@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:greencycle/constants/Theme.dart';
@@ -33,20 +34,40 @@ class _NewGroupState extends State<NewGroup> {
   List<MyUser?> usersList = [];
 
   var _image = null;
+  File? groupImage = null;
 
   Future getImageFromCamera() async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
 
-    _image = image as File;
+    final imageTemporary = File(image.path);
+    setState(() {
+      this.groupImage = imageTemporary;
+    });
   }
 
   Future getImageFromGallery() async {
-    final picker = ImagePicker();
-    var image = await picker.pickImage(source: ImageSource.gallery
-    );
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    _image = image as File;
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      this.groupImage = imageTemporary;
+    });
+  }
+
+  void uploadFileToStorage() {
+    if (groupImage == null) {
+      print("no tenes foto seleccionada");
+      return;
+    }
+    final fileName = groupImage!.path;
+    final destination = 'GroupImages/' + fileName;
+
+    final ref = FirebaseStorage.instance.ref(destination);
+
+    UploadTask uploadTask = ref.putFile(groupImage!);
   }
 
   @override
@@ -203,6 +224,21 @@ class _NewGroupState extends State<NewGroup> {
                                           )
                                         ],
                                       ),
+                                      groupImage != null ? new Stack(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(24.0),
+                                          child: Image.file(
+                                            groupImage!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        FloatingActionButton.small(
+                                            backgroundColor: Colors.red,
+                                            onPressed: () {
+                                              groupImage = null;
+                                              setState(() {});
+                                            }),
+                                      ] ): SizedBox.shrink(),
                                       Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(
@@ -307,6 +343,7 @@ class _NewGroupState extends State<NewGroup> {
                                             textColor: ArgonColors.white,
                                             color: ArgonColors.verdeOscuro,
                                             onPressed: () async {
+                                              uploadFileToStorage();
                                               groupNameKey.currentState!.save();
                                               groupNameKey.currentState!.validate();
                                               groupDescriptionKey.currentState!.save();
@@ -314,7 +351,13 @@ class _NewGroupState extends State<NewGroup> {
                                               if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
-                                                Group _group = Group(_groupNameController.text, '', _groupDescriptionController.text);
+                                                late Group _group;
+                                                if (groupImage == null) {
+                                                  // Todo aca habria que crear al group con alguno de los iconos predeterminados
+                                                  _group = Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text);
+                                                } else {
+                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text);
+                                                }
                                                 GroupService _groupService = GroupService();
                                                 String _groupId = await _groupService.create(_group);
                                                 for(int i = 0; i < usersList.length; i++) {

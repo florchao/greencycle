@@ -59,7 +59,7 @@ class _CreateActionState extends State<CreateAction> {
       return;
     }
     final fileName = groupImage!.path;
-    final destination = 'GroupImages/' + fileName;
+    final destination = 'ActionImages/' + fileName;
 
     final ref = FirebaseStorage.instance.ref(destination);
 
@@ -121,13 +121,21 @@ class _CreateActionState extends State<CreateAction> {
               ),
             ],
           ),
-          groupImage != null ? Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Image.file(
+          groupImage != null ? new Stack(children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Image.file(
                 groupImage!,
-              fit: BoxFit.cover,
+                fit: BoxFit.cover,
+              ),
             ),
-          ): SizedBox.shrink(),
+            FloatingActionButton.small(
+                backgroundColor: Colors.red,
+                onPressed: () {
+                  groupImage = null;
+                  setState(() {});
+                }),
+          ] ): SizedBox.shrink(),
           // Comments
           Padding(padding: const EdgeInsets.only(left: 8.0, top: 32, bottom: 5.0),
             child: Text("Comentarios", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
