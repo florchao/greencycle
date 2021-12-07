@@ -141,8 +141,7 @@ class UserService {
        groupsId = List.from(value.get('groups')),
        groupsId.forEach((element) async{
          await groupService.addAction(element, actionId);
-         //todo:calcular el score
-         _addScore(40);
+         _addScore(action.getScore());
        }),
      });
     return actionId;
