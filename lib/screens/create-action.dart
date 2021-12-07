@@ -293,7 +293,12 @@ class _CreateActionState extends State<CreateAction> {
                       _image = "";
                     }
                     if(countProductos!=0) {
-                      MyAction action = new MyAction("Ecoproductos", _image, comment, {}, {}, 0, countProductos as int, 0);
+                      late MyAction action;
+                      if (groupImage == null) {
+                        action = new MyAction("Ecoproductos", defaultActionIconUrl+"ecoProd.jpeg", comment, {}, {}, 0, countProductos as int, 0);
+                      } else {
+                        action = new MyAction("Ecoproductos", groupImage!.path, comment, {}, {}, 0, countProductos as int, 0);
+                      }
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
                     }
@@ -305,8 +310,7 @@ class _CreateActionState extends State<CreateAction> {
                     if(countCompost !=0){
                     late MyAction action;
                     if (groupImage == null) {
-                      // Todo hacer que se cargue una imagen random de las x ya precargadas
-                      action = new MyAction("Compost", "Imagen_precargada", comment, {},  {}, countCompost as double, 0, 0);
+                      action = new MyAction("Compost", defaultActionIconUrl+"compost.jpeg", comment, {},  {}, countCompost as double, 0, 0);
                     } else {
                       action = new MyAction("Compost", groupImage!.path, comment, {},  {}, countCompost as double, 0, 0);
                     }
@@ -317,8 +321,12 @@ class _CreateActionState extends State<CreateAction> {
                     }
                   }
                   else if(categoryChoose == 'Factura de luz y gas'){ //DESPUES HAY QUE VER COMO SE CARGAN LAS FOTOS
-                    print("ENTRE");
-                    MyAction action = new MyAction("Factura de luz y gas", groupImage.toString(), comment, {},  {}, 0, 0, 0);
+                    late MyAction action;
+                    if (groupImage == null) {
+                      action = new MyAction("Factura de luz y gas", defaultActionIconUrl+"facturas.jpeg", comment, {},  {}, 0, 0, 0);
+                    } else {
+                      action = new MyAction("Factura de luz y gas", groupImage!.path, comment, {},  {}, 0, 0, 0);
+                    }
                     userService.addAction(action);
                     Navigator.pushReplacementNamed(context, '/home');
                   }
