@@ -122,6 +122,13 @@ class UserService {
     return id;
   }
 
+  Future<void> addUserToGroup(String groupId, String memberId)async{
+    final userDoc = userRef.doc(memberId);
+    await userDoc.update({
+      "groups": FieldValue.arrayUnion([groupId])
+    });
+  }
+
   //borra al grupo de la coleccion 'grupos' y saca el id del grupo del usuario actual
   Future<void> deleteGroup(String groupId) async {
     groupService.deleteGroup(groupId);
