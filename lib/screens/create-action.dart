@@ -187,7 +187,7 @@ class _CreateActionState extends State<CreateAction> {
                 textColor: ArgonColors.white,
                 color: ArgonColors.verdeOscuro,
                 onPressed: () {
-
+                  uploadFileToStorage();
                   //print(groupImage!.path);
                   if(categoryChoose == ""){
                     showToast("Se debe elegir una categoria");
@@ -274,29 +274,23 @@ class _CreateActionState extends State<CreateAction> {
                     }
                   }
                   else if(categoryChoose == 'Compost'){
-                    if (_image == null){
-                      _image = "";
-                    }
                     if(countCompost !=0){
                     late MyAction action;
                     if (groupImage == null) {
                       // Todo hacer que se cargue una imagen random de las x ya precargadas
-                      action = new MyAction("Compost", "Imagen_precargada", comment, {},  {}, countCompost as int, 0, 0);
+                      action = new MyAction("Compost", "Imagen_precargada", comment, {},  {}, countCompost as double, 0, 0);
                     } else {
-                      action = new MyAction("Compost", groupImage!.path, comment, {},  {}, countCompost as int, 0, 0);
+                      action = new MyAction("Compost", groupImage!.path, comment, {},  {}, countCompost as double, 0, 0);
                     }
-                    uploadFileToStorage();
                     userService.addAction(action);
                     Navigator.pushReplacementNamed(context, '/home');
                   }else{
                       showToast("Se debe compostar algo");
                     }
-                  if (_image == null){
-                    _image = "";
-                  }
                   }
                   else if(categoryChoose == 'Factura de luz y gas'){ //DESPUES HAY QUE VER COMO SE CARGAN LAS FOTOS
-                    MyAction action = new MyAction("Factura de luz y gas", _image, comment, {},  {}, 0, 0, 0);
+                    print("ENTRE");
+                    MyAction action = new MyAction("Factura de luz y gas", groupImage.toString(), comment, {},  {}, 0, 0, 0);
                     userService.addAction(action);
                     Navigator.pushReplacementNamed(context, '/home');
                   }

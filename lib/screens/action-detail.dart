@@ -198,7 +198,7 @@ class _ActionDetailState extends State<ActionDetail> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        for(var field in list!)
+        for(var field in list)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: Text(field.toString(),
@@ -240,7 +240,7 @@ class _ActionDetailState extends State<ActionDetail> {
   }
 
   Widget CompostData() {
-    int compost = _actionSnapshot.data!.compost;
+    double compost = _actionSnapshot.data!.compost;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
