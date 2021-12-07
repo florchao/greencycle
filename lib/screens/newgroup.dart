@@ -441,6 +441,7 @@ class _NewGroupState extends State<NewGroup> {
                                       ),
                                       SingleChildScrollView(
                                         child: Flexible(
+                                          flex: 1,
                                             child: ListView.builder(
                                                 itemCount: usersList.length,
                                                 shrinkWrap: true,
