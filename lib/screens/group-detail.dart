@@ -15,7 +15,7 @@ class GroupDetail extends StatefulWidget{
 class _CreateGroupDetailState extends State<GroupDetail> {
   Map<int, String> membersNamesByScore = new Map<int, String>();
   var membersScoreInAScendingOrder = List.filled(100, null, growable: false);
-  Group? group = new Group('', '', '');
+  Group? group = new Group('', '', '', '', '', '');
   int position = 1;
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
