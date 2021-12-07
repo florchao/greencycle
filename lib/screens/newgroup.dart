@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/model/Group.dart';
@@ -32,6 +33,38 @@ class _NewGroupState extends State<NewGroup> {
   final _searchController = TextEditingController();
   final searchKey = GlobalKey<FormState>();
   List<MyUser?> usersList = [];
+
+
+  late FToast fToast;
+
+  @override
+  void initState(){
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  void showToast(String message) {
+    Widget toast = Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Color.fromRGBO(244, 67, 54, 0.5019607843137255)
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(message),
+        ],
+      ),
+    );
+    if(groupNameKey.currentState!.validate() && groupDescriptionKey.currentState!.validate()) {
+      fToast.showToast(
+        child: toast,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+  }
 
   var _image = null;
   File? groupImage = null;
@@ -348,7 +381,10 @@ class _NewGroupState extends State<NewGroup> {
                                               groupNameKey.currentState!.validate();
                                               groupDescriptionKey.currentState!.save();
                                               groupDescriptionKey.currentState!.validate();
-                                              if (_groupNameController.text.isNotEmpty &&
+                                              if (usersList.isEmpty){
+                                                showToast("El grupo debe tener integrantes");
+                                              }
+                                              else if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
                                                 late Group _group;
