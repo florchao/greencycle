@@ -90,7 +90,7 @@ class _NewGroupState extends State<NewGroup> {
     });
   }
 
-  void uploadFileToStorage() {
+  void uploadFileToStorage() async{
     if (groupImage == null) {
       print("no tenes foto seleccionada");
       return;
@@ -98,7 +98,7 @@ class _NewGroupState extends State<NewGroup> {
     final fileName = groupImage!.path;
     final destination = 'GroupImages/' + fileName;
 
-    final ref = FirebaseStorage.instance.ref(destination);
+    final ref = await FirebaseStorage.instance.ref(destination);
 
     UploadTask uploadTask = ref.putFile(groupImage!);
   }
@@ -474,7 +474,6 @@ class _NewGroupState extends State<NewGroup> {
                                             textColor: ArgonColors.white,
                                             color: ArgonColors.verdeOscuro,
                                             onPressed: () async {
-                                              uploadFileToStorage();
                                               groupNameKey.currentState!.save();
                                               groupNameKey.currentState!.validate();
                                               groupDescriptionKey.currentState!.save();
@@ -488,6 +487,7 @@ class _NewGroupState extends State<NewGroup> {
                                               else if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
+                                                uploadFileToStorage();
                                                 late Group _group;
                                                 UserService _userService = UserService();
                                                 GroupService _groupService = GroupService();
