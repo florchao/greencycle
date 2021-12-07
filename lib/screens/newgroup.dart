@@ -33,7 +33,9 @@ class _NewGroupState extends State<NewGroup> {
   final prize3rdKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   final searchKey = GlobalKey<FormState>();
+
   List<MyUser?> usersList = [];
+  late String photo_url;
 
   late FToast fToast;
 
@@ -90,7 +92,7 @@ class _NewGroupState extends State<NewGroup> {
     });
   }
 
-  void uploadFileToStorage() async{
+  Future<void> uploadFileToStorage() async{
     if (groupImage == null) {
       print("no tenes foto seleccionada");
       return;
@@ -100,13 +102,14 @@ class _NewGroupState extends State<NewGroup> {
 
     final ref = await FirebaseStorage.instance.ref(destination);
 
-    UploadTask uploadTask = ref.putFile(groupImage!);
+    TaskSnapshot uploadTask = await ref.putFile(groupImage!);
+    photo_url = await ref.getDownloadURL();
   }
 
   String getRandomIconPath() {
     Random random = Random();
     int randomNumber = random.nextInt(6);
-    String finalIcon = "gs://greencycle-ed98e.appspot.com/PredeterminedGroupIcons/grupo"+randomNumber.toString()+".jpeg";
+    String finalIcon = "PredeterminedGroupIcons/grupo"+randomNumber.toString()+".jpeg";
     return finalIcon;
   }
 
@@ -192,7 +195,7 @@ class _NewGroupState extends State<NewGroup> {
                                           key: groupDescriptionKey,
                                           child: TextFormField(
                                             cursorColor: ArgonColors.black,
-                                            controller: _groupDescriptionController,
+                                            // controller: _groupDescriptionController,
                                             autofocus: false,
                                             maxLines: null,
                                             style:
@@ -488,15 +491,19 @@ class _NewGroupState extends State<NewGroup> {
                                               else if (_groupNameController.text.isNotEmpty &&
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
-                                                uploadFileToStorage();
                                                 late Group _group;
                                                 UserService _userService = UserService();
                                                 GroupService _groupService = GroupService();
                                                 if (groupImage == null) {
                                                   // Todo aca habria que crear al group con alguno de los iconos predeterminados
-                                                  _group= Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
+                                                  String destination = getRandomIconPath();
+                                                  final ref = await FirebaseStorage.instance.ref(destination);
+                                                  String url = await ref.getDownloadURL();
+
+                                                  _group= Group(_groupNameController.text, url, _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 } else {
-                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
+                                                  await uploadFileToStorage();
+                                                  _group = Group(_groupNameController.text, photo_url, _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 }
                                                 String _groupId = await _userService.addGroup(_group);
                                                 for(int i = 0; i < usersList.length; i++) {
