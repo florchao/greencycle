@@ -13,15 +13,16 @@ class GroupDetail extends StatefulWidget{
 }
 
 class _CreateGroupDetailState extends State<GroupDetail> {
-  Map<int, String> membersNamesByScore = new Map<int, String>();
-  var membersScoreInAScendingOrder = List.filled(100, null, growable: false);
+  Map<int, String> membersNamesByScore = {};
+  var membersScoreInAScendingOrder = [];
   Group? group = new Group('', '', '', '', '', '');
   int position = 1;
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
 
   Future<Map<int, String>> load(String groupId) async {
-    await groupService.getGroupById(groupId).then((value) => group = value);
+    Group? group = await groupService.getGroupById(groupId);
+    print("mi grupo");
     print(group);
     Map<String, dynamic> members = group!.members;
     print(members);
@@ -29,24 +30,28 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     // print(keys);
     List<String> keys = members.entries.map( (entry) => entry.key).toList();
     print(keys);
-    for(int i=0; i < keys.length; i++){
+    for(int i=0; i < keys.length; i++) {
       String id = keys[i];
       var userScoreInGroup = members[id];
       MyUser? user = await userService.getUser(id);
-      if(user!=null){
+      print("mi user");
+      print(user);
+      if (user != null) {
         print("ADENTRO");
-        membersNamesByScore.putIfAbsent(userScoreInGroup, () => user.name);
-        membersScoreInAScendingOrder.add(userScoreInGroup);
+        membersNamesByScore[i] = user.name;
       }
     }
+    // var topThree = bestThree(membersNamesByScore);
+    print("FINAL");
+    print(membersNamesByScore);
     return membersNamesByScore;
   }
+
 
   @override
   Widget build(BuildContext context) {
     final String groupId = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Detalle grupo"),
         backgroundColor: ArgonColors.verdeOscuro,
@@ -149,3 +154,4 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     );
   }
 }
+
