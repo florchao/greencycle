@@ -50,6 +50,7 @@ class _MisAccionesState extends State<MisAcciones>{
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    loading = load();
     return Scaffold(
         appBar: AppBar(
           title: const Text("Mis Acciones"),

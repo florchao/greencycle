@@ -16,8 +16,6 @@ class _ActionDetailState extends State<ActionDetail> {
   late MyAction _action;
   List<String>? _actionFieldsList = [];
   late AsyncSnapshot<MyAction> _actionSnapshot;
-
-  Future<MyAction>? loading;
   
   Future<MyAction> load(String actionId) async {
     await _actionService.getAction(actionId).then((value) => _action = value!);
@@ -132,7 +130,7 @@ class _ActionDetailState extends State<ActionDetail> {
                                           ]
                                       ),
                                       SizedBox(height: 20),
-                                      Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
+                                      Image.network(_action.icon_url),
                                       SizedBox(height: 20),
                                       Text(snapshot.data!.description,
                                           style: TextStyle(color: ArgonColors.azul, fontSize: 16))
