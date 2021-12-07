@@ -290,26 +290,116 @@ class _NewGroupState extends State<NewGroup> {
                                                   )
                                               ),
                                               const SizedBox(height: 8.0),
-                                              Input(
-                                                placeholder: "1er Puesto",
-                                                controller: _prize1stController,
+                                              Form(
+                                          key: prize1stKey,
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: ArgonColors.white,
                                                 suffixIcon: const Icon(
                                                     Icons.emoji_events),
+                                                hintStyle: const TextStyle(
+                                                  color: ArgonColors.azul,
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                    borderRadius: BorderRadius
+                                                        .circular(4.0),
+                                                    borderSide: const BorderSide(
+                                                        color: ArgonColors
+                                                            .verdeOscuro,
+                                                        width: 1.0,
+                                                        style: BorderStyle
+                                                            .solid)),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderRadius: BorderRadius
+                                                        .circular(4.0),
+                                                    borderSide: const BorderSide(
+                                                        color: ArgonColors
+                                                            .verdeOscuro,
+                                                        width: 1.0,
+                                                        style: BorderStyle
+                                                            .solid)),
+                                                hintText: "1er Puesto"
+                                            ),
+                                            onSaved: (value){
+                                              _prize1stController.text = value!;
+                                            },
+                                          ),
+                                        ),
+                                              const SizedBox(height: 8.0),
+                                              Form(
+                                                key: prize2ndKey,
+                                                child: TextFormField(
+                                                  decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor: ArgonColors.white,
+                                                      suffixIcon: const Icon(
+                                                          Icons.emoji_events),
+                                                      hintStyle: const TextStyle(
+                                                        color: ArgonColors.azul,
+                                                      ),
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius
+                                                              .circular(4.0),
+                                                          borderSide: const BorderSide(
+                                                              color: ArgonColors
+                                                                  .verdeOscuro,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid)),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius
+                                                              .circular(4.0),
+                                                          borderSide: const BorderSide(
+                                                              color: ArgonColors
+                                                                  .verdeOscuro,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid)),
+                                                      hintText: "2do Puesto"
+                                                  ),
+                                                  onSaved: (value){
+                                                    _prize2ndController.text = value!;
+                                                  },
+                                                ),
                                               ),
                                               const SizedBox(height: 8.0),
-                                              Input(
-                                                placeholder: "2do Puesto",
-                                                controller: _prize2ndController,
-                                                suffixIcon: const Icon(
-                                                    Icons.emoji_events),
+                                              Form(
+                                                key: prize3rdKey,
+                                                child: TextFormField(
+                                                  decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor: ArgonColors.white,
+                                                      suffixIcon: const Icon(
+                                                          Icons.emoji_events),
+                                                      hintStyle: const TextStyle(
+                                                        color: ArgonColors.azul,
+                                                      ),
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius
+                                                              .circular(4.0),
+                                                          borderSide: const BorderSide(
+                                                              color: ArgonColors
+                                                                  .verdeOscuro,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid)),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius
+                                                              .circular(4.0),
+                                                          borderSide: const BorderSide(
+                                                              color: ArgonColors
+                                                                  .verdeOscuro,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid)),
+                                                      hintText: "3er Puesto"
+                                                  ),
+                                                  onSaved: (value){
+                                                    _prize3rdController.text = value!;
+                                                  },
+                                                ),
                                               ),
-                                              const SizedBox(height: 8.0),
-                                              Input(
-                                                placeholder: "3er Puesto",
-                                                controller: _prize3rdController,
-                                                suffixIcon: const Icon(
-                                                    Icons.emoji_events),
-                                              )
                                             ],
                                           )
                                       ),
@@ -381,6 +471,9 @@ class _NewGroupState extends State<NewGroup> {
                                               groupNameKey.currentState!.validate();
                                               groupDescriptionKey.currentState!.save();
                                               groupDescriptionKey.currentState!.validate();
+                                              prize1stKey.currentState!.save();
+                                              prize2ndKey.currentState!.save();
+                                              prize3rdKey.currentState!.save();
                                               if (usersList.isEmpty){
                                                 showToast("El grupo debe tener integrantes");
                                               }
@@ -388,14 +481,15 @@ class _NewGroupState extends State<NewGroup> {
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
                                                 late Group _group;
+                                                UserService _userService = UserService();
+                                                GroupService _groupService = GroupService();
                                                 if (groupImage == null) {
                                                   // Todo aca habria que crear al group con alguno de los iconos predeterminados
-                                                  _group = Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text);
+                                                     _group= Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 } else {
-                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text);
+                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 }
-                                                GroupService _groupService = GroupService();
-                                                String _groupId = await _groupService.create(_group);
+                                                String _groupId = await _userService.addGroup(_group);
                                                 for(int i = 0; i < usersList.length; i++) {
                                                   await _groupService.addMember(_groupId, usersList[i]!.Id);
                                                 }
