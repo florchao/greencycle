@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:greencycle/constants/Theme.dart';
@@ -28,25 +29,41 @@ class _CreateActionState extends State<CreateAction> {
   String actionUnits = '';
   String comment = '';
   var _image = null;
+  File? groupImage = null;
   UserService userService = new UserService();
 
   Future getImageFromCamera() async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
 
+    final imageTemporary = File(image.path);
     setState(() {
-      _image = image as File;
+      this.groupImage = imageTemporary;
     });
   }
 
   Future getImageFromGallery() async {
-    final picker = ImagePicker();
-    var image = await picker.pickImage(source: ImageSource.gallery
-    );
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
     setState(() {
-      _image = image as File;
+      this.groupImage = imageTemporary;
     });
+  }
+
+  void uploadFileToStorage() {
+    if (groupImage == null) {
+      print("no tenes foto seleccionada");
+      return;
+    }
+    final fileName = groupImage!.path;
+    final destination = 'GroupImages/' + fileName;
+
+    final ref = FirebaseStorage.instance.ref(destination);
+
+    UploadTask uploadTask = ref.putFile(groupImage!);
   }
 
   @override
@@ -101,9 +118,16 @@ class _CreateActionState extends State<CreateAction> {
               FloatingActionButton(
                 onPressed: getImageFromGallery,
                 child: Icon(Icons.camera_alt),
-              )
+              ),
             ],
           ),
+          groupImage != null ? Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Image.file(
+                groupImage!,
+              fit: BoxFit.cover,
+            ),
+          ): SizedBox.shrink(),
           // Comments
           Padding(padding: const EdgeInsets.only(left: 8.0, top: 32, bottom: 5.0),
             child: Text("Comentarios", style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 18)),
@@ -124,6 +148,8 @@ class _CreateActionState extends State<CreateAction> {
                 textColor: ArgonColors.white,
                 color: ArgonColors.verdeOscuro,
                 onPressed: () {
+
+                  print(groupImage!.path);
                   if(categoryChoose == 'Reciclaje'){
                     if (_image == null){
                       _image = "";
@@ -156,7 +182,14 @@ class _CreateActionState extends State<CreateAction> {
                     if (_image == null){
                       _image = "";
                     }
-                    MyAction action = new MyAction("Compost", _image, comment, {},  {}, countCompost as int, 0, 0);
+                    late MyAction action;
+                    if (groupImage == null) {
+                      // Todo hacer que se cargue una imagen random de las x ya precargadas
+                      action = new MyAction("Compost", "Imagen_precargada", comment, {},  {}, countCompost as int, 0, 0);
+                    } else {
+                      action = new MyAction("Compost", groupImage!.path, comment, {},  {}, countCompost as int, 0, 0);
+                    }
+                    uploadFileToStorage();
                     userService.addAction(action);
                   }
                   if (_image == null){
@@ -382,4 +415,5 @@ class _CreateActionState extends State<CreateAction> {
   }
 
 }
+
 

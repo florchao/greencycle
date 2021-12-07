@@ -139,7 +139,7 @@ class _LoginState extends State<Login> {
                                                 user.displayName!.split(" ")[0].toLowerCase(),
                                                 user.displayName!.split(" ")[1].toLowerCase(),
                                                 user.uid,
-                                                "URL",
+                                                user.photoURL,
                                                 user.email!
                                               );
                                               print("es la primera vez!");
