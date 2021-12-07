@@ -93,7 +93,7 @@ class _MisAccionesState extends State<MisAcciones>{
                               children: <Widget>[
                                 for (var action in snapshot.data!)
                                   CardHorizontal(
-                                      description: action.description,
+                                      cta: "Ver acción",
                                       title: action.name,
                                       img: action.icon_url,
                                       tap: () {

@@ -80,9 +80,9 @@ class CardXs extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(cta,
                                     style: TextStyle(
-                                        color: ArgonColors.azul,
+                                        color: ArgonColors.verdeOscuro,
                                         fontSize: 11,
-                                        fontWeight: FontWeight.w600)),
+                                        fontWeight: FontWeight.w600, fontStyle: FontStyle.italic)),
                               )
                             ],
                           ),
