@@ -209,10 +209,10 @@ class _SettingsState extends State<Settings> {
                             // Habria que hacer un checkeo para que se fije si inicie sesino con google o no
                             await _googleSignIn.signOut();
                             FirebaseAuth.instance.signOut();
-                            setState(
-                                () {}); // Esto es para forzar un refresh nadamas
-                            Navigator.pushReplacementNamed(
-                                context, '/onboarding');
+                            setState(() {}); // Esto es para forzar un refresh nadamas
+                            Navigator.pushNamedAndRemoveUntil(context, '/onboarding',(r) => false);
+                            //Navigator.pushReplacementNamed(context, '/onboarding');
+
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0),
