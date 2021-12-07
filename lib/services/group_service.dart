@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greencycle/model/Group.dart';
+import 'package:greencycle/services/user_service.dart';
 
 class GroupService{
+
   CollectionReference groupRef = FirebaseFirestore.instance.collection(Group.collection_id);
 
   Future<String> create(Group group)async{
@@ -42,12 +44,15 @@ class GroupService{
 
   ///members
   Future<void> addMember(String groupId, String memberId)async {
+    UserService userService = new UserService();
     final groupDoc = groupRef.doc(groupId);
     groupDoc.set({
       'members' : {
         memberId : 0
       }
     }, SetOptions(merge: true) );
+
+    userService.addUserToGroup(groupId, memberId);
   }
 
   Future<void> removeMembers(String groupId, String memberId)async {

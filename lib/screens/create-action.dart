@@ -33,6 +33,8 @@ class _CreateActionState extends State<CreateAction> {
   File? groupImage = null;
   UserService userService = new UserService();
 
+  String defaultActionIconUrl = "gs://greencycle-ed98e.appspot.com/PredeterminedActionImages/";
+
   late FToast fToast;
 
   @override
@@ -197,20 +199,38 @@ class _CreateActionState extends State<CreateAction> {
                       _image = "";
                     }
                     if(counterRecycle[0] !=0 || counterRecycle[1] !=0 || counterRecycle[2] !=0 || counterRecycle[3] !=0) {
-                      MyAction action = new MyAction(
-                          "Reciclaje",
-                          _image,
-                          comment,
-                          {},
-                          {
-                            'glass': counterRecycle[3],
-                            'plastic': counterRecycle[1],
-                            'aluminum': counterRecycle[0],
-                            'Peper': counterRecycle[2]
-                          },
-                          0,
-                          0,
-                          0);
+                      late MyAction action;
+                      if (groupImage == null) {
+                        action = new MyAction(
+                            "Reciclaje",
+                            defaultActionIconUrl + "reciclaje.jpeg",
+                            comment,
+                            {},
+                            {
+                              'glass': counterRecycle[3],
+                              'plastic': counterRecycle[1],
+                              'aluminum': counterRecycle[0],
+                              'Peper': counterRecycle[2]
+                            },
+                            0,
+                            0,
+                            0);
+                      } else {
+                        action = new MyAction(
+                            "Reciclaje",
+                            groupImage!.path,
+                            comment,
+                            {},
+                            {
+                              'glass': counterRecycle[3],
+                              'plastic': counterRecycle[1],
+                              'aluminum': counterRecycle[0],
+                              'Peper': counterRecycle[2]
+                            },
+                            0,
+                            0,
+                            0);
+                      }
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
                     }else{
@@ -222,8 +242,12 @@ class _CreateActionState extends State<CreateAction> {
                       _image = "";
                     }
                     if (counterTransport[0] != 0 || counterTransport[1] != 0) {
-                      MyAction action = new MyAction(
-                          "Transporte", _image, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
+                      late MyAction action;
+                      if (groupImage == null) {
+                        action = new MyAction("Transporte", defaultActionIconUrl + "transporte.jpeg", comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
+                      } else {
+                        action = new MyAction("Transporte", groupImage!.path, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
+                      }
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
                     }else{
@@ -235,15 +259,29 @@ class _CreateActionState extends State<CreateAction> {
                       _image = "";
                     }
                     if(countPlanta!=0) {
-                      MyAction action = new MyAction(
-                          "Plantar",
-                          _image,
-                          comment,
-                          {},
-                          {},
-                          0,
-                          0,
-                          countPlanta as int);
+                      late MyAction action;
+                      if (groupImage == null) {
+                        action = new MyAction(
+                            "Plantar",
+                            defaultActionIconUrl+"plantar.jpeg",
+                            comment,
+                            {},
+                            {},
+                            0,
+                            0,
+                            countPlanta as int);
+                      } else {
+                        action = new MyAction(
+                            "Plantar",
+                            groupImage!.path,
+                            comment,
+                            {},
+                            {},
+                            0,
+                            0,
+                            countPlanta as int);
+                      }
+
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
                     }else{
