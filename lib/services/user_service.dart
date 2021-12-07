@@ -83,9 +83,9 @@ class UserService {
     List<String> groups;
     userDoc.get().then((data) => {
       groups = List.from(data.get('groups') ),
-      groups.forEach((element) async {
-        await groupService.addScore(element, score, data.id);
-      }),
+      for(String groupId in groups) {
+        groupService.addScore(groupId, score, data.id)
+      }
     });
   }
 
@@ -151,12 +151,12 @@ class UserService {
     await userDoc.update({
       'actions': FieldValue.arrayUnion([actionId])
     });
-    List<String> groupsId;
+    List<String> groups;
     await userDoc.get().then((value) => {
-      groupsId = List.from(value.get('groups')),
-      groupsId.forEach((element) async{
-        await groupService.addAction(element, actionId);
-      }),
+      groups = List.from(value.get('groups')),
+      for(String groupId in groups ){
+        groupService.addAction(groupId, actionId)
+      }
     });
 
   }
