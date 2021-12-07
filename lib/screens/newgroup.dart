@@ -479,6 +479,9 @@ class _NewGroupState extends State<NewGroup> {
                                               groupNameKey.currentState!.validate();
                                               groupDescriptionKey.currentState!.save();
                                               groupDescriptionKey.currentState!.validate();
+                                              prize1stKey.currentState!.save();
+                                              prize2ndKey.currentState!.save();
+                                              prize3rdKey.currentState!.save();
                                               if (usersList.isEmpty){
                                                 showToast("El grupo debe tener integrantes");
                                               }
@@ -486,14 +489,15 @@ class _NewGroupState extends State<NewGroup> {
                                                   _groupDescriptionController.text.isNotEmpty &&
                                                   usersList.isNotEmpty) {
                                                 late Group _group;
+                                                UserService _userService = UserService();
+                                                GroupService _groupService = GroupService();
                                                 if (groupImage == null) {
                                                   // Todo aca habria que crear al group con alguno de los iconos predeterminados
-                                                  _group = Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text);
+                                                  _group= Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 } else {
-                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text);
+                                                  _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text, _prize1stController.text, _prize2ndController.text, _prize3rdController.text);
                                                 }
-                                                GroupService _groupService = GroupService();
-                                                String _groupId = await _groupService.create(_group);
+                                                String _groupId = await _userService.addGroup(_group);
                                                 for(int i = 0; i < usersList.length; i++) {
                                                   await _groupService.addMember(_groupId, usersList[i]!.Id);
                                                 }
