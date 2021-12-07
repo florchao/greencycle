@@ -135,7 +135,7 @@ class UserService {
   Future<String?> addAction(MyAction action) async{
     String? actionId = await actionService.create(action);
     _addActionToUser(getCurrentUserId(), actionId!);
-
+    _addScore(action.getScore());
     List<String> groupsId;
      await userRef.doc(getCurrentUserId()).get().then((value) => {
        groupsId = List.from(value.get('groups')),

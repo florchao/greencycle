@@ -7,12 +7,15 @@ class Group{
   String description;
   String id;
   int score;
+  String premio1;
+  String premio2;
+  String premio3;
   Map<String, dynamic> members;
   List<String> actions;
 
   static const String collection_id = 'Grupos';
 
-  Group(this.name, this.icon_url, this.description)
+  Group(this.name, this.icon_url, this.description, this.premio1, this.premio2, this.premio3)
       : this.score= 0,
         this.id = "",
         this.actions = [],
@@ -25,6 +28,9 @@ class Group{
       score = group['score'],
       description = group['description'],
       actions = List.from(group['actions']),
+      premio1 = group['premio1'],
+      premio2 = group['premio2'],
+      premio3 = group['premio3'],
       members = group['members'];
 
   Map<String, dynamic> toMap() => {
@@ -34,6 +40,10 @@ class Group{
     'members' : members,
     'actions' : actions,
     'description': description,
+    'premio1' : premio1,
+    'premio2' : premio2,
+    'premio3' : premio3,
+
   };
 
   @override
