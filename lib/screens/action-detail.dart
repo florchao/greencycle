@@ -178,7 +178,7 @@ class _ActionDetailState extends State<ActionDetail> {
   }
 
   Widget RecycleData() {
-    List<int>? list = _actionSnapshot.data!.recycling.values.toList() as List<int>;
+    Iterable list = _actionSnapshot.data!.recycling.values;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
