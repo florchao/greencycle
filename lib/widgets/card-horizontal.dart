@@ -61,26 +61,14 @@ class CardHorizontal extends StatelessWidget {
                                 textAlign: TextAlign.left,
                                 maxFontSize: 18,
                                 style: TextStyle(
-                                    color: ArgonColors.azul, fontSize: 18)
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                            child: AutoSizeText(
-                                description,
-                                maxLines: 2,
-                                minFontSize: 9,
-                                textAlign: TextAlign.left,
-                                maxFontSize: 13,
-                                style: TextStyle(
-                                    color: ArgonColors.azul, fontSize: 13)
+                                    color: ArgonColors.azul, fontSize: 18, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)
                             ),
                           ),
                           Text(cta,
                               style: TextStyle(
-                                  color: ArgonColors.azul,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600))
+                                  color: ArgonColors.verdeOscuro,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600, fontStyle: FontStyle.italic))
                         ],
                       ),
                     ))

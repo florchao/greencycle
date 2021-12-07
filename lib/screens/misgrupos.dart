@@ -97,7 +97,7 @@ class _MisGruposState extends State<MisGrupos> {
                               children: <Widget>[
                                 for (var group in snapshot.data!)
                                   CardHorizontal(
-                                      description: group.description,
+                                      cta: "Ver grupo",
                                       title: group.name,
                                       img: group.icon_url,
                                       tap: () {

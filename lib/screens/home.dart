@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                                 children: <Widget>[
                                   for (var group in snapshot.data!)
                                     CardSmall(
-                                        cta: group.description,
+                                        cta: "Ver grupo",
                                         title: group.name,
                                         img: group.icon_url,
                                         tap: () {
@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
                                 children: <Widget>[
                                   for (var action in snapshot.data!)
                                     CardSmall(
-                                        cta: action.description,
+                                        cta: "Ver acción",
                                         title: action.name,
                                         img: action.icon_url,
                                         tap: () {
