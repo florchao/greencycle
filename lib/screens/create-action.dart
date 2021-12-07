@@ -134,7 +134,7 @@ class _CreateActionState extends State<CreateAction> {
             child:
             ShowActionOptions(categoryChoose),
           ),
-          Padding(
+          if(groupImage == null) Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -144,16 +144,18 @@ class _CreateActionState extends State<CreateAction> {
               )
             )
           ),
-          Row(
+          if(groupImage == null) Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FloatingActionButton(
                 onPressed: getImageFromCamera,
-                child: Icon(Icons.add_a_photo)
+                child: Icon(Icons.add_a_photo),
+                backgroundColor: ArgonColors.verdeOscuro,
               ),
               FloatingActionButton(
                 onPressed: getImageFromGallery,
-                child: Icon(Icons.camera_alt),
+                child: Icon(Icons.add_photo_alternate_outlined),
+                backgroundColor: ArgonColors.verdeOscuro,
               ),
             ],
           ),
