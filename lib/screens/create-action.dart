@@ -33,7 +33,9 @@ class _CreateActionState extends State<CreateAction> {
   File? groupImage = null;
   UserService userService = new UserService();
 
-  String defaultActionIconUrl = "gs://greencycle-ed98e.appspot.com/PredeterminedActionImages/";
+  late String photo_url;
+
+  String defaultActionIconUrl = "PredeterminedActionImages/";
 
   late FToast fToast;
 
@@ -85,17 +87,19 @@ class _CreateActionState extends State<CreateAction> {
     });
   }
 
-  void uploadFileToStorage() {
+  Future<void> uploadFileToStorage() async {
     if (groupImage == null) {
       print("no tenes foto seleccionada");
       return;
     }
+
     final fileName = groupImage!.path;
     final destination = 'ActionImages/' + fileName;
 
-    final ref = FirebaseStorage.instance.ref(destination);
+    final ref = await FirebaseStorage.instance.ref(destination);
 
-    UploadTask uploadTask = ref.putFile(groupImage!);
+    TaskSnapshot uploadTask = await ref.putFile(groupImage!);
+    photo_url = await ref.getDownloadURL();
   }
 
   @override
@@ -188,8 +192,7 @@ class _CreateActionState extends State<CreateAction> {
               child: FlatButton(
                 textColor: ArgonColors.white,
                 color: ArgonColors.verdeOscuro,
-                onPressed: () {
-                  uploadFileToStorage();
+                onPressed: () async {
                   //print(groupImage!.path);
                   if(categoryChoose == ""){
                     showToast("Se debe elegir una categoria");
@@ -238,15 +241,17 @@ class _CreateActionState extends State<CreateAction> {
                     }
                   }
                   else if(categoryChoose == 'Transporte') {
-                    if (_image == null) {
-                      _image = "";
-                    }
                     if (counterTransport[0] != 0 || counterTransport[1] != 0) {
                       late MyAction action;
                       if (groupImage == null) {
-                        action = new MyAction("Transporte", defaultActionIconUrl + "transporte.jpeg", comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
+                        final destination = defaultActionIconUrl + "transporte.jpeg";
+                        final ref = await FirebaseStorage.instance.ref(destination);
+                        String url = await ref.getDownloadURL();
+
+                        action = new MyAction("Transporte", url, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
                       } else {
-                        action = new MyAction("Transporte", groupImage!.path, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
+                        await uploadFileToStorage();
+                        action = new MyAction("Transporte", photo_url, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
                       }
                       userService.addAction(action);
                       Navigator.pushReplacementNamed(context, '/home');
