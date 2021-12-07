@@ -76,7 +76,7 @@ class GroupService{
     int _auxScore = 0;
     await groupDoc.get().then((value) => _auxScore = value.get('members')[memberId]);
     _auxScore += score;
-    groupDoc.update({
+    await groupDoc.update({
       "score" : FieldValue.increment(score),
       "members" : {
         memberId : _auxScore

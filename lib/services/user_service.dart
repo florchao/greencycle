@@ -143,13 +143,6 @@ class UserService {
     String? actionId = await actionService.create(action);
     _addActionToUser(getCurrentUserId(), actionId!);
     _addScore(action.getScore());
-    List<String> groupsId;
-     await userRef.doc(getCurrentUserId()).get().then((value) => {
-       groupsId = List.from(value.get('groups')),
-       groupsId.forEach((element) async{
-         await groupService.addAction(element, actionId);
-       }),
-     });
     return actionId;
   }
 
@@ -158,6 +151,14 @@ class UserService {
     await userDoc.update({
       'actions': FieldValue.arrayUnion([actionId])
     });
+    List<String> groupsId;
+    await userDoc.get().then((value) => {
+      groupsId = List.from(value.get('groups')),
+      groupsId.forEach((element) async{
+        await groupService.addAction(element, actionId);
+      }),
+    });
+
   }
 
   Future<void> _removeActionToUser(String userId, String actionId) async{
