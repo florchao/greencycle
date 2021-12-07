@@ -7,39 +7,39 @@ import 'package:greencycle/model/MyUser.dart';
 import 'package:greencycle/services/group_service.dart';
 import 'package:greencycle/services/user_service.dart';
 
-Map<int, String> membersNamesByScore = {};
-List<String> membersScoreInAScendingOrder = [];
-Group? group = new Group('', '', '');
-int position = 1;
-
 class GroupDetail extends StatefulWidget{
   @override
   _CreateGroupDetailState createState() => _CreateGroupDetailState();
 }
 
 class _CreateGroupDetailState extends State<GroupDetail> {
+  Map<int, String> membersNamesByScore = new Map<int, String>();
+  var membersScoreInAScendingOrder = List.filled(100, null, growable: false);
+  Group? group = new Group('', '', '');
+  int position = 1;
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
 
-  Future<List<String>> load(String groupId) async {
+  Future<Map<int, String>> load(String groupId) async {
     await groupService.getGroupById(groupId).then((value) => group = value);
     print(group);
     Map<String, dynamic> members = group!.members;
     print(members);
-    var keys = members.keys;
-    for (var id in keys){
-      print(id);
+    // var keys = members.keys;
+    // print(keys);
+    List<String> keys = members.entries.map( (entry) => entry.key).toList();
+    print(keys);
+    for(int i=0; i < keys.length; i++){
+      String id = keys[i];
       var userScoreInGroup = members[id];
-      print(userScoreInGroup);
       MyUser? user = await userService.getUser(id);
-      print(user);
       if(user!=null){
         print("ADENTRO");
         membersNamesByScore.putIfAbsent(userScoreInGroup, () => user.name);
         membersScoreInAScendingOrder.add(userScoreInGroup);
       }
     }
-    return membersScoreInAScendingOrder;
+    return membersNamesByScore;
   }
 
   @override
@@ -52,9 +52,9 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-      body: FutureBuilder<List<String>>(
+      body: FutureBuilder<Map<int, String>>(
         future: load(groupId),
-        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<Map<int, String>> snapshot) {
           if (snapshot.hasData) {
             // membersScoreInAScendingOrder.sort((a, b) => a.compareTo(b));
             print("SNAP");
