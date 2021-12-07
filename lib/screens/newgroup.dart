@@ -34,7 +34,6 @@ class _NewGroupState extends State<NewGroup> {
   final searchKey = GlobalKey<FormState>();
   List<MyUser?> usersList = [];
 
-
   late FToast fToast;
 
   @override
@@ -400,6 +399,9 @@ class _NewGroupState extends State<NewGroup> {
                                                 for(int i = 0; i < usersList.length; i++) {
                                                   await _groupService.addMember(_groupId, usersList[i]!.Id);
                                                 }
+
+                                                _myMultipleNotifier._selectedItems = [];
+
                                                 Navigator.pushReplacementNamed(
                                                     context, '/home');
                                               }
