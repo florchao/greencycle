@@ -193,7 +193,6 @@ class _CreateActionState extends State<CreateAction> {
                 textColor: ArgonColors.white,
                 color: ArgonColors.verdeOscuro,
                 onPressed: () async {
-                  //print(groupImage!.path);
                   if(categoryChoose == ""){
                     showToast("Se debe elegir una categoria");
                   }
@@ -204,11 +203,10 @@ class _CreateActionState extends State<CreateAction> {
                     if(counterRecycle[0] !=0 || counterRecycle[1] !=0 || counterRecycle[2] !=0 || counterRecycle[3] !=0) {
                       late MyAction action;
                       if (groupImage == null) {
-                        action = new MyAction(
-                            "Reciclaje",
-                            defaultActionIconUrl + "reciclaje.jpeg",
-                            comment,
-                            {},
+                        final destination = defaultActionIconUrl + "reciclaje.jpeg";
+                        final ref = await FirebaseStorage.instance.ref(destination);
+                        String url = await ref.getDownloadURL();
+                        action = new MyAction("Reciclaje", url, comment, {},
                             {
                               'glass': counterRecycle[3],
                               'plastic': counterRecycle[1],
@@ -219,9 +217,10 @@ class _CreateActionState extends State<CreateAction> {
                             0,
                             0);
                       } else {
+                        await uploadFileToStorage();
                         action = new MyAction(
                             "Reciclaje",
-                            groupImage!.path,
+                            photo_url,
                             comment,
                             {},
                             {
@@ -235,7 +234,7 @@ class _CreateActionState extends State<CreateAction> {
                             0);
                       }
                       userService.addAction(action);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/misacciones');
                     }else{
                       showToast("Se debe reciclar al menos un producto");
                     }
@@ -247,65 +246,49 @@ class _CreateActionState extends State<CreateAction> {
                         final destination = defaultActionIconUrl + "transporte.jpeg";
                         final ref = await FirebaseStorage.instance.ref(destination);
                         String url = await ref.getDownloadURL();
-
                         action = new MyAction("Transporte", url, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
                       } else {
                         await uploadFileToStorage();
                         action = new MyAction("Transporte", photo_url, comment, {'bike': counterTransport[0],'publicTransport': counterTransport[1]}, {}, 0, 0, 0);
                       }
                       userService.addAction(action);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/misacciones');
                     }else{
                       showToast("Se debe registar algún trayecto realizado");
                     }
                   }
                   else if(categoryChoose == 'Plantar'){
-                    if (_image == null){
-                      _image = "";
-                    }
                     if(countPlanta!=0) {
                       late MyAction action;
                       if (groupImage == null) {
-                        action = new MyAction(
-                            "Plantar",
-                            defaultActionIconUrl+"plantar.jpeg",
-                            comment,
-                            {},
-                            {},
-                            0,
-                            0,
-                            countPlanta as int);
+                        final destination = defaultActionIconUrl + "plantar.jpeg";
+                        final ref = await FirebaseStorage.instance.ref(destination);
+                        String url = await ref.getDownloadURL();
+                        action = new MyAction("Plantar", url, comment, {}, {}, 0, 0, countPlanta as int);
                       } else {
-                        action = new MyAction(
-                            "Plantar",
-                            groupImage!.path,
-                            comment,
-                            {},
-                            {},
-                            0,
-                            0,
-                            countPlanta as int);
+                        await uploadFileToStorage();
+                        action = new MyAction("Plantar", photo_url, comment, {}, {}, 0, 0, countPlanta as int);
                       }
-
                       userService.addAction(action);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/misacciones');
                     }else{
                       showToast("Se debe plantar al menos un árbol");
                     }
                   }
                   else if(categoryChoose == 'Ecoproductos'){
-                    if (_image == null){
-                      _image = "";
-                    }
                     if(countProductos!=0) {
                       late MyAction action;
                       if (groupImage == null) {
-                        action = new MyAction("Ecoproductos", defaultActionIconUrl+"ecoProd.jpeg", comment, {}, {}, 0, countProductos as int, 0);
+                        final destination = defaultActionIconUrl + "ecoProd.jpeg";
+                        final ref = await FirebaseStorage.instance.ref(destination);
+                        String url = await ref.getDownloadURL();
+                        action = new MyAction("Ecoproductos", url, comment, {}, {}, 0, countProductos as int, 0);
                       } else {
-                        action = new MyAction("Ecoproductos", groupImage!.path, comment, {}, {}, 0, countProductos as int, 0);
+                        await uploadFileToStorage();
+                        action = new MyAction("Ecoproductos", photo_url, comment, {}, {}, 0, countProductos as int, 0);
                       }
                       userService.addAction(action);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/misacciones');
                     }
                     else{
                       showToast("Se debe registrar al menos un producto");
@@ -315,12 +298,16 @@ class _CreateActionState extends State<CreateAction> {
                     if(countCompost !=0){
                     late MyAction action;
                     if (groupImage == null) {
-                      action = new MyAction("Compost", defaultActionIconUrl+"compost.jpeg", comment, {},  {}, countCompost as double, 0, 0);
+                      final destination = defaultActionIconUrl + "compost.jpeg";
+                      final ref = await FirebaseStorage.instance.ref(destination);
+                      String url = await ref.getDownloadURL();
+                      action = new MyAction("Compost", url, comment, {},  {}, countCompost as double, 0, 0);
                     } else {
-                      action = new MyAction("Compost", groupImage!.path, comment, {},  {}, countCompost as double, 0, 0);
+                      await uploadFileToStorage();
+                      action = new MyAction("Compost", photo_url, comment, {},  {}, countCompost as double, 0, 0);
                     }
                     userService.addAction(action);
-                    Navigator.pushReplacementNamed(context, '/home');
+                    Navigator.pushReplacementNamed(context, '/misacciones');
                   }else{
                       showToast("Se debe compostar algo");
                     }
@@ -328,12 +315,21 @@ class _CreateActionState extends State<CreateAction> {
                   else if(categoryChoose == 'Factura de luz y gas'){ //DESPUES HAY QUE VER COMO SE CARGAN LAS FOTOS
                     late MyAction action;
                     if (groupImage == null) {
-                      action = new MyAction("Factura de luz y gas", defaultActionIconUrl+"facturas.jpeg", comment, {},  {}, 0, 0, 0);
+                      showToast("Es necesario cargar una foto");
                     } else {
-                      action = new MyAction("Factura de luz y gas", groupImage!.path, comment, {},  {}, 0, 0, 0);
+                      await uploadFileToStorage();
+                      action = new MyAction(
+                          "Factura de luz y gas",
+                          photo_url,
+                          comment,
+                          {},
+                          {},
+                          0,
+                          0,
+                          0);
+                      userService.addAction(action);
+                      Navigator.pushReplacementNamed(context, '/misacciones');
                     }
-                    userService.addAction(action);
-                    Navigator.pushReplacementNamed(context, '/home');
                   }
                 },
                 shape: RoundedRectangleBorder(
