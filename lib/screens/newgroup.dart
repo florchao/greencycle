@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -100,6 +101,13 @@ class _NewGroupState extends State<NewGroup> {
     final ref = FirebaseStorage.instance.ref(destination);
 
     UploadTask uploadTask = ref.putFile(groupImage!);
+  }
+
+  String getRandomIconPath() {
+    Random random = Random();
+    int randomNumber = random.nextInt(6);
+    String finalIcon = "gs://greencycle-ed98e.appspot.com/PredeterminedGroupIcons/grupo"+randomNumber.toString()+".jpeg";
+    return finalIcon;
   }
 
   @override
@@ -390,7 +398,9 @@ class _NewGroupState extends State<NewGroup> {
                                                 late Group _group;
                                                 if (groupImage == null) {
                                                   // Todo aca habria que crear al group con alguno de los iconos predeterminados
-                                                  _group = Group(_groupNameController.text, "Icono predeterminado", _groupDescriptionController.text);
+                                                  String randomIconPath = getRandomIconPath();
+                                                  print(randomIconPath);
+                                                  _group = Group(_groupNameController.text, randomIconPath, _groupDescriptionController.text);
                                                 } else {
                                                   _group = Group(_groupNameController.text, groupImage!.path, _groupDescriptionController.text);
                                                 }
