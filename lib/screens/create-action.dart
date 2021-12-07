@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/model/MyAction.dart';
 import 'package:greencycle/model/MyUser.dart';
@@ -31,6 +32,35 @@ class _CreateActionState extends State<CreateAction> {
   var _image = null;
   File? groupImage = null;
   UserService userService = new UserService();
+
+  late FToast fToast;
+
+  @override
+  void initState(){
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  void showToast(String message) {
+    Widget toast = Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Color.fromRGBO(244, 67, 54, 0.5019607843137255)
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(message),
+        ],
+      ),
+    );
+      fToast.showToast(
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+      );
+  }
 
   Future getImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -130,6 +160,7 @@ class _CreateActionState extends State<CreateAction> {
               ),
             ),
             FloatingActionButton.small(
+              child: Icon(Icons.delete, color: ArgonColors.white),
                 backgroundColor: Colors.red,
                 onPressed: () {
                   groupImage = null;
@@ -157,39 +188,96 @@ class _CreateActionState extends State<CreateAction> {
                 color: ArgonColors.verdeOscuro,
                 onPressed: () {
 
-                  print(groupImage!.path);
-                  if(categoryChoose == 'Reciclaje'){
-                    if (_image == null){
-                      _image = "";
-                    }
-                    MyAction action = new MyAction("Reciclaje", _image, comment, {},  {'glass': counterRecycle[3], 'plastic': counterRecycle[1], 'aluminum': counterRecycle[0], 'Peper': counterRecycle[2]}, 0, 0, 0);
-                    userService.addAction(action);
+                  //print(groupImage!.path);
+                  if(categoryChoose == ""){
+                    showToast("Se debe elegir una categoria");
                   }
-                  else if(categoryChoose == 'Transporte'){
+                  else if(categoryChoose == 'Reciclaje'){
                     if (_image == null){
                       _image = "";
                     }
-                    MyAction action = new MyAction("Transporte", _image, comment, {'bike': counterTransport[0], 'publicTransport': counterTransport[1]},  {}, 0, 0, 0);
-                    userService.addAction(action);
+                    if(counterRecycle[0] !=0 || counterRecycle[1] !=0 || counterRecycle[2] !=0 || counterRecycle[3] !=0) {
+                      MyAction action = new MyAction(
+                          "Reciclaje",
+                          _image,
+                          comment,
+                          {},
+                          {
+                            'glass': counterRecycle[3],
+                            'plastic': counterRecycle[1],
+                            'aluminum': counterRecycle[0],
+                            'Peper': counterRecycle[2]
+                          },
+                          0,
+                          0,
+                          0);
+                      userService.addAction(action);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }else{
+                      showToast("Se debe reciclar al menos un producto");
+                    }
+                  }
+                  else if(categoryChoose == 'Transporte') {
+                    if (_image == null) {
+                      _image = "";
+                    }
+                    if (counterTransport[0] != 0 || counterTransport[1] != 0) {
+                      MyAction action = new MyAction(
+                          "Transporte",
+                          _image,
+                          comment,
+                          {
+                            'bike': counterTransport[0],
+                            'publicTransport': counterTransport[1]
+                          },
+                          {},
+                          0,
+                          0,
+                          0);
+                      userService.addAction(action);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }else{
+                      showToast("Se debe registar algún trayecto realizado");
+                    }
                   }
                   else if(categoryChoose == 'Plantar'){
                     if (_image == null){
                       _image = "";
                     }
-                    MyAction action = new MyAction("Plantar", _image, comment, {},  {}, 0, 0, countPlanta as int);
-                    userService.addAction(action);
+                    if(countPlanta!=0) {
+                      MyAction action = new MyAction(
+                          "Plantar",
+                          _image,
+                          comment,
+                          {},
+                          {},
+                          0,
+                          0,
+                          countPlanta as int);
+                      userService.addAction(action);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }else{
+                      showToast("Se debe plantar al menos un árbol");
+                    }
                   }
                   else if(categoryChoose == 'Ecoproductos'){
                     if (_image == null){
                       _image = "";
                     }
-                    MyAction action = new MyAction("Ecoproductos", _image, comment, {},  {}, 0, countProductos as int, 0);
-                    userService.addAction(action);
+                    if(countProductos!=0) {
+                      MyAction action = new MyAction("Ecoproductos", _image, comment, {}, {}, 0, countProductos as int, 0);
+                      userService.addAction(action);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }
+                    else{
+                      showToast("Se debe registrar al menos un producto");
+                    }
                   }
                   else if(categoryChoose == 'Compost'){
                     if (_image == null){
                       _image = "";
                     }
+                    if(countCompost !=0){
                     late MyAction action;
                     if (groupImage == null) {
                       // Todo hacer que se cargue una imagen random de las x ya precargadas
@@ -199,15 +287,19 @@ class _CreateActionState extends State<CreateAction> {
                     }
                     uploadFileToStorage();
                     userService.addAction(action);
-                  }
+                    Navigator.pushReplacementNamed(context, '/home');
+                  }else{
+                      showToast("Se debe compostar algo");
+                    }
                   if (_image == null){
                     _image = "";
+                  }
                   }
                   else if(categoryChoose == 'Factura de luz y gas'){ //DESPUES HAY QUE VER COMO SE CARGAN LAS FOTOS
                     MyAction action = new MyAction("Factura de luz y gas", _image, comment, {},  {}, 0, 0, 0);
                     userService.addAction(action);
+                    Navigator.pushReplacementNamed(context, '/home');
                   }
-                  Navigator.pushReplacementNamed(context, '/home');
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
