@@ -1,16 +1,17 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:greencycle/constants/Theme.dart';
 import 'package:greencycle/model/MyUser.dart';
 import 'package:greencycle/services/user_service.dart';
-import 'package:greencycle/widgets/input.dart';
 
 //widgets
-import 'package:greencycle/widgets/navbar.dart';
-
 import 'package:greencycle/widgets/drawer.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -29,6 +30,43 @@ class _SettingsState extends State<Settings> {
 
   void initState() {
     super.initState();
+  }
+
+  var _image = null;
+  File? profileImage = null;
+
+  Future getImageFromCamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      this.profileImage = imageTemporary;
+    });
+  }
+
+  Future getImageFromGallery() async {
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      this.profileImage = imageTemporary;
+    });
+  }
+
+  void uploadFileToStorage() async {
+    if (profileImage == null) {
+      print("no tenes foto seleccionada");
+      return;
+    }
+    final fileName = profileImage!.path;
+    final destination = 'profileImages/' + fileName;
+
+    final ref = FirebaseStorage.instance.ref(destination);
+
+    UploadTask uploadTask = ref.putFile(profileImage!);
   }
 
   @override
@@ -130,57 +168,121 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: image,
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Modificar imagen",
-                            border: OutlineInputBorder(),
-                            labelStyle: TextStyle(color: ArgonColors.azul),
-                          ),
-                          onSaved: (value) {
-                            _imageController!.text = value!;
-                          },
-                          validator: (value) {
-                            RegExp regex = new RegExp(
-                                r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$');
-                            if (value == null || value.isEmpty) {
-                              return null;
-                            } else if (!regex.hasMatch(value)) {
-                              return "La imagen debe ser una dirección URL";
-                            }
-                            return null;
-                          },
+                    const SizedBox(height: 10.0),
+                    Center(
+                        child: _image == null ? const Text(
+                            "Modificar imagen de perfil",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: ArgonColors.azul,
+                                fontSize: 15)) : Image.file(
+                            _image)
+                    ),
+                    const SizedBox(height: 20.0),
+                    if(profileImage == null) Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceEvenly,
+                      children: <Widget>[
+                        FloatingActionButton(
+                            onPressed: getImageFromCamera,
+                            child: const Icon(Icons.add_a_photo),
+                          backgroundColor: ArgonColors.verdeOscuro
+                        ),
+                        FloatingActionButton(
+                          onPressed: getImageFromGallery,
+                          child: const Icon(Icons.add_photo_alternate_outlined),
+                          backgroundColor: ArgonColors.verdeOscuro
+                        )
+                      ],
+                    ),
+                    profileImage != null ? Stack(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Image.file(
+                          profileImage!,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    ),
+                      FloatingActionButton.small(
+                          child: Icon(Icons.delete, color: ArgonColors.white),
+                          backgroundColor: Colors.red,
+                          onPressed: () {
+                            profileImage = null;
+                            setState(() {});
+                          }),
+                    ] ): SizedBox.shrink(),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child:
+                      // Form(
+                      //   key: image,
+                      //   child: TextFormField(
+                      //     decoration: const InputDecoration(
+                      //       labelText: "Modificar imagen",
+                      //       border: OutlineInputBorder(),
+                      //       labelStyle: TextStyle(color: ArgonColors.azul),
+                      //     ),
+                      //     onSaved: (value) {
+                      //       _imageController!.text = value!;
+                      //     },
+                      //     validator: (value) {
+                      //       RegExp regex = new RegExp(
+                      //           r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$');
+                      //       if (value == null || value.isEmpty) {
+                      //         return null;
+                      //       } else if (!regex.hasMatch(value)) {
+                      //         return "La imagen debe ser una dirección URL";
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 30),
                       child: Center(
                         child: FlatButton(
                           textColor: ArgonColors.white,
                           color: ArgonColors.verdeOscuro,
+                          minWidth: 190,
                           onPressed: () async {
                             mail.currentState!.save();
                             mail.currentState!.validate();
-                            image.currentState!.save();
-                            image.currentState!.validate();
+                            // image.currentState!.save();
+                            // image.currentState!.validate();
                             firstName.currentState!.save();
                             firstName.currentState!.validate();
                             lastName.currentState!.save();
                             lastName.currentState!.validate();
+                            uploadFileToStorage();
+                            print("PHOTO PATH");
+                            print(profileImage!.path);
                             if(_firstNameController!.text != "" || _lastNameController!.text != "" || _imageController!.text != "" || _emailController!.text != "") {
-                              MyUser _myUser = MyUser(
-                                  _firstNameController!.text,
-                                  _lastNameController!.text,
-                                  "",
-                                  _imageController!.text,
-                                  _emailController!.text);
+                              late MyUser _myUser;
+                              if(profileImage == null) {
+                                _myUser = MyUser(
+                                    _firstNameController!.text,
+                                    _lastNameController!.text,
+                                    "",
+                                    null,
+                                    _emailController!.text);
+                                print("SIN FOTO");
+                                print(_myUser);
+                              } else {
+                                _myUser = MyUser(
+                                    _firstNameController!.text,
+                                    _lastNameController!.text,
+                                    "",
+                                    profileImage!.path,
+                                    _emailController!.text);
+                                print("CON FOTO");
+                                print(_myUser);
+                              }
+                              print(_myUser);
+
                               UserService _userService = UserService();
                               _userService.editCurrentUser(_myUser);
                               setState(() {});
@@ -200,11 +302,12 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 100),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Center(
                         child: FlatButton(
                           textColor: ArgonColors.white,
                           color: ArgonColors.verdeOscuro,
+                          minWidth: 190,
                           onPressed: () async {
                             // Habria que hacer un checkeo para que se fije si inicie sesino con google o no
                             await _googleSignIn.signOut();

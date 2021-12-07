@@ -260,7 +260,7 @@ class _NewGroupState extends State<NewGroup> {
                                           ),
                                           FloatingActionButton(
                                             onPressed: getImageFromGallery,
-                                            child: const Icon(Icons.camera_alt),
+                                            child: const Icon(Icons.add_photo_alternate_outlined),
                                           )
                                         ],
                                       ),
