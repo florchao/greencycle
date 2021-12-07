@@ -60,8 +60,8 @@ class MyAction{
     double aux = 0;
 
     if(transport.isNotEmpty) {
-      aux += (transport['bike'] as double) * 5;
-      aux += (transport['publicTransport'] as double) * 3;
+      aux += (transport['bike']) * 5;
+      aux += (transport['publicTransport'] ) * 3;
     }
     if(recycling.isNotEmpty) {
       aux += (recycling['glass'] as int) * 15;
