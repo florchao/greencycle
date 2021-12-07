@@ -266,6 +266,7 @@ class _NewGroupState extends State<NewGroup> {
                                           ),
                                         ),
                                         FloatingActionButton.small(
+                                            child: Icon(Icons.delete, color: ArgonColors.white),
                                             backgroundColor: Colors.red,
                                             onPressed: () {
                                               groupImage = null;
