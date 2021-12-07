@@ -14,7 +14,6 @@ class _ActionDetailState extends State<ActionDetail> {
 
   ActionService _actionService = ActionService();
   late MyAction _action;
-  int _listCount = 0;
   List<String>? _actionFieldsList = [];
   late AsyncSnapshot<MyAction> _actionSnapshot;
 
@@ -24,10 +23,6 @@ class _ActionDetailState extends State<ActionDetail> {
     await _actionService.getAction(actionId).then((value) => _action = value!);
     return _action;
   }
-
-  MyAction _myAction = MyAction('Reciclaje', '', 'Descrip.',
-      new Map<String, dynamic>(), new Map<String, dynamic>(),
-      0, 0, 0);
 
   Map<String, List> _categories = new Map();
 
@@ -42,8 +37,6 @@ class _ActionDetailState extends State<ActionDetail> {
   List<String> _lightGasBills = ['Consumo de luz y gas'];
 
   List<String> _compost = ['Compost'];
-
-  Map<String, String> _fieldNames = new Map();
 
   Map<String, String> _units = new Map();
 
@@ -74,15 +67,10 @@ class _ActionDetailState extends State<ActionDetail> {
       body: FutureBuilder<MyAction>(
         future:load(actionId),
         builder: (BuildContext context, AsyncSnapshot<MyAction> snapshot) {
-          print('SNAPSHOT');
-          print(snapshot);
           if(snapshot.hasData) {
             String actionName = snapshot.data!.name;
-            print('NAME');
-            print(actionName);
             _actionFieldsList = _categories[actionName]!.cast<String>();
             _actionSnapshot = snapshot;
-            print(_actionFieldsList);
             return Stack(
               children: <Widget>[
                 SafeArea(
@@ -267,7 +255,6 @@ class _ActionDetailState extends State<ActionDetail> {
   }
 
   Widget UnitsDisplay(String name) {
-    print(_units[name]);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

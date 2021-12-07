@@ -188,7 +188,6 @@ class _NewGroupState extends State<NewGroup> {
                                                   fontSize: 15)) : Image.file(
                                               _image)
                                       ),
-                                      // Image.network("https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"),
                                       const SizedBox(height: 8.0),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment
@@ -269,10 +268,7 @@ class _NewGroupState extends State<NewGroup> {
                                               onPressed: () {
                                                 _showUserListDialog(context);
                                                 usersList = _myMultipleNotifier._selectedItems;
-                                                print(usersList);
-                                                print(usersList[0]);
                                               }
-                                            // data = _myMultipleNotifier._selectedItems;
                                           ),
                                         ],
                                       ),
@@ -394,28 +390,14 @@ class _NewGroupState extends State<NewGroup> {
                                       onPressed: () async {
                                         if (_searchController.text.isNotEmpty) {
                                           UserService _userService = UserService();
-                                          print(_searchController.text);
                                           List<MyUser> _userList = await _userService
                                               .getAllUser(
                                               _searchController.text, 1);
-                                          print(_userList);
                                           _userToAdd = _userList[0] as MyUser;
-                                          print(_userList);
-                                          print(_userToAdd);
-                                          print(_userToAdd!.name);
                                           if (_userToAdd != null) {
                                             dialogState(() {
                                               userVisibility = true;
                                             });
-                                            //   print(_userToAdd!.name);
-                                            //   ListTile(
-                                            //       onTap: ()
-                                            //       {},
-                                            //       title: Text(_userToAdd!.name),
-                                            //       subtitle: Text(_userToAdd!.email),
-                                            //       trailing: const Icon(Icons.chat, color: ArgonColors.azul)
-                                            //   ); } else {
-                                            //   Container(); }
                                           }
                                         }
                                         setState(() {});
@@ -433,7 +415,6 @@ class _NewGroupState extends State<NewGroup> {
                                                 leading: const Icon(
                                                     Icons.account_circle),
                                                 onTap: () {
-                                                  print(_userToAdd);
                                                   // usersList.add(_userToAdd!);
                                                   if(!_multipleNotifier.isInList(_userToAdd!)) {
                                                     _multipleNotifier.addItem(
