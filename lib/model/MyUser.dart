@@ -24,7 +24,6 @@ class MyUser{
         //this.weekly_score = " ",
         this.score = 0;
 
-  //todo testear
   List<MyAction?>? getActions(){
     ActionService actionService = new ActionService();
     List<MyAction?>? auxActions;
@@ -35,7 +34,6 @@ class MyUser{
     return auxActions;
   }
 
-  //todo testear
   List<Group?>? getGroups(){
     GroupService groupService = new GroupService();
     List<Group?>? auxGroups;
