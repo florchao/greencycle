@@ -13,6 +13,12 @@ class GroupDetail extends StatefulWidget{
 }
 
 class _CreateGroupDetailState extends State<GroupDetail> {
+  var groupId;
+  @override
+  void initState(){
+    super.initState();
+  }
+
   List<String> names = [];
   List<dynamic> scores = [];
   var membersScoreInAScendingOrder = [];
@@ -31,6 +37,7 @@ class _CreateGroupDetailState extends State<GroupDetail> {
   // }
 
   LinkedHashMap<String, dynamic> order(Map<String, dynamic> members) {
+
     // lista de ids ordenados x score
     var membersIdsSortedByScoreList = members.keys.toList(growable:false)
       ..sort((k1, k2) => members[k2].compareTo(members[k1]));
@@ -54,54 +61,25 @@ class _CreateGroupDetailState extends State<GroupDetail> {
   }
 
   Future<Map<String, int>> fetchData(String groupId) async {
-    Map<String, dynamic> scoreByNamesMap = {};
     Map<String, int> members = new Map<String, int>();
-    groupService.getGroupById(groupId).then((value) => group = value!);
-    print(group);
+    await groupService.getGroupById(groupId).then((value) => group = value!);
     LinkedHashMap<String, dynamic> scoresByIdMap = order(group.members);
-    print(scoresByIdMap);
     List<String> membersIds = scoresByIdMap.keys.toList();
-    print(membersIds);
     List<MyUser> usersByScore = [];
     await getUser(membersIds).then((response) =>
-        //Esto lo trae perfecto
         usersByScore = response
     ).whenComplete(() {
-        print("AFTER GETUSER");
-        print(usersByScore);
-        print(members);
         for(int i=0; i<usersByScore.length; i++) {
-          print(i);
-          print(usersByScore.length);
-          print(usersByScore[i].Id);
-          print(scoresByIdMap);
-          print(scoresByIdMap[usersByScore[i].Id]);
-          print(usersByScore[i].name + " " + usersByScore[i].last_name);
           members.putIfAbsent(usersByScore[i].name + " " + usersByScore[i].last_name, ()=> scoresByIdMap[usersByScore[i].Id]);
-          print("DESPUES");
         }
-        print(members);
-        // Acá se caga
-        //for(int i=0; i< usersByScore.length; i++){
-          //userNamesOrderedByScore[i] = usersByScore[i].name + ' ' + usersByScore[i].last_name;
-        //}
-        //print(userNamesOrderedByScore);
-        //int i = 1;
-       // scoresByIdMap.keys.toList().forEach((key) {
-        //scoreByNamesMap.addAll({
-          //userNamesOrderedByScore[i]: scoresByIdMap[key]
-        //});
-        //i++;
       });
-    //});
-    //print(scoreByNamesMap);
     return members;
   }
 
   @override
   Widget build(BuildContext context) {
-    final String groupId = ModalRoute.of(context)!.settings.arguments as String;
-    print(groupId);
+    dynamic arguments = ModalRoute.of(context)!.settings.arguments;
+    groupId = arguments["id"];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalle grupo"),
@@ -117,8 +95,6 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         future: fetchData(groupId),
         builder: (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-            print("AFTER FETCHDATA");
-            print(snapshot);
             names = snapshot.data!.keys.toList();
             scores = snapshot.data!.values.toList();
             position = 1;
@@ -176,8 +152,6 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     }
   
   Widget ScoreTableRowWidget(int position){
-    print("ENTRA");
-    print(position);
     Color? color = null;
     if(position < 3) {
       switch (position) {

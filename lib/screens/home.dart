@@ -175,9 +175,10 @@ class _HomeState extends State<Home> {
                                         title: group.name,
                                         img: group.icon_url,
                                         tap: () {
-                                          print("ID");
-                                          print(group.id.toString());
-                                          Navigator.pushNamed(context, '/group-detail', arguments: group.id);
+                                          Navigator.pushNamed(
+                                              context, '/group-detail', arguments: {
+                                            "id": group.id
+                                          });
                                         })
                                 ],
                               ),

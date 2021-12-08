@@ -102,7 +102,9 @@ class _MisGruposState extends State<MisGrupos> {
                                       img: group.icon_url,
                                       tap: () {
                                         Navigator.pushNamed(
-                                            context, '/group-detail', arguments: group.id);
+                                            context, '/group-detail', arguments: {
+                                          "id": group.id
+                                        });
                                       })
                               ],
                             ),

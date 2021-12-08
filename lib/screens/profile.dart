@@ -64,16 +64,6 @@ class _ProfileState extends State<Profile> {
             future: UserService().getCurrentUser(),
             builder: (BuildContext context, AsyncSnapshot<MyUser?> snapshot) {
               if (snapshot.hasData) {
-                // String image = snapshot.data!.icon_url!;
-                // print(image);
-                // String _imageUrl = '';
-                // ref = FirebaseStorage.instance.ref().child(image).getDownloadURL().then((value) => setState(() => _imageUrl = value));
-                // ref.getDownloadURL().then((loc) {
-                //   print('ENTRO');
-                //   setState(() => _imageUrl = loc);});;
-                // print('URL' + _imageUrl);
-                // print('REF' + ref.toString());
-                // print('DOWNLOAD' + ref.getDownloadURL().toString());
                 return Stack(children: <Widget>[
                   SafeArea(
                     child: ListView(children: [
@@ -224,7 +214,12 @@ class _ProfileState extends State<Profile> {
                                                                     CardXs(cta: "Ver grupo",
                                                                     title: group.name,
                                                                     img: group.icon_url != "" ? group.icon_url : "./assets/imgs/logo.png",
-                                                                    tap: () { Navigator.pushNamed(context, '/group-detail', arguments: group.id);},),
+                                                                    tap: () {
+                                                                      Navigator.pushNamed(
+                                                                          context, '/group-detail', arguments: {
+                                                                        "id": group.id
+                                                                      });
+                                                                      },),
                                                               ]),
                                                         );
                                                       } else {
