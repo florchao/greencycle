@@ -121,7 +121,7 @@ class _CreateGroupDetailState extends State<GroupDetail> {
                         ),
                     Column(
                       children: [
-                        for (int i=0; i<3; i++)
+                        for (int i=0; i<3 || i< names.length; i++)
                          ScoreTableRowWidget(i)
                       ],
                     ),
