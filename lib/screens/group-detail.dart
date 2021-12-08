@@ -15,38 +15,36 @@ class GroupDetail extends StatefulWidget{
 class _CreateGroupDetailState extends State<GroupDetail> {
   Map<int, String> membersNamesByScore = {};
   var membersScoreInAScendingOrder = [];
-  Group? group = new Group('', '', '', '', '', '');
+  late Group group;
   int position = 1;
+  List<MyUser> names = [];
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
 
-  Future<Map<int, String>> load(String groupId) async {
-    Group? group = await groupService.getGroupById(groupId);
-    print("mi grupo");
-    print(group);
-    Map<String, dynamic> members = group!.members;
-    print(members);
-    // var keys = members.keys;
-    // print(keys);
-    List<String> keys = members.entries.map( (entry) => entry.key).toList();
-    print(keys);
-    for(int i=0; i < keys.length; i++) {
-      String id = keys[i];
-      var userScoreInGroup = members[id];
-      MyUser? user = await userService.getUser(id);
-      print("mi user");
-      print(user);
-      if (user != null) {
-        print("ADENTRO");
-        membersNamesByScore[i] = user.name;
-      }
-    }
-    // var topThree = bestThree(membersNamesByScore);
-    print("FINAL");
-    print(membersNamesByScore);
-    return membersNamesByScore;
+  Future<Group> load(String groupId) async {
+    await groupService.getGroupById(groupId).then((value) => group = value!);
+    return group;
   }
 
+  order(Map<String, dynamic> list){
+    var sortedKeys = list.keys.toList(growable:false)
+      ..sort((k1, k2) => list[k2].compareTo(list[k1]));
+    LinkedHashMap sortedMap = new LinkedHashMap.fromIterable(sortedKeys, key: (k) => k, value: (k) => list[k]);
+    Map<String, int> map = new Map<String, int>();
+    List keysSortedMap = sortedMap.keys.toList();
+    for(var index=0; index < keysSortedMap.length; index ++){
+      map[keysSortedMap[index]] = sortedMap[keysSortedMap[index]];
+    }
+    return map;
+  }
+
+  getUser(List<String> list)async{
+    for(int i=0; i < await list.length; i++) {
+     MyUser user =  (await userService.getUser(list[i]))!;
+     names.add(await user);
+    }
+    return names;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,24 +55,46 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         backgroundColor: ArgonColors.verdeOscuro,
       ),
       backgroundColor: ArgonColors.verdeClaro,
-      body: FutureBuilder<Map<int, String>>(
+      body: Container(
+    padding: EdgeInsets.only(right: 24, left: 24, bottom: 36),
+    child: SingleChildScrollView(
+    child: Column(
+    children: [
+      FutureBuilder<Group>(
         future: load(groupId),
-        builder: (BuildContext context, AsyncSnapshot<Map<int, String>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<Group> snapshot) {
           if (snapshot.hasData) {
-            // membersScoreInAScendingOrder.sort((a, b) => a.compareTo(b));
-            print("SNAP");
-            print(snapshot);
+            Map<String, dynamic> membersByScore = order(snapshot.data!.members);
+            List<String> list = membersByScore.keys.toList();
+            getUser(list);
+            position =1;
             return Container(
                 child: SafeArea(
                     child: Column(
-                      children: <Widget>[
-                        GroupDetailsTitleWidget(group!.name),
+                      children:[
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(padding: const EdgeInsets.only(left: 8.0, top: 32),
+                            child: Text('Grupo ' + snapshot.data!.name, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20))
+                        )
+                      ],
+                    ),
+                        Padding(padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                            child: Text(snapshot.data!.description, style: TextStyle(color: ArgonColors.azul, fontSize: 15))
+                        ),
+                        Image.network(snapshot.data!.icon_url),
                         Divider(
                             height: 50,
                             thickness: 5,
                             color: ArgonColors.verdeOscuro
                         ),
-                        ScoreTableWidget(),
+                    Column(
+                      children: [
+                         for (var index in names)
+                             ScoreTableRowWidget(index.name, membersByScore[index.Id], position++)
+                      ],
+                    ),
                         Divider(
                             height: 50,
                             thickness: 5,
@@ -94,53 +114,52 @@ class _CreateGroupDetailState extends State<GroupDetail> {
                 )
             );
           }
-        }));
-    }
-
-  Widget GroupDetailsTitleWidget(String title){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(padding: const EdgeInsets.only(left: 8.0, top: 32),
-            child: Text('Grupo $title', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20))
+        }
         )
-      ],
-    );
-  }
-
-  Widget ScoreTableWidget(){
-    return Column(
-      children: [
-        for (var score in membersScoreInAScendingOrder)
-          if(position < 3)
-            ScoreTableRowWidget(membersNamesByScore[score], score.toString(), position++)
-      ],
-    );
-  }
-  
-  Widget ScoreTableRowWidget(String? name, String score, int position){
-    Color? color = null;
-    switch(position){
-      case 1: color = Colors.orange; break;
-      case 2: color = Colors.blueGrey; break;
-      case 3: color = Colors.brown; break;
+          ]
+    ),
+    )));
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Icon(Icons.stars, color: color, size: 30),
-        Text(name!, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 16)),
-        Text(score + ' pts', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 16)),
-      ],
-    );
+  
+  Widget ScoreTableRowWidget(String? name, int score, int position){
+    print("ENTRA");
+    print(position);
+    Color? color = null;
+    if(position <= 3) {
+      switch (position) {
+        case 1:
+          color = Colors.orange;
+          break;
+        case 2:
+          color = Colors.blueGrey;
+          break;
+        case 3:
+          color = Colors.brown;
+          break;
+      }
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(Icons.stars, color: color, size: 30),
+          Text(name!, style: TextStyle(fontWeight: FontWeight.bold,
+              color: ArgonColors.azul,
+              fontSize: 16)),
+          Text(score.toString() + ' pts', style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: ArgonColors.azul,
+              fontSize: 16)),
+        ],
+      );
+    }
+    return Row();
   }
 
   Widget ParticipantsListWidget(){
     return Column(
       children: [
-        Text(membersNamesByScore.length.toString() + ' Participantes:', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
-        for(var memberName in membersNamesByScore.values)
-          ParticipantsList(memberName),
+        Text(names.length.toString() + ' Participantes:', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
+        for(var memberName in names)
+          ParticipantsList(memberName.name + " " + memberName.last_name),
       ],
     );
   }
