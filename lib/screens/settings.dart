@@ -63,19 +63,11 @@ class _SettingsState extends State<Settings> {
       print("no tenes foto seleccionada");
       return;
     }
-    // var snapshot = await FirebaseStorage.instance.ref().child('profileImages/' + user.Id).putFile(profileImage!);
-
     final fileName = profileImage!.path;
     final destination = 'profileImages/' + fileName;
-
     final ref = await FirebaseStorage.instance.ref(destination);
-
     TaskSnapshot uploadTask = await ref.putFile(profileImage!);
-    print('POR OBTENER EL URL');
     photo_url = await ref.getDownloadURL();
-    print("URL DEL ICONO");
-    print(photo_url);
-    // user.icon_url = 'gs://greencycle-ed98e.appspot.com' + 'profileImages/' + user.icon_url!;
   }
 
   @override
@@ -220,33 +212,6 @@ class _SettingsState extends State<Settings> {
                             setState(() {});
                           }),
                     ] ): SizedBox.shrink(),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child:
-                      // Form(
-                      //   key: image,
-                      //   child: TextFormField(
-                      //     decoration: const InputDecoration(
-                      //       labelText: "Modificar imagen",
-                      //       border: OutlineInputBorder(),
-                      //       labelStyle: TextStyle(color: ArgonColors.azul),
-                      //     ),
-                      //     onSaved: (value) {
-                      //       _imageController!.text = value!;
-                      //     },
-                      //     validator: (value) {
-                      //       RegExp regex = new RegExp(
-                      //           r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$');
-                      //       if (value == null || value.isEmpty) {
-                      //         return null;
-                      //       } else if (!regex.hasMatch(value)) {
-                      //         return "La imagen debe ser una dirección URL";
-                      //       }
-                      //       return null;
-                      //     },
-                      //   ),
-                      // ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0),
                     ),
@@ -260,15 +225,10 @@ class _SettingsState extends State<Settings> {
                           onPressed: () async {
                             mail.currentState!.save();
                             mail.currentState!.validate();
-                            // image.currentState!.save();
-                            // image.currentState!.validate();
                             firstName.currentState!.save();
                             firstName.currentState!.validate();
                             lastName.currentState!.save();
                             lastName.currentState!.validate();
-
-                            print("PHOTO PATH");
-                            print(profileImage!.path);
                             if(_firstNameController!.text != "" || _lastNameController!.text != "" || _imageController!.text != "" || _emailController!.text != "") {
                               late MyUser _myUser;
                               if(profileImage == null) {
@@ -278,8 +238,6 @@ class _SettingsState extends State<Settings> {
                                     "",
                                     null,
                                     _emailController!.text);
-                                print("SIN FOTO");
-                                print(_myUser);
                               } else {
                                 await uploadFileToStorage();
                                 _myUser = MyUser(
@@ -288,15 +246,16 @@ class _SettingsState extends State<Settings> {
                                     "",
                                     photo_url,
                                     _emailController!.text);
-
-                                print("CON FOTO");
-                                print(_myUser);
                               }
-                              print(_myUser);
-
                               UserService _userService = UserService();
                               _userService.editCurrentUser(_myUser);
                               setState(() {});
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text('Se modifico tu usuario',
+                                    style: const TextStyle(
+                                    color: ArgonColors.white),
+                              )));
                             }
                           },
                           shape: RoundedRectangleBorder(
@@ -320,12 +279,10 @@ class _SettingsState extends State<Settings> {
                           color: ArgonColors.verdeOscuro,
                           minWidth: 190,
                           onPressed: () async {
-                            // Habria que hacer un checkeo para que se fije si inicie sesino con google o no
                             await _googleSignIn.signOut();
                             FirebaseAuth.instance.signOut();
-                            setState(() {}); // Esto es para forzar un refresh nadamas
+                            setState(() {});
                             Navigator.pushNamedAndRemoveUntil(context, '/onboarding',(r) => false);
-                            //Navigator.pushReplacementNamed(context, '/onboarding');
 
                           },
                           shape: RoundedRectangleBorder(
