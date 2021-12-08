@@ -53,9 +53,9 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     return usersByScore;
   }
 
-  Future<Map<String, dynamic>> fetchData(String groupId) async {
+  Future<Map<String, int>> fetchData(String groupId) async {
     Map<String, dynamic> scoreByNamesMap = {};
-
+    Map<String, int> members = new Map<String, int>();
     groupService.getGroupById(groupId).then((value) => group = value!);
     print(group);
     LinkedHashMap<String, dynamic> scoresByIdMap = order(group.members);
@@ -68,26 +68,40 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         usersByScore = response
     ).whenComplete(() {
         print("AFTER GETUSER");
-        // Acá se caga
-        for(int i=0; i< usersByScore.length; i++){
-          userNamesOrderedByScore[i] = usersByScore[i].name + ' ' + usersByScore[i].last_name;
+        print(usersByScore);
+        print(members);
+        for(int i=0; i<usersByScore.length; i++) {
+          print(i);
+          print(usersByScore.length);
+          print(usersByScore[i].Id);
+          print(scoresByIdMap);
+          print(scoresByIdMap[usersByScore[i].Id]);
+          print(usersByScore[i].name + " " + usersByScore[i].last_name);
+          members.putIfAbsent(usersByScore[i].name + " " + usersByScore[i].last_name, ()=> scoresByIdMap[usersByScore[i].Id]);
+          print("DESPUES");
         }
-        print(userNamesOrderedByScore);
-        int i = 1;
-        scoresByIdMap.keys.toList().forEach((key) {
-        scoreByNamesMap.addAll({
-          userNamesOrderedByScore[i]: scoresByIdMap[key]
-        });
-        i++;
+        print(members);
+        // Acá se caga
+        //for(int i=0; i< usersByScore.length; i++){
+          //userNamesOrderedByScore[i] = usersByScore[i].name + ' ' + usersByScore[i].last_name;
+        //}
+        //print(userNamesOrderedByScore);
+        //int i = 1;
+       // scoresByIdMap.keys.toList().forEach((key) {
+        //scoreByNamesMap.addAll({
+          //userNamesOrderedByScore[i]: scoresByIdMap[key]
+        //});
+        //i++;
       });
-    });
-    print(scoreByNamesMap);
-    return scoreByNamesMap;
+    //});
+    //print(scoreByNamesMap);
+    return members;
   }
 
   @override
   Widget build(BuildContext context) {
     final String groupId = ModalRoute.of(context)!.settings.arguments as String;
+    print(groupId);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalle grupo"),
@@ -99,9 +113,9 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     child: SingleChildScrollView(
     child: Column(
     children: [
-      FutureBuilder<Map<String, dynamic>>(
+      FutureBuilder<Map<String, int>>(
         future: fetchData(groupId),
-        builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             print("AFTER FETCHDATA");
             print(snapshot);
@@ -131,7 +145,8 @@ class _CreateGroupDetailState extends State<GroupDetail> {
                         ),
                     Column(
                       children: [
-                         ScoreTableRowWidget(position++)
+                        for (int i=0; i<3; i++)
+                         ScoreTableRowWidget(i)
                       ],
                     ),
                         Divider(
@@ -164,15 +179,15 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     print("ENTRA");
     print(position);
     Color? color = null;
-    if(position <= 3) {
+    if(position < 3) {
       switch (position) {
-        case 1:
+        case 0:
           color = Colors.orange;
           break;
-        case 2:
+        case 1:
           color = Colors.blueGrey;
           break;
-        case 3:
+        case 2:
           color = Colors.brown;
           break;
       }
