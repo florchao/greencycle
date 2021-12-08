@@ -51,7 +51,7 @@ class ArgonDrawer extends StatelessWidget {
                   fontSize: 15,
                   color: ((currentPage == "Home") ? ArgonColors.azul: ArgonColors.white),
                 )),
-                leading: Icon(Icons.home, color: ArgonColors.white,),
+                leading: Icon(Icons.home, color: ((currentPage == "Home") ? ArgonColors.azul: ArgonColors.white),),
                   selected: (currentPage == "Home" ? true: false),
                   selectedTileColor: ArgonColors.verdeClaro,
                   onTap: () {
@@ -69,7 +69,7 @@ class ArgonDrawer extends StatelessWidget {
                   fontSize: 15,
                   color: ((currentPage == "Profile") ? ArgonColors.azul: ArgonColors.white),
                 )),
-                leading: Icon(Icons.person, color: ArgonColors.white,),
+                leading: Icon(Icons.person, color: ((currentPage == "Profile") ? ArgonColors.azul: ArgonColors.white),),
                 // selected: ((currentPage == "Mi Perfil") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
@@ -86,7 +86,7 @@ class ArgonDrawer extends StatelessWidget {
                   fontSize: 15,
                   color: ((currentPage == "Mis Grupos") ? ArgonColors.azul: ArgonColors.white),
                 )),
-                leading: Icon(Icons.people, color: ArgonColors.white,),
+                leading: Icon(Icons.people, color: ((currentPage == "Mis Grupos") ? ArgonColors.azul: ArgonColors.white),),
                 selected: ((currentPage == "Mis Grupos") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
@@ -103,7 +103,7 @@ class ArgonDrawer extends StatelessWidget {
                   fontSize: 15,
                   color: ((currentPage == "Mis Acciones") ? ArgonColors.azul: ArgonColors.white),
                 )),
-                leading: Icon(Icons.category, color: ArgonColors.white,),
+                leading: Icon(Icons.category, color: ((currentPage == "Mis Acciones") ? ArgonColors.azul: ArgonColors.white),),
                 selected: ((currentPage == "Mis Acciones") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
@@ -120,7 +120,7 @@ class ArgonDrawer extends StatelessWidget {
                   fontSize: 15,
                   color: ((currentPage == "Configuración") ? ArgonColors.azul: ArgonColors.white),
                 )),
-                leading: Icon(Icons.settings, color: ArgonColors.white,),
+                leading: Icon(Icons.settings, color: ((currentPage == "Configuración") ? ArgonColors.azul: ArgonColors.white),),
                 selected: ((currentPage == "Configuración") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {

@@ -229,14 +229,14 @@ class _SettingsState extends State<Settings> {
                             firstName.currentState!.validate();
                             lastName.currentState!.save();
                             lastName.currentState!.validate();
-                            if(_firstNameController!.text != "" || _lastNameController!.text != "" || _imageController!.text != "" || _emailController!.text != "") {
+                            if(_firstNameController!.text != "" || _lastNameController!.text != "" || profileImage != null || _emailController!.text != "") {
                               late MyUser _myUser;
                               if(profileImage == null) {
                                 _myUser = MyUser(
                                     _firstNameController!.text,
                                     _lastNameController!.text,
                                     "",
-                                    null,
+                                    "",
                                     _emailController!.text);
                               } else {
                                 await uploadFileToStorage();
