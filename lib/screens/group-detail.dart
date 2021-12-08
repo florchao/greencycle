@@ -13,37 +13,76 @@ class GroupDetail extends StatefulWidget{
 }
 
 class _CreateGroupDetailState extends State<GroupDetail> {
-  Map<int, String> membersNamesByScore = {};
+  List<String> names = [];
+  List<dynamic> scores = [];
   var membersScoreInAScendingOrder = [];
   late Group group;
   int position = 1;
-  List<MyUser> names = [];
+  List<String> userNamesOrderedByScore = [];
   final GroupService groupService = new GroupService();
   UserService userService = UserService();
 
-  Future<Group> load(String groupId) async {
-    await groupService.getGroupById(groupId).then((value) => group = value!);
-    return group;
+  // Future<Group> load(String groupId) async {
+  //   await groupService.getGroupById(groupId).then((value) => group = value!);
+  //   Map<String, dynamic> membersByScore = order(group.members);
+  //   List<String> membersIds = membersByScore.keys.toList();
+  //   await getUser(membersIds);
+  //   return group;
+  // }
+
+  LinkedHashMap<String, dynamic> order(Map<String, dynamic> members) {
+    // lista de ids ordenados x score
+    var membersIdsSortedByScoreList = members.keys.toList(growable:false)
+      ..sort((k1, k2) => members[k2].compareTo(members[k1]));
+    // mapa id:score usando el orden de la lista
+    LinkedHashMap<String, dynamic> scoresByIdMap = new LinkedHashMap.fromIterable(membersIdsSortedByScoreList, key: (k) => k, value: (k) => members[k]);
+    // Map<String, int> map = new Map<String, int>();
+    // List membersIdsSortedByScoreList2 = scoresByIdMap.keys.toList();
+    // for(var index=0; index < membersIdsSortedByScoreList2.length; index ++){
+    //   map[membersIdsSortedByScoreList2[index]] = scoresByIdMap[membersIdsSortedByScoreList2[index]];
+    // }
+    return scoresByIdMap;
   }
 
-  order(Map<String, dynamic> list){
-    var sortedKeys = list.keys.toList(growable:false)
-      ..sort((k1, k2) => list[k2].compareTo(list[k1]));
-    LinkedHashMap sortedMap = new LinkedHashMap.fromIterable(sortedKeys, key: (k) => k, value: (k) => list[k]);
-    Map<String, int> map = new Map<String, int>();
-    List keysSortedMap = sortedMap.keys.toList();
-    for(var index=0; index < keysSortedMap.length; index ++){
-      map[keysSortedMap[index]] = sortedMap[keysSortedMap[index]];
-    }
-    return map;
-  }
-
-  getUser(List<String> list)async{
+  Future<List<MyUser>> getUser(List<String> list) async {
+    List<MyUser> usersByScore = [];
     for(int i=0; i < await list.length; i++) {
      MyUser user =  (await userService.getUser(list[i]))!;
-     names.add(await user);
+     usersByScore.add(await user);
     }
-    return names;
+    return usersByScore;
+  }
+
+  Future<Map<String, dynamic>> fetchData(String groupId) async {
+    Map<String, dynamic> scoreByNamesMap = {};
+
+    groupService.getGroupById(groupId).then((value) => group = value!);
+    print(group);
+    LinkedHashMap<String, dynamic> scoresByIdMap = order(group.members);
+    print(scoresByIdMap);
+    List<String> membersIds = scoresByIdMap.keys.toList();
+    print(membersIds);
+    List<MyUser> usersByScore = [];
+    await getUser(membersIds).then((response) =>
+        //Esto lo trae perfecto
+        usersByScore = response
+    ).whenComplete(() {
+        print("AFTER GETUSER");
+        // Acá se caga
+        for(int i=0; i< usersByScore.length; i++){
+          userNamesOrderedByScore[i] = usersByScore[i].name + ' ' + usersByScore[i].last_name;
+        }
+        print(userNamesOrderedByScore);
+        int i = 1;
+        scoresByIdMap.keys.toList().forEach((key) {
+        scoreByNamesMap.addAll({
+          userNamesOrderedByScore[i]: scoresByIdMap[key]
+        });
+        i++;
+      });
+    });
+    print(scoreByNamesMap);
+    return scoreByNamesMap;
   }
 
   @override
@@ -60,14 +99,15 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     child: SingleChildScrollView(
     child: Column(
     children: [
-      FutureBuilder<Group>(
-        future: load(groupId),
-        builder: (BuildContext context, AsyncSnapshot<Group> snapshot) {
-          if (snapshot.hasData) {
-            Map<String, dynamic> membersByScore = order(snapshot.data!.members);
-            List<String> list = membersByScore.keys.toList();
-            getUser(list);
-            position =1;
+      FutureBuilder<Map<String, dynamic>>(
+        future: fetchData(groupId),
+        builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            print("AFTER FETCHDATA");
+            print(snapshot);
+            names = snapshot.data!.keys.toList();
+            scores = snapshot.data!.values.toList();
+            position = 1;
             return Container(
                 child: SafeArea(
                     child: Column(
@@ -76,14 +116,14 @@ class _CreateGroupDetailState extends State<GroupDetail> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(padding: const EdgeInsets.only(left: 8.0, top: 32),
-                            child: Text('Grupo ' + snapshot.data!.name, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20))
+                            child: Text('Grupo ' + group.name, style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 20))
                         )
                       ],
                     ),
                         Padding(padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
-                            child: Text(snapshot.data!.description, style: TextStyle(color: ArgonColors.azul, fontSize: 15))
+                            child: Text(group.description, style: TextStyle(color: ArgonColors.azul, fontSize: 15))
                         ),
-                        Image.network(snapshot.data!.icon_url),
+                        Image.network(group.icon_url),
                         Divider(
                             height: 50,
                             thickness: 5,
@@ -91,8 +131,7 @@ class _CreateGroupDetailState extends State<GroupDetail> {
                         ),
                     Column(
                       children: [
-                         for (var index in names)
-                             ScoreTableRowWidget(index.name, membersByScore[index.Id], position++)
+                         ScoreTableRowWidget(position++)
                       ],
                     ),
                         Divider(
@@ -121,7 +160,7 @@ class _CreateGroupDetailState extends State<GroupDetail> {
     )));
     }
   
-  Widget ScoreTableRowWidget(String? name, int score, int position){
+  Widget ScoreTableRowWidget(int position){
     print("ENTRA");
     print(position);
     Color? color = null;
@@ -141,10 +180,10 @@ class _CreateGroupDetailState extends State<GroupDetail> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Icon(Icons.stars, color: color, size: 30),
-          Text(name!, style: TextStyle(fontWeight: FontWeight.bold,
+          Text(names[position], style: TextStyle(fontWeight: FontWeight.bold,
               color: ArgonColors.azul,
               fontSize: 16)),
-          Text(score.toString() + ' pts', style: TextStyle(
+          Text(scores[position].toString() + ' pts', style: TextStyle(
               fontWeight: FontWeight.bold,
               color: ArgonColors.azul,
               fontSize: 16)),
@@ -159,7 +198,7 @@ class _CreateGroupDetailState extends State<GroupDetail> {
       children: [
         Text(names.length.toString() + ' Participantes:', style: TextStyle(fontWeight: FontWeight.bold, color: ArgonColors.azul, fontSize: 15)),
         for(var memberName in names)
-          ParticipantsList(memberName.name + " " + memberName.last_name),
+          ParticipantsList(memberName),
       ],
     );
   }
