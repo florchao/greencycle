@@ -19,6 +19,9 @@ class ArgonDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    double screenWidth = queryData.size.width;
     return Drawer(
         child: Container(
       color: ArgonColors.verdeOscuro,
@@ -43,10 +46,10 @@ class ArgonDrawer extends StatelessWidget {
             padding: EdgeInsets.only(top:16, left: 16, right: 16),
             children: [
               ListTile(
-                title: const Text("Menú", style: TextStyle(
+                title: Text("Menú", style: TextStyle(
                   letterSpacing: .3,
                   fontSize: 15,
-                  color: ArgonColors.white,
+                  color: ((currentPage == "Home") ? ArgonColors.azul: ArgonColors.white),
                 )),
                 leading: Icon(Icons.home, color: ArgonColors.white,),
                   selected: (currentPage == "Home" ? true: false),
@@ -55,27 +58,33 @@ class ArgonDrawer extends StatelessWidget {
                     if (currentPage != "Home") {
                       Navigator.popAndPushNamed(context, '/home');
                     }
+                    else {
+                      Navigator.pop(context);
+                    }
                   },
               ),
               ListTile(
-                title: const Text("Perfil", style: TextStyle(
+                title: Text("Perfil", style: TextStyle(
                   letterSpacing: .3,
                   fontSize: 15,
-                  color: ArgonColors.white,
+                  color: ((currentPage == "Profile") ? ArgonColors.azul: ArgonColors.white),
                 )),
                 leading: Icon(Icons.person, color: ArgonColors.white,),
-                selected: ((currentPage == "Mi Perfil") ? true: false),
+                // selected: ((currentPage == "Mi Perfil") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
                   if (currentPage != "Profile")
                     Navigator.popAndPushNamed(context, '/profile');
+                  else {
+                    Navigator.pop(context);
+                  }
                 },
               ),
               ListTile(
-                title: const Text("Mis Grupos", style: TextStyle(
+                title: Text("Mis Grupos", style: TextStyle(
                   letterSpacing: .3,
                   fontSize: 15,
-                  color: ArgonColors.white,
+                  color: ((currentPage == "Mis Grupos") ? ArgonColors.azul: ArgonColors.white),
                 )),
                 leading: Icon(Icons.people, color: ArgonColors.white,),
                 selected: ((currentPage == "Mis Grupos") ? true: false),
@@ -83,34 +92,44 @@ class ArgonDrawer extends StatelessWidget {
                 onTap: () {
                   if (currentPage != "MisGrupos")
                     Navigator.popAndPushNamed(context, '/misgrupos');
+                  else {
+                    Navigator.pop(context);
+                  }
                 },
               ),
               ListTile(
-                title: const Text("Mis Acciones", style: TextStyle(
+                title: Text("Mis Acciones", style: TextStyle(
                   letterSpacing: .3,
                   fontSize: 15,
-                  color: ArgonColors.white,
+                  color: ((currentPage == "Mis Acciones") ? ArgonColors.azul: ArgonColors.white),
                 )),
                 leading: Icon(Icons.category, color: ArgonColors.white,),
                 selected: ((currentPage == "Mis Acciones") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
-                  if (currentPage != "MisAcciones")
+                  if (currentPage != "Mis Acciones")
                     Navigator.popAndPushNamed(context, '/misacciones');
+                  else {
+                    Navigator.pop(context);
+                  }
                 },
               ),
               ListTile(
-                title: const Text("Configuración", style: TextStyle(
+                title: Text("Configuración", style: TextStyle(
                   letterSpacing: .3,
                   fontSize: 15,
-                  color: ArgonColors.white,
+                  color: ((currentPage == "Configuración") ? ArgonColors.azul: ArgonColors.white),
                 )),
                 leading: Icon(Icons.settings, color: ArgonColors.white,),
-                selected: ((currentPage == "Settings") ? true: false),
+                selected: ((currentPage == "Configuración") ? true: false),
                 selectedTileColor: ArgonColors.verdeClaro,
                 onTap: () {
-                  if (currentPage != "Settings")
+                  print(currentPage);
+                  if (currentPage != "Configuración")
                     Navigator.popAndPushNamed(context, '/settings');
+                  else {
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ],
